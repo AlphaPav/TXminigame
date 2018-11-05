@@ -1,14 +1,13 @@
 # TXminigame
 Minigame project in Tencent game planning course
 
-
 ## Objects
 - 人物
 - Boss
 - 纸张（本身会发亮）
 - 原书
 - 传送点
-
+- 陷阱
 
 ## Interaction
 - Boss 在人物附近X米半径内，人物屏幕边缘会变红
@@ -50,5 +49,167 @@ Minigame project in Tencent game planning course
     - 冷却时间等待
     - 其他如上
 
-## FlowChart
-![image](flowchart.png)
+## Game Architecture 
+![image](flowchart.jpg)
+
+### UI ###
+
++ 读取人物状态，屏幕显示相应的提示
++ 读取人物技能，显示相应的技能
+
+
+### 游戏逻辑 ###
+
++ infomation control
+	
+	+ 公共变量管理（人物基本技能，血量，状态）
+	+ 和UI的交流（UI要获取的信息，以及UI送过来的信息，都通过这个类）
+	+ 本地模块间也通过这个类交流（当移动模块需要人物状态时）
+	+ 维护一个next_skill_to_execute，每次发动技能前需要设定技能所需的信息
+	
+	例子：
+		
+		// 获取人物的状态
+		// infomation control中代码
+		public static int getState(){
+			return this.getCompnent<StateControl>().state;
+			// State Control 是维护人物状态的脚本
+		}
+	其他脚本的调用：
+		
+		this.getCompnent<InfomationControl>().getState();
+
+
++ state control
+	+ 人物状态控制
+	+ 人物状态改变，至少需要提供 `trans2(int targetState)`
+	+ 判断人物状态是否可以变化
+	+ 维护人物状态维持时间（冰冻三秒后自动改变状态）
+
++ skill control
+	
+	+ 负责发送技能
+	+ 负责技能的冷却
+	+ 由于纸张都是在技能使用前后丢失或得到，因此，同时管理纸张【救人，捡纸张，抓人  可以都视作技能来实现】
+	+ 技能的执行顺序：
+		+ UI层获取执行的技能，以及技能的对象或方向或位置
+		+ UI层传递信息至information层
+		+ 判断技能能否执行
+		+ 可以执行，通知state control改变状态`trans2(targetState)
+		+ skill state开始执行技能 
+	+ 发动技能的两个阶段
+		+ BEGIN_SKILL
+		+ EXECUTE_SKILL
+	+ 注意：
+		+ 打断技能时，操作是在状态改变的函数中完成的
+		+ 从BEGIN_SKILL或者EXECUTE_SKILL改变状时，需要恢复技能冷却时间和引导剩余时间
+		+ 如果为一次性技能，需要将纸张和技能删了
+
+	Skill Class：
+
+		public class SKILL{
+		
+			private float boot_time = 0;		// 引导时间
+			private float cd_time = 0;			// 技能冷却时间
+			private bool  once_skill = false;	// 是否为一次性技能
+			/* 上面为需要修改的参数 */
+	
+			private float boot_waiting_time = 0;    		// 技能引导剩余时间
+			private float cd_waiting_time = 0;				// 剩余的冷却时间
+	
+			/*技能引导的目标参数*/
+			private GameObject skill_owner = null;
+			private GameObject target = null;
+			private Vector3 direction = null;
+			private Vector3 targetPos = null;
+	
+			public SKILL(GameObject skill_owner, bool once_skill){
+				this.skill_owner = skill_owner;
+				this.once_skill = once_skill;
+			}
+	
+	
+	
+			//几乎不用重载
+			public void display(){
+				// 技能引导
+				if(getState() == BEGIN_SKILL){
+					// 正在引导
+					if(boot_waiting_time > 0){
+						update(boot_waiting_time);   // 计算剩余引导时间
+						return;
+					}
+					boot_waiting_time = boot_time;			// 恢复引导时间
+					
+					/*更新人物状态*/
+					this.getComponent<StateControl>().tran2(EXECUTE_SKILL);
+				}
+	
+				/*获取技能参数*/
+				target = this.getComponent<InformationControl>().getTarget;
+				targetPos = this.getComponent<InformationControl>().getTargetPos;
+				direction = this.getComponent<InformationControl>().getDirection;	
+				attack();
+			}
+			
+			
+			// 重点重载函数 * 2
+	
+			// 技能效果函数
+			public void  attack(){
+				/*结束技能，更新人物状态*/
+				this.getComponent<StateControl>().tran2(FREE);
+				cd_waiting_time = cd_time;				// 恢复冷却时间
+				return;
+			}
+	
+			// 能否使用技能
+			public bool CanUse(){
+				// 未冷却
+				if(cd_waiting_time > 0) 
+					return false;
+				// 判断target/targetPos/Direction 是否合理
+			}
+		}
+
+
+	伪代码：
+		
+		void Update(){
+			UpdateSkillCD();	//刷新技能的冷却时间
+			
+			if(getState != BEGIN_SKILL || getState != EXECUTE_SKILL){
+				return;
+			}
+			
+			// 开始执行技能
+			this.getComponent<InformationControl>().getNextSkill().display();	
+		}
++ move control
+	+ 控制移动
+	
+	伪代码：
+		
+		void Update(){
+			if(getState() != FREE)
+				return;
+			Move();
+		}
+
++ animotion control
+
+	+ 根据状态和必要信息，控制动画的播放
+	
+	伪代码
+	
+		int lastState = FREE;
+		void Update(){
+			if(lastState == getState())
+				return;
+			
+			if(getState == BEGIN_SKILL){
+				//根据技能播放动画
+			}	
+			// ...
+			lastState = getState();
+		}
