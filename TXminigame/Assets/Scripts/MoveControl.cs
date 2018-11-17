@@ -13,6 +13,7 @@ public class MoveControl : MonoBehaviour {
 
 
 
+
     private float m_currentV = 0;
     private float m_currentH = 0;
 
@@ -31,11 +32,15 @@ public class MoveControl : MonoBehaviour {
     private List<Collider> m_collisions = new List<Collider>();
 
 
-
     float v = 0.0f;
     float h = 0.0f;
     float last_v = 0.0f;
     float last_h = 0.0f;
+
+   
+    public Transform footfalls;
+    public float total_time=0;
+   
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -94,6 +99,13 @@ public class MoveControl : MonoBehaviour {
 
     void Update()
     {
+        bool transparent = this.GetComponent<UIControl>().transparent;
+        total_time += Time.deltaTime;
+        if (total_time>0.1&&transparent==false)
+        {
+            Instantiate(footfalls, GetComponent<Transform>().position, footfalls.rotation);
+            total_time = 0;
+        }
 
         int tempState = this.GetComponent<InfoControl>().getState();
         if (tempState == PEOPLE.ICE|| tempState == PEOPLE.EXECUTE_SKILL|| tempState == PEOPLE.END_SKILL)
@@ -124,6 +136,7 @@ public class MoveControl : MonoBehaviour {
 
         last_v = v;
         last_h = h;
+
     }
 
     private void MovementUpdate()

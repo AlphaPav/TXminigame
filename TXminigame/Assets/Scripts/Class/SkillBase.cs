@@ -38,6 +38,7 @@ public class SKILL
     public bool need_pos = false;
     public float pos_radius = 10f;
 
+
     /*构造函数*/
 
     public SKILL(GameObject _skill_owner, int _id)
@@ -141,9 +142,23 @@ public class SKILL_HIDE : SKILL
 {
     public SKILL_HIDE(GameObject _skill_owner, int _id) : base(_skill_owner, _id)
     {
-         is_page_skill = true;  
+         is_page_skill = true;
+         need_dir = false;
          page_name = "BlackPage";
          skill_name = "SKILL_HIDE";
+    }
+
+    public override void Attack()
+    {
+        GameObject model = GameObject.Find("model");
+        Material[] _material = model.GetComponent<SkinnedMeshRenderer>().materials;
+        Color temp1 = _material[0].color;
+        Color temp2 = _material[1].color;
+        _material[0].SetColor("_Color", new Color(temp1[0], temp1[1], temp1[2], 0));
+        _material[1].SetColor("_Color", new Color(temp2[0], temp2[1], temp2[2], 0));
+        skill_owner.GetComponent<UIControl>().transparent = true;
+        skill_owner.GetComponent<InfoControl>().changeState(PEOPLE.END_SKILL);
+        return;
     }
 }
 /*复活：白色纸张技能*/
