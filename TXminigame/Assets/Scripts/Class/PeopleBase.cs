@@ -37,6 +37,7 @@ public class PeopleBase : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        
 		
 	}
 }
