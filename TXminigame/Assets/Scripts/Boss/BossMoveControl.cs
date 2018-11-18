@@ -45,7 +45,7 @@ public class BossMoveControl : MonoBehaviour {
     void Update()
     {
         MovementUpdate();
-        BossAttack();
+        //BossAttack();
         //OnTrap();
     }
 
@@ -111,20 +111,20 @@ public class BossMoveControl : MonoBehaviour {
         transform.position += transform.forward * m_currentV * m_moveSpeed * Time.deltaTime;
         transform.Rotate(0, m_currentH * m_turnSpeed * Time.deltaTime, 0);
 
-        //判断boss 状态
-        if(this.GetComponent<StateControl>().state == PEOPLE.SLOW)
-        {
-            m_moveSpeed = 0.25f * m_moveSpeedStandard;
-            // slow cd 判断
-            slow_cd -= slow_cd_speed * Time.deltaTime;
-        }
-        //恢复正常状态
-        if (slow_cd <= 0)
-        {
-            slow_cd = 10;
-            this.GetComponent<StateControl>().transStateTo(PEOPLE.FREE);
-            m_moveSpeed = Mathf.Lerp(m_moveSpeedStandard, m_moveSpeed, Time.deltaTime * 1);
-        }
+        ////判断boss 状态
+        //if(this.GetComponent<StateControl>().state == PEOPLE.SLOW)
+        //{
+        //    m_moveSpeed = 0.25f * m_moveSpeedStandard;
+        //    // slow cd 判断
+        //    slow_cd -= slow_cd_speed * Time.deltaTime;
+        //}
+        ////恢复正常状态
+        //if (slow_cd <= 0)
+        //{
+        //    slow_cd = 10;
+        //    this.GetComponent<StateControl>().transStateTo(PEOPLE.FREE);
+        //    m_moveSpeed = Mathf.Lerp(m_moveSpeedStandard, m_moveSpeed, Time.deltaTime * 1);
+        //}
 
     }
 

@@ -61,6 +61,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\detect.cs" />
+    <Compile Include="Assets\disapear.cs" />
     <Compile Include="Assets\Scripts\AniControl.cs" />
     <Compile Include="Assets\Scripts\Boss\BossMoveControl.cs" />
     <Compile Include="Assets\Scripts\CameraFollow.cs" />
@@ -71,10 +73,14 @@
     <Compile Include="Assets\Scripts\Page\PageInfo.cs" />
     <Compile Include="Assets\Scripts\SkillControl.cs" />
     <Compile Include="Assets\Scripts\StateControl.cs" />
+    <Compile Include="Assets\Scripts\UI\MoveJoystick.cs" />
+    <Compile Include="Assets\Scripts\UI\SkillJoystick.cs" />
     <Compile Include="Assets\Scripts\UIControl.cs" />
     <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\CameraLogic.cs" />
     <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\Demo.cs" />
     <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\SimpleCharacterControl.cs" />
+    <Compile Include="Assets\testcamera.cs" />
+    <Compile Include="Assets\testmove.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/Code/UnityProgram/TXminigame/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

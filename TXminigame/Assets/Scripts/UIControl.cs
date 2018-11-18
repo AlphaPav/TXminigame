@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIControl : MonoBehaviour {
     public  float v = 0.0f;/*vertical*/
@@ -9,20 +10,65 @@ public class UIControl : MonoBehaviour {
     Vector3 Pos = new Vector3(0,0,0);
     Vector3 Dir= new Vector3(0, 0, 0);
     // Use this for initialization
+
+    public bool transparent = false;
+
+    private MoveJoystick moveJoystick;
+    private SkillJoystick baseSkillJoystick;
+    private GameObject baseSkillUI;
+    private GameObject skill1UI;
+    private GameObject skill2UI;
+    private GameObject skill3UI;
+    private GameObject skill4UI;
+    Sprite sp_trap_blind;
+    Sprite sp_trap_blind_colding;
+    Sprite sp_trap_slow;
+    Sprite sp_trap_slow_colding;
+    Sprite sp_trap_ice;
+    Sprite sp_trap_ice_colding;
+    Sprite sp_flash;
+    Sprite sp_hide;
+    Sprite sp_revive;
+    Sprite sp_null;
+
+
+
     void Start () {
         highlightPosCube.SetActive(false);
-
+        moveJoystick = GameObject.FindGameObjectWithTag("UIMove").GetComponent<MoveJoystick>();
+        baseSkillUI = GameObject.FindGameObjectWithTag("UIBaseSkill");
+        skill1UI = GameObject.FindGameObjectWithTag("UISkill1");
+        skill2UI = GameObject.FindGameObjectWithTag("UISkill2");
+        skill3UI = GameObject.FindGameObjectWithTag("UISkill3");
+        skill4UI = GameObject.FindGameObjectWithTag("UISkill4");
+        baseSkillJoystick  = GameObject.FindGameObjectWithTag("UIBaseSkill").GetComponent<SkillJoystick>();
+        LoadUIResources();
+    }
+    void LoadUIResources()
+    {
+        sp_trap_blind= Resources.Load("Textrues/SKILL_TRAP_BLIND", typeof(Sprite)) as Sprite;
+        sp_trap_blind_colding= Resources.Load("Textrues/SKILL_TRAP_BLIND_COLDING", typeof(Sprite)) as Sprite;
+        sp_trap_slow= Resources.Load("Textrues/SKILL_TRAP_SLOW", typeof(Sprite)) as Sprite;
+        sp_trap_slow_colding= Resources.Load("Textrues/SKILL_TRAP_SLOW_COLDING", typeof(Sprite)) as Sprite;
+        sp_trap_ice= Resources.Load("Textrues/SKILL_TRAP_ICE", typeof(Sprite)) as Sprite;
+        sp_trap_ice_colding= Resources.Load("Textrues/SKILL_TRAP_ICE_COLDING", typeof(Sprite)) as Sprite;
+        sp_flash= Resources.Load("Textrues/SKILL_FLASH", typeof(Sprite)) as Sprite;
+        sp_hide= Resources.Load("Textrues/SKILL_HIDE", typeof(Sprite)) as Sprite;
+        sp_revive= Resources.Load("Textrues/SKILL_REVIVE", typeof(Sprite)) as Sprite;
+        sp_null = Resources.Load("Textrues/NULL", typeof(Sprite)) as Sprite;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        ShowSkill();
+        
+
         if (this.GetComponent<InfoControl>().getState() == PEOPLE.FREE)
         {
             SkillUpdate();
         }
         MovementUpdate();
         HandleClick();
+        SkillUIUpdate();
     }
     void HandleClick()
     {
@@ -39,8 +85,8 @@ public class UIControl : MonoBehaviour {
                 if (hitInfo.collider.tag.Equals("GoldenPage")|| hitInfo.collider.tag.Equals("BlackPage") || hitInfo.collider.tag.Equals("WhitePage"))
                 {
                     Debug.Log("unlock_time_left:"+ hitInfo.collider.gameObject.GetComponent<PageInfo>().unlock_time_left);
-                    hitInfo.collider.gameObject.GetComponent<PageInfo>().unlock_time_left -= this.GetComponent<InfoControl>().unlock_page_speed * Time.deltaTime;
-
+                    hitInfo.collider.gameObject.GetComponent<PageInfo>().unlock_time_left -= this.GetComponent<InfoControl>().unlock_page_speed * Time.deltaTime;                   
+            
                     if (hitInfo.collider.gameObject.GetComponent<PageInfo>().unlock_time_left <= 0)
                     {
                         hitInfo.collider.gameObject.GetComponent<PageInfo>().unlock_time_left = 0;
@@ -68,110 +114,200 @@ public class UIControl : MonoBehaviour {
         
         return targetPos;
     }
-
-
- 
-    void ShowSkill()
-    { 
-        //this.GetComponent<InfoControl>().basicSkill的冷却时间如果不为零，显示剩余冷却时间，技能图标颜色为灰色
-        //按顺序展示 this.GetComponent<InfoControl>().pageSkills的内容
-
-
-    }
-    
-
-
-
-    void SkillUpdate()
+    void PageSkillUIUpdate(SKILL _skill, GameObject _skillUI)
     {
-       
-        // UI 接收基本技能的位置，这里匹配到键盘按键数字0
-        if (this.GetComponent<InfoControl>().basicSkill.cd_time_left <= 0)// 判断基本技能的冷却时间
+        Image _skillImg = _skillUI.GetComponent<Image>();
+        string skill_name = _skill.getSkillName();
+        switch (skill_name)
         {
-            
-            SKILL basicSkill = this.GetComponent<InfoControl>().basicSkill;
-            if (Input.GetKey(KeyCode.Alpha0))//在UI上接收点击信息 实时获取方向/位置信息
-            {
-                Debug.Log("Input.GetKey(KeyCode.Alpha0)");
-                HandleGetKeyEvent(basicSkill);
-                return;
-            }
-            if (Input.GetKeyUp(KeyCode.Alpha0))//如果用户放开了按键,表示触发？ 
-            {
-                Debug.Log("Input.GetKeyUp(KeyCode.Alpha0)");
-                HandleGetKeyUpEvent(basicSkill);
-                return;
-            }
+            case "SKILL_FLASH":
+                _skillImg.sprite = sp_flash;
+                break;
+            case "SKILL_REVIVE":
+                _skillImg.sprite = sp_revive;
+                break;
+            case "SKILL_HIDE":
+                _skillImg.sprite = sp_hide;
+                break;
+            default:
+                Debug.Log("Error! Invalid PAGE skill_name!");
+                break;
         }
 
-        // UI上 第一个纸张技能的位置，这里匹配到键盘按键数字1
+    }
+    void setPageSkillUINULL()
+    {
+        skill1UI.GetComponent<Image>().sprite = sp_null;
+        skill2UI.GetComponent<Image>().sprite = sp_null;
+        skill3UI.GetComponent<Image>().sprite = sp_null;
+        skill4UI.GetComponent<Image>().sprite = sp_null;
+    }
+    void SkillUIUpdate()
+    {
+        SKILL _basicSkill = this.GetComponent<InfoControl>().basicSkill;
+        Image baseSkillImg = baseSkillUI.GetComponent<Image>();
+        string skill_name = _basicSkill.getSkillName();
+        if (_basicSkill.cd_time_left > 0)
+        {
+            Text cd_text = baseSkillUI.transform.Find("cd_time_left_text").gameObject.GetComponent<Text>();
+            cd_text.text = _basicSkill.cd_time_left.ToString();
+            switch (skill_name)
+            {
+                case "SKILL_TRAP_BLIND":
+                    baseSkillImg.sprite = sp_trap_blind_colding;
+                    break;
+                case "SKILL_TRAP_ICE":
+                    baseSkillImg.sprite = sp_trap_ice_colding;
+                    break;
+                case "SKILL_TRAP_SLOW":
+                    baseSkillImg.sprite = sp_trap_slow_colding;
+                    break;
+                default:
+                    Debug.Log("Error! Invalid skill_name!");
+                    break;
+            }
+
+        }
+        else
+        {
+            switch (skill_name)
+            {
+                case "SKILL_TRAP_BLIND":
+                    baseSkillImg.sprite = sp_trap_blind;
+                    break;
+                case "SKILL_TRAP_ICE":
+                    baseSkillImg.sprite = sp_trap_ice;
+                    break;
+                case "SKILL_TRAP_SLOW":
+                    baseSkillImg.sprite = sp_trap_slow;
+                    break;
+                default:
+                    Debug.Log("Error! Invalid BASE skill_name!");
+                    break;
+            }
+        }
+        setPageSkillUINULL();
+        // UI上 第一个纸张技能的位置
         if (this.GetComponent<InfoControl>().pageSkills.Count >= 1)  //如果这个位置有技能
         {
             SKILL _skill = this.GetComponent<InfoControl>().pageSkills[0];
-            if (Input.GetKey(KeyCode.Alpha1))//在UI上接收点击信息 实时获取方向/位置信息
-            {
-                Debug.Log("Input.GetKey(KeyCode.Alpha1)");
-                HandleGetKeyEvent(_skill);
-                return;
-            }
-            if (Input.GetKeyUp(KeyCode.Alpha1))//如果用户放开了按键,表示触发？ 
-            {
-                Debug.Log("Input.GetKeyUp(KeyCode.Alpha1)");
-                HandleGetKeyUpEvent(_skill);
-                return;
-            }
+            PageSkillUIUpdate(_skill, skill1UI);
         }
-
-
-        // UI上 第二个纸张技能的位置 ，这里匹配到键盘按键数字2
+        // UI上 第二个纸张技能的位置
         if (this.GetComponent<InfoControl>().pageSkills.Count >= 2) //如果这个位置有技能
         {
             SKILL _skill = this.GetComponent<InfoControl>().pageSkills[1];
-            if (Input.GetKey(KeyCode.Alpha2))//在UI上接收点击信息 实时获取方向/位置信息
-            {
-                Debug.Log("Input.GetKey(KeyCode.Alpha2)");
-                HandleGetKeyEvent(_skill);
-                return;
-            }
-            if (Input.GetKeyUp(KeyCode.Alpha2))//如果用户放开了按键,表示触发？ 
-            {
-                Debug.Log("Input.GetKeyUp(KeyCode.Alpha2)");
-                HandleGetKeyUpEvent(_skill);
-                return;
-            }
+            PageSkillUIUpdate(_skill, skill2UI);
         }
 
-        // UI上 第三个纸张技能的位置 ，这里匹配到键盘按键数字3
+        // UI上 第三个纸张技能的位置 
         if (this.GetComponent<InfoControl>().pageSkills.Count >= 3) //如果这个位置有技能
         {
             SKILL _skill = this.GetComponent<InfoControl>().pageSkills[2];
-            if (Input.GetKey(KeyCode.Alpha3))//在UI上接收点击信息 实时获取方向/位置信息
-            {
-                Debug.Log("Input.GetKey(KeyCode.Alpha3)");
-                HandleGetKeyEvent(_skill);
-                return;
-            }
-            if (Input.GetKeyUp(KeyCode.Alpha3))//如果用户放开了按键,表示触发？ 
-            {
-                Debug.Log("Input.GetKeyUp(KeyCode.Alpha3)");
-                HandleGetKeyUpEvent(_skill);
-                return;
-            }
+            PageSkillUIUpdate(_skill, skill3UI);
         }
-        // UI上 第四个纸张技能的位置 ，这里匹配到键盘按键数字4
+        // UI上 第四个纸张技能的位置
         if (this.GetComponent<InfoControl>().pageSkills.Count >= 4) //如果这个位置有技能
         {
             SKILL _skill = this.GetComponent<InfoControl>().pageSkills[3];
-            if (Input.GetKey(KeyCode.Alpha4))//在UI上接收点击信息 实时获取方向/位置信息
+            PageSkillUIUpdate(_skill, skill4UI);
+        }
+
+
+    }
+ 
+    bool HandleBasicSkillEvent()
+    {
+        SKILL _basicSkill = this.GetComponent<InfoControl>().basicSkill;
+        SkillJoystick skillJoystick = baseSkillUI.GetComponent<SkillJoystick>();
+        if (_basicSkill.cd_time_left > 0)
+        {
+
+        }
+        else {
+          
+            if (skillJoystick.isPressed())//在UI上接收点击信息 实时获取方向/位置信息
             {
-                Debug.Log("Input.GetKey(KeyCode.Alpha4)");
-                HandleGetKeyEvent(_skill);
+                Debug.Log("Input.GetKey");
+                skillJoystick.waspressed = true;
+                HandleGetKeyEvent(_basicSkill);
+                return true;
+            }
+            else if (skillJoystick.waspressed)//如果用户现在没按下但是曾经按下，表示放开了按键
+            {
+                Debug.Log("Input.GetKeyUp");
+                HandleGetKeyUpEvent(_basicSkill);
+                skillJoystick.waspressed = false;
+                return true;
+            }
+        }
+        return false;
+ 
+    }
+
+    bool HandlePageSkillEvent(SKILL _skill,GameObject _skillUI)
+    {
+       
+        SkillJoystick skillJoystick= _skillUI.GetComponent<SkillJoystick>();
+
+        if (skillJoystick.isPressed())//在UI上接收点击信息 实时获取方向/位置信息
+        {
+            Debug.Log("Input.GetKey");
+            skillJoystick.waspressed = true;
+            HandleGetKeyEvent(_skill);
+            return true;
+        }
+        else if (skillJoystick.waspressed)//如果用户现在没按下但是曾经按下，表示放开了按键
+        {
+            Debug.Log("Input.GetKeyUp");
+            HandleGetKeyUpEvent(_skill);
+            skillJoystick.waspressed  = false;
+            return true;
+        }
+        return false;
+    }
+
+    void SkillUpdate()
+    {
+        if (HandleBasicSkillEvent()) //true表示接收到按键事件，此次不需要再检查别的按键了
+        {
+            return;
+        }
+      
+        // UI上 第一个纸张技能的位置
+        if (this.GetComponent<InfoControl>().pageSkills.Count >= 1)  //如果这个位置有技能
+        {
+            SKILL _skill = this.GetComponent<InfoControl>().pageSkills[0];
+            if (HandlePageSkillEvent(_skill, skill1UI))
+            {
                 return;
             }
-            if (Input.GetKeyUp(KeyCode.Alpha4))//如果用户放开了按键,表示触发？ 
+
+        }
+        // UI上 第二个纸张技能的位置
+        if (this.GetComponent<InfoControl>().pageSkills.Count >= 2) //如果这个位置有技能
+        {
+            SKILL _skill = this.GetComponent<InfoControl>().pageSkills[1];
+            if (HandlePageSkillEvent(_skill, skill2UI))
             {
-                Debug.Log("Input.GetKeyUp(KeyCode.Alpha4)");
-                HandleGetKeyUpEvent(_skill);
+                return;
+            }
+        }
+        // UI上 第三个纸张技能的位置 
+        if (this.GetComponent<InfoControl>().pageSkills.Count >= 3) //如果这个位置有技能
+        {
+            SKILL _skill = this.GetComponent<InfoControl>().pageSkills[2];
+            if (HandlePageSkillEvent(_skill, skill3UI))
+            {
+                return;
+            }
+        }
+        // UI上 第四个纸张技能的位置
+        if (this.GetComponent<InfoControl>().pageSkills.Count >= 4) //如果这个位置有技能
+        {
+            SKILL _skill = this.GetComponent<InfoControl>().pageSkills[3];
+            if (HandlePageSkillEvent(_skill, skill4UI))
+            {
                 return;
             }
         }
@@ -235,25 +371,21 @@ public class UIControl : MonoBehaviour {
     {
         v = 0.0f;
         h = 0.0f;
+        bool move = false;
         //w键前进  
-        if (Input.GetKey(KeyCode.W))
+        h = moveJoystick.Horizontal();
+        v = moveJoystick.Vertical();
+        if (v != 0.0f || h != 0.0f) move = true;
+
+        if (move && transparent==true)
         {
-            v += Time.deltaTime * 100;
-        }
-        //s键后退  
-        if (Input.GetKey(KeyCode.S))
-        {
-            v -= Time.deltaTime * 100;
-        }
-        //a键左
-        if (Input.GetKey(KeyCode.A))
-        {
-            h -= Time.deltaTime * 100;
-        }
-        //d键右
-        if (Input.GetKey(KeyCode.D))
-        {
-            h += Time.deltaTime * 100;
+            GameObject model = GameObject.Find("model");
+            Material[] _material = model.GetComponent<SkinnedMeshRenderer>().materials;
+            Color temp1 = _material[0].color;
+            Color temp2 = _material[1].color;
+            _material[0].SetColor("_Color", new Color(temp1[0], temp1[1], temp1[2], 1.0f));
+            _material[1].SetColor("_Color", new Color(temp2[0], temp2[1], temp2[2], 1.0f));
+            transparent = false;
         }
     }
 
