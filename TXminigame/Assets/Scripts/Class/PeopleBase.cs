@@ -22,10 +22,8 @@ class PEOPLE
 
     public const int ICE = 4;    // 被冰冻
     public const int SLOW = 5; //被减速
-
-    public bool transparent = false;
                                  // ....
-
+              
 }
 
 

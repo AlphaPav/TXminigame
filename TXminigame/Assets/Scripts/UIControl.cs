@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UIControl : MonoBehaviour {
     public  float v = 0.0f;/*vertical*/
@@ -10,9 +9,6 @@ public class UIControl : MonoBehaviour {
     Vector3 Pos = new Vector3(0,0,0);
     Vector3 Dir= new Vector3(0, 0, 0);
     // Use this for initialization
-
-    public bool transparent = false;
-
     void Start () {
         highlightPosCube.SetActive(false);
 
@@ -43,8 +39,8 @@ public class UIControl : MonoBehaviour {
                 if (hitInfo.collider.tag.Equals("GoldenPage")|| hitInfo.collider.tag.Equals("BlackPage") || hitInfo.collider.tag.Equals("WhitePage"))
                 {
                     Debug.Log("unlock_time_left:"+ hitInfo.collider.gameObject.GetComponent<PageInfo>().unlock_time_left);
-                    hitInfo.collider.gameObject.GetComponent<PageInfo>().unlock_time_left -= this.GetComponent<InfoControl>().unlock_page_speed * Time.deltaTime;                   
-            
+                    hitInfo.collider.gameObject.GetComponent<PageInfo>().unlock_time_left -= this.GetComponent<InfoControl>().unlock_page_speed * Time.deltaTime;
+
                     if (hitInfo.collider.gameObject.GetComponent<PageInfo>().unlock_time_left <= 0)
                     {
                         hitInfo.collider.gameObject.GetComponent<PageInfo>().unlock_time_left = 0;
@@ -239,40 +235,25 @@ public class UIControl : MonoBehaviour {
     {
         v = 0.0f;
         h = 0.0f;
-        bool move = false;
         //w键前进  
         if (Input.GetKey(KeyCode.W))
         {
             v += Time.deltaTime * 100;
-            move = true;
         }
         //s键后退  
         if (Input.GetKey(KeyCode.S))
         {
             v -= Time.deltaTime * 100;
-            move = true;
         }
         //a键左
         if (Input.GetKey(KeyCode.A))
         {
             h -= Time.deltaTime * 100;
-            move = true;
         }
         //d键右
         if (Input.GetKey(KeyCode.D))
         {
             h += Time.deltaTime * 100;
-            move = true;
-        }
-        if (move && transparent==true)
-        {
-            GameObject model = GameObject.Find("model");
-            Material[] _material = model.GetComponent<SkinnedMeshRenderer>().materials;
-            Color temp1 = _material[0].color;
-            Color temp2 = _material[1].color;
-            _material[0].SetColor("_Color", new Color(temp1[0], temp1[1], temp1[2], 1.0f));
-            _material[1].SetColor("_Color", new Color(temp2[0], temp2[1], temp2[2], 1.0f));
-            transparent = false;
         }
     }
 
