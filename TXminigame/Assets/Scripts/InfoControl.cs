@@ -36,8 +36,6 @@ public class InfoControl : MonoBehaviour {
             changeState(PEOPLE.BEGIN_SKILL);
             next_skill_to_begin = null;
         }
-
-        
 	}
 
     public void addPageSkill(string _page_name)
