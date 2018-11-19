@@ -14,7 +14,7 @@ public class UIControl : MonoBehaviour {
     public bool transparent = false;
 
     private MoveJoystick moveJoystick;
-    private SkillJoystick baseSkillJoystick;
+    
     private GameObject baseSkillUI;
     private GameObject skill1UI;
     private GameObject skill2UI;
@@ -41,7 +41,7 @@ public class UIControl : MonoBehaviour {
         skill2UI = GameObject.FindGameObjectWithTag("UISkill2");
         skill3UI = GameObject.FindGameObjectWithTag("UISkill3");
         skill4UI = GameObject.FindGameObjectWithTag("UISkill4");
-        baseSkillJoystick  = GameObject.FindGameObjectWithTag("UIBaseSkill").GetComponent<SkillJoystick>();
+        
         LoadUIResources();
     }
     void LoadUIResources()
@@ -379,7 +379,7 @@ public class UIControl : MonoBehaviour {
 
         if (move && transparent==true)
         {
-            GameObject model = GameObject.Find("model");
+            GameObject model = this.transform.Find("model").gameObject;
             Material[] _material = model.GetComponent<SkinnedMeshRenderer>().materials;
             Color temp1 = _material[0].color;
             Color temp2 = _material[1].color;

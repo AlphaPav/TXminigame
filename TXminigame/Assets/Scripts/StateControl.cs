@@ -12,6 +12,7 @@ public class StateControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        
         if (state == PEOPLE.END_SKILL)
         {
             SKILL current_skill = this.GetComponent<InfoControl>().current_skill;
@@ -28,6 +29,18 @@ public class StateControl : MonoBehaviour {
             }
             transStateTo(PEOPLE.FREE);
             current_skill = null;
+            return;
+        }
+
+        if (state == PEOPLE.SEALED)
+        {
+            this.GetComponent<InfoControl>().seal_time += Time.deltaTime;
+            if (this.GetComponent<InfoControl>().seal_time >=120)
+            {
+                Debug.Log("state= die");
+                this.GetComponent<InfoControl>().seal_time = 0;
+                state = PEOPLE.DIE;
+            }
             return;
         }
 

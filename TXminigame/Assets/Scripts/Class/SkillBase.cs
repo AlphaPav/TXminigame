@@ -157,7 +157,8 @@ public class SKILL_HIDE : SKILL
 
     public override void Attack()
     {
-        GameObject model = GameObject.Find("model");
+        // GameObject model = GameObject.Find("model");
+        GameObject model = skill_owner.transform.Find("model").gameObject;
         Material[] _material = model.GetComponent<SkinnedMeshRenderer>().materials;
         Color temp1 = _material[0].color;
         Color temp2 = _material[1].color;
@@ -245,6 +246,54 @@ public class SKILL_TRAP_BLIND : SKILL
         UnityEngine.Object trapPreb = Resources.Load("Prefabs/blind_trap", typeof(GameObject));
         GameObject myTrap = GameObject.Instantiate(trapPreb, targetPos, Quaternion.identity) as GameObject;   // 实例化陷阱，参数为prefab, position, rotation
         skill_owner.GetComponent<InfoControl>().changeState(PEOPLE.END_SKILL);
+        return;
+    }
+}
+
+/*Boss抓人：基本技能*/
+public class SKILL_CATCH: SKILL
+{
+    public SKILL_CATCH(GameObject _skill_owner, int _id) : base(_skill_owner, _id)
+    {
+        cd_time = 300;   // 5min
+        boot_time = 0;
+        skill_name = "SKILL_CATCH";
+        need_pos = false;
+        need_dir = false;
+    }
+    // 重载
+    override public void Attack()
+    {   //目前是按照hero1 ,hero2, hero3的顺序来判断位置  只抓其中一个
+        Debug.Log(" SKILL_CATCH Attack()");
+        GameObject hero1 = GameObject.FindGameObjectWithTag("Hero1");
+        GameObject hero2 = GameObject.FindGameObjectWithTag("Hero2");
+        GameObject hero3 = GameObject.FindGameObjectWithTag("Hero3");
+        if ((skill_owner.transform.position - hero1.transform.position).magnitude < 5)
+        {
+            //hero1改成封印状态，hero1的脚本还没挂上去，故先注释掉
+           // hero1.GetComponent<StateControl>().transStateTo(PEOPLE.SEALED);
+            //Boss 减速
+            skill_owner.GetComponent<BossStateControl>().transStateTo(PEOPLE.SLOW);
+        }
+        else if ((skill_owner.transform.position - hero2.transform.position).magnitude < 5)
+        {
+            //hero2改成封印状态
+            //hero2.GetComponent<StateControl>().transStateTo(PEOPLE.SEALED);
+            //Boss 减速
+            skill_owner.GetComponent<BossStateControl>().transStateTo(PEOPLE.SLOW);
+        }
+        else if ((skill_owner.transform.position - hero3.transform.position).magnitude < 5)
+        {
+            //hero3改成封印状态
+           // hero3.GetComponent<StateControl>().transStateTo(PEOPLE.SEALED);
+            //Boss 减速
+            skill_owner.GetComponent<BossStateControl>().transStateTo(PEOPLE.SLOW);
+        }
+        else
+        {
+            Debug.Log("out of the scope of attacking");
+        }
+        skill_owner.GetComponent<BossInfoControl>().changeState(PEOPLE.END_SKILL);
         return;
     }
 }

@@ -9,20 +9,30 @@ public class InfoControl : MonoBehaviour {
     public List<SKILL> pageSkills = new List<SKILL>();
     public SKILL next_skill_to_begin = null;//UI传递过来，在update判断是否合法
     public SKILL current_skill;
-    public string basic_skill_name = "SKILL_TRAP_SLOW";
+    public string basic_skill_name = "";
     int id_count=0;
     public float unlock_page_speed = 5.0f;
+    public float seal_time = 0;//已经被封印的时间
 
 
     // Use this for initialization
     void Start () {
-        if (basic_skill_name == "SKILL_TRAP_SLOW")
+        if (this.gameObject.tag.Equals("Hero1"))
         {
+            basic_skill_name = "SKILL_TRAP_SLOW";
             basicSkill = new SKILL_TRAP_SLOW(this.gameObject, id_count++);
         }
-
-        
-	}
+        else if (this.gameObject.tag.Equals("Hero2"))
+        {
+            basic_skill_name = "SKILL_TRAP_ICE";
+            basicSkill = new SKILL_TRAP_SLOW(this.gameObject, id_count++);
+        }
+        else if (this.gameObject.tag.Equals("Hero3"))
+        {
+            basic_skill_name = "SKILL_TRAP_BLIND";
+            basicSkill = new SKILL_TRAP_SLOW(this.gameObject, id_count++);
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {
