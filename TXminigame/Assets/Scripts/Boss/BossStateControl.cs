@@ -32,13 +32,15 @@ public class BossStateControl : MonoBehaviour {
         {
             Debug.Log("state == PEOPLE.BLIND"+ this.GetComponent<BossInfoControl>().blind_time);
             this.GetComponent<BossInfoControl>().blind_time += Time.deltaTime;
+            //致盲蒙版
+            this.GetComponent<BossUIControl>().BlindMask(true);
             if (this.GetComponent<BossInfoControl>().blind_time >= 2)
             {
                 this.GetComponent<BossInfoControl>().blind_time = 0;
                 state = PEOPLE.FREE;
-
+                this.GetComponent<BossUIControl>().BlindMask(false);
             }
-                return;
+            return;
         }
         if (state == PEOPLE.ICE)
         {
