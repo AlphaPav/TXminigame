@@ -27,6 +27,7 @@ public class SKILL
     public float cd_time_left = 0;
     public float boot_speed = 5.0f;
     public float cd_speed = 5.0f;
+    public Animator m_animator;
 
     private DateTime last_skill_use_time;
 
@@ -38,6 +39,7 @@ public class SKILL
     public bool need_pos = false;
     public float pos_radius = 10f;
 
+
     /*构造函数*/
 
     public SKILL(GameObject _skill_owner, int _id)
@@ -45,6 +47,7 @@ public class SKILL
         skill_owner = _skill_owner;
         boot_time_left = boot_time;
         id = _id;
+        m_animator = skill_owner.GetComponent<Animator>();
     }
     public int getSkillID()
     {
@@ -55,7 +58,7 @@ public class SKILL
         return skill_name;
     }
 
-    //几乎不用重载
+    //不用重载
     public void Boot()
     {
         Debug.Log("In boot");
@@ -64,9 +67,13 @@ public class SKILL
             if (boot_time_left > 0)
             {
                 boot_time_left -= boot_speed * Time.deltaTime;
+                //更改一下动画，这里随便用了一个动画
+                m_animator.SetBool("Grounded", false);
                 return;
             }
             else {
+                //更改一下动画，这里随便用了一个动画
+                m_animator.SetBool("Grounded", true);
                 /*进入执行技能阶段*/
                 skill_owner.GetComponent<InfoControl>().changeState(PEOPLE.EXECUTE_SKILL);
                 /*恢复引导时间*/
@@ -83,6 +90,7 @@ public class SKILL
           skill_owner.GetComponent<InfoControl>().changeState(PEOPLE.END_SKILL);
   		  return;
          */
+        return;
     }
 
     //设置技能参数
@@ -114,7 +122,7 @@ public class SKILL
 
 
 /*闪现：金色纸张技能*/
-
+//只需要同步人物的位置即可
 public class SKILL_FLASH : SKILL
 {
 
@@ -131,19 +139,30 @@ public class SKILL_FLASH : SKILL
     override public void Attack()
     {
         skill_owner.transform.Translate(direction * distance);
+        skill_owner.GetComponent<StateControl>().state = PEOPLE.END_SKILL;
         skill_owner.GetComponent<InfoControl>().changeState(PEOPLE.END_SKILL);
+        Debug.Log("Flash on!!!!!!!");
         return;
     }
 }
-/*隐身：黑色纸张技能*/
 
+/*隐身：黑色纸张技能*/
 public class SKILL_HIDE : SKILL
 {
     public SKILL_HIDE(GameObject _skill_owner, int _id) : base(_skill_owner, _id)
     {
-         is_page_skill = true;  
+         is_page_skill = true;
+         need_dir = false;
          page_name = "BlackPage";
          skill_name = "SKILL_HIDE";
+    }
+
+    public override void Attack()
+    {
+        skill_owner.GetComponent<UIControl>().CmdBecomeTransparent();
+        skill_owner.GetComponent<StateControl>().state = PEOPLE.END_SKILL;
+        skill_owner.GetComponent<InfoControl>().changeState(PEOPLE.END_SKILL);
+        return;
     }
 }
 /*复活：白色纸张技能*/
@@ -157,6 +176,13 @@ public class SKILL_REVIVE : SKILL
         page_name = "WhitePage";
         skill_name = "SKILL_REVIVE";
     }
+    override public void Attack()
+    {
+        
+        skill_owner.GetComponent<InfoControl>().changeState(PEOPLE.END_SKILL);
+        return;
+    }
+
 }
 
 
@@ -172,14 +198,102 @@ public class SKILL_TRAP_SLOW : SKILL
     // 重载
     override public void Attack()
     {
-        Debug.Log(" SKILL_TRAP_SLOW Attack()");
-        UnityEngine.Object trapPreb = Resources.Load("Prefabs/slow_trap", typeof(GameObject));
+        //Debug.Log(" SKILL_TRAP_SLOW Attack()");
+        skill_owner.GetComponent<SkillControl>().CmdSetTramp(targetPos);
+        //UnityEngine.Object trapPreb = Resources.Load("Prefabs/slow_trap", typeof(GameObject));
+        //GameObject myTrap = GameObject.Instantiate(trapPreb, targetPos, Quaternion.identity) as GameObject;   // 实例化陷阱，参数为prefab, position, rotation
+        skill_owner.GetComponent<InfoControl>().changeState(PEOPLE.END_SKILL);
+        return;
+    }
+}
+
+/*冻住的陷阱：基本技能*/
+public class SKILL_TRAP_ICE : SKILL
+{
+    public SKILL_TRAP_ICE(GameObject _skill_owner, int _id) : base(_skill_owner, _id)
+    {
+        cd_time = 300;   // 5min
+        need_pos = true; //需要位置
+        skill_name = "SKILL_TRAP_ICE";
+    }
+    // 重载
+    override public void Attack()
+    {
+        Debug.Log(" SKILL_TRAP_ICE Attack()");
+        UnityEngine.Object trapPreb = Resources.Load("Prefabs/ice_trap", typeof(GameObject));
         GameObject myTrap = GameObject.Instantiate(trapPreb, targetPos, Quaternion.identity) as GameObject;   // 实例化陷阱，参数为prefab, position, rotation
         skill_owner.GetComponent<InfoControl>().changeState(PEOPLE.END_SKILL);
         return;
     }
 }
 
+/*变漆黑的陷阱：基本技能*/
+public class SKILL_TRAP_BLIND : SKILL
+{
+    public SKILL_TRAP_BLIND(GameObject _skill_owner, int _id) : base(_skill_owner, _id)
+    {
+        cd_time = 300;   // 5min
+        need_pos = true; //需要位置
+        skill_name = "SKILL_TRAP_BLIND";
+    }
+    // 重载
+    override public void Attack()
+    {
+        Debug.Log(" SKILL_TRAP_BLIND Attack()");
+        UnityEngine.Object trapPreb = Resources.Load("Prefabs/blind_trap", typeof(GameObject));
+        GameObject myTrap = GameObject.Instantiate(trapPreb, targetPos, Quaternion.identity) as GameObject;   // 实例化陷阱，参数为prefab, position, rotation
+        skill_owner.GetComponent<InfoControl>().changeState(PEOPLE.END_SKILL);
+        return;
+    }
+}
+
+/*Boss抓人：基本技能*/
+public class SKILL_CATCH: SKILL
+{
+    public SKILL_CATCH(GameObject _skill_owner, int _id) : base(_skill_owner, _id)
+    {
+        cd_time = 300;   // 5min
+        boot_time = 0;
+        skill_name = "SKILL_CATCH";
+        need_pos = false;
+        need_dir = false;
+    }
+    // 重载
+    override public void Attack()
+    {   //目前是按照hero1 ,hero2, hero3的顺序来判断位置  只抓其中一个
+        Debug.Log(" SKILL_CATCH Attack()");
+        GameObject hero1 = GameObject.FindGameObjectWithTag("Hero1");
+        GameObject hero2 = GameObject.FindGameObjectWithTag("Hero2");
+        GameObject hero3 = GameObject.FindGameObjectWithTag("Hero3");
+        if ((skill_owner.transform.position - hero1.transform.position).magnitude < 5)
+        {
+            //hero1改成封印状态，hero1的脚本还没挂上去，故先注释掉
+           // hero1.GetComponent<StateControl>().transStateTo(PEOPLE.SEALED);
+            //Boss 减速
+            skill_owner.GetComponent<BossStateControl>().transStateTo(PEOPLE.SLOW);
+        }
+        else if ((skill_owner.transform.position - hero2.transform.position).magnitude < 5)
+        {
+            //hero2改成封印状态
+            //hero2.GetComponent<StateControl>().transStateTo(PEOPLE.SEALED);
+            //Boss 减速
+            skill_owner.GetComponent<BossStateControl>().transStateTo(PEOPLE.SLOW);
+        }
+        else if ((skill_owner.transform.position - hero3.transform.position).magnitude < 5)
+        {
+            //hero3改成封印状态
+           // hero3.GetComponent<StateControl>().transStateTo(PEOPLE.SEALED);
+            //Boss 减速
+            skill_owner.GetComponent<BossStateControl>().transStateTo(PEOPLE.SLOW);
+        }
+        else
+        {
+            Debug.Log("out of the scope of attacking");
+        }
+        skill_owner.GetComponent<BossInfoControl>().changeState(PEOPLE.END_SKILL);
+        return;
+    }
+}
 
 
 

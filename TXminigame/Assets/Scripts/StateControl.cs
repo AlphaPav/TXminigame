@@ -1,8 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class StateControl : MonoBehaviour {
+//人物状态的转变与同步必须在服务器上完成。
+
+public class StateControl : NetworkBehaviour {
+
+    [SyncVar]
     public int state;
 
 	// Use this for initialization
@@ -11,12 +16,13 @@ public class StateControl : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         if (state == PEOPLE.END_SKILL)
         {
             SKILL current_skill = this.GetComponent<InfoControl>().current_skill;
             SKILL basicSkill = this.GetComponent<InfoControl>().basicSkill;
-            if (current_skill.getSkillID() == basicSkill.getSkillID())
+            if (current_skill!=null && current_skill.getSkillID() == basicSkill.getSkillID())
             {
                 //回复技能冷却时间和引导时间
                 basicSkill.cd_time_left = basicSkill.cd_time;
@@ -26,16 +32,39 @@ public class StateControl : MonoBehaviour {
             {
                 this.GetComponent<InfoControl>().deletePageSkill(current_skill);
             }
-            transStateTo(PEOPLE.FREE);
+            CmdtransStateTo(PEOPLE.FREE);
             current_skill = null;
+            return;
+        }
+
+        if (state == PEOPLE.SEALED)
+        {
+            this.GetComponent<InfoControl>().seal_time += Time.deltaTime;
+            if (this.GetComponent<InfoControl>().seal_time >=120)
+            {
+                Debug.Log("state= die");
+                this.GetComponent<InfoControl>().seal_time = 0;
+                state = PEOPLE.DIE;
+            }
             return;
         }
 
     }
 
-    public void transStateTo(int targetState)
+    [Command]
+    public void CmdtransStateTo(int targetState)
     {
         state = targetState;
+        Debug.Log("CMD change ");
+        Debug.Log("CmdtanslateStateTo");
+        RpcChangeState(targetState);
+    }
+    [ClientRpc]
+    public void RpcChangeState(int targetState)
+    {
+        Debug.Log("RPCChangeStaet");
+        state = targetState;
+        Debug.Log(state);
     }
 
    
