@@ -10,8 +10,6 @@ public class CameraFollow : MonoBehaviour {
 
     void Update()
     {
-        // m_TargetTransform = GameObject.FindWithTag("Hero1").transform;
-        m_TargetTransform = GameObject.FindWithTag("Boss").transform;
         if (m_TargetTransform != null)
         {
             var targetposition = m_TargetTransform.position + new Vector3(0, 3, depth);

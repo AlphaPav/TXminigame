@@ -22,6 +22,14 @@ TagManager:
   - UISkill1
   - UISkill3
   - UISkill4
+  - myface
+  - myboot
+  - mymove
+  - Net
+  - WarnImage
+  - BlindImage
+  - TransferPos
+  - BossCircle
   layers:
   - Default
   - TransparentFX

@@ -72,6 +72,7 @@ GameObject:
   - component: {fileID: 23203180829147228}
   - component: {fileID: 65738216645230700}
   - component: {fileID: 114467367551228528}
+  - component: {fileID: 114299568488246518}
   m_Layer: 0
   m_Name: golden_page
   m_TagString: GoldenPage
@@ -121,7 +122,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1555297499929112}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.1, y: 0.321, z: -1.4094015}
+  m_LocalPosition: {x: 1.06, y: 0.321, z: -3.87}
   m_LocalScale: {x: 0.48366, y: 0.41719744, z: 1.2992467}
   m_Children:
   - {fileID: 224462230702448796}
@@ -241,6 +242,38 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114299568488246518
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1555297499929112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 247
+    i1: 227
+    i2: 15
+    i3: 231
+    i4: 51
+    i5: 78
+    i6: 127
+    i7: 148
+    i8: 72
+    i9: 156
+    i10: 156
+    i11: 229
+    i12: 145
+    i13: 87
+    i14: 183
+    i15: 217
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114467367551228528
 MonoBehaviour:
   m_ObjectHideFlags: 1

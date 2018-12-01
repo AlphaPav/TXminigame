@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class BossStateControl : MonoBehaviour {
+public class BossStateControl : NetworkBehaviour{
+    [SyncVar]
     public int state;
 
 	// Use this for initialization
@@ -22,8 +24,17 @@ public class BossStateControl : MonoBehaviour {
                 basicSkill.cd_time_left = basicSkill.cd_time;
                 basicSkill.boot_time_left = basicSkill.boot_time;
             }
-            transStateTo(PEOPLE.FREE);
+            CmdtransStateTo(PEOPLE.FREE);
             current_skill = null;
+            if (isLocalPlayer)
+            {
+                if (this.GetComponent<BossSkillControl>().BeSlowAfterEndSkill==true)
+                {
+                    CmdtransStateTo(PEOPLE.SLOW);
+                    this.GetComponent<BossSkillControl>().BeSlowAfterEndSkill = false;
+                }
+            }
+            
             return;
         }
         //state为 slow 已经在movecontrol中写了
@@ -32,15 +43,21 @@ public class BossStateControl : MonoBehaviour {
         {
             Debug.Log("state == PEOPLE.BLIND"+ this.GetComponent<BossInfoControl>().blind_time);
             this.GetComponent<BossInfoControl>().blind_time += Time.deltaTime;
-            //致盲蒙版
-            this.GetComponent<BossUIControl>().BlindMask(true);
+            if (isLocalPlayer)
+            {
+                this.GetComponent<BossUIControl>().BlindMask(true);
+            }
+
             if (this.GetComponent<BossInfoControl>().blind_time >= 2)
             {
                 this.GetComponent<BossInfoControl>().blind_time = 0;
                 state = PEOPLE.FREE;
-                this.GetComponent<BossUIControl>().BlindMask(false);
+                if (isLocalPlayer)
+                {
+                    this.GetComponent<BossUIControl>().BlindMask(false);
+                }
             }
-            return;
+                return;
         }
         if (state == PEOPLE.ICE)
         {
@@ -54,16 +71,23 @@ public class BossStateControl : MonoBehaviour {
             }
             return;
         }
-
-
-
     }
 
-    public void transStateTo(int targetState)
+
+    [Command]
+    public void CmdtransStateTo(int targetState)
     {
         state = targetState;
+        Debug.Log("CmdtanslateStateTo");
+        RpcChangeState(targetState);
+    }
+    [ClientRpc]
+    public void RpcChangeState(int targetState)
+    {
+        Debug.Log("RPCChangeStaet");
+        state = targetState;
+        Debug.Log(state);
     }
 
-   
 
 }

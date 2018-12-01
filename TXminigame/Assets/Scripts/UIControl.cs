@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class UIControl : MonoBehaviour {
+//UIcontrol 中一切设备输入都必须限制在local player上才能执行，但是ui界面的同步可能会有bug？
+
+public class UIControl : NetworkBehaviour {
     public  float v = 0.0f;/*vertical*/
     public float h = 0.0f;/*horizontal*/
     public GameObject highlightPosCube;
     Vector3 Pos = new Vector3(0,0,0);
     Vector3 Dir= new Vector3(0, 0, 0);
-    /*
-     * 屏幕红色蒙版变量
-     */
+
+     //屏幕红色蒙版变量
     public Image warnImage;
     private float flashSpeed = 5;
-    // Use this for initialization
-
+    [SyncVar]
     public bool transparent = false;
 
     private MoveJoystick moveJoystick;
@@ -37,21 +38,22 @@ public class UIControl : MonoBehaviour {
     Sprite sp_null;
 
 
-
+    // Use this for initialization
     void Start () {
-        highlightPosCube.SetActive(false);
+        if (!isLocalPlayer) return;
         moveJoystick = GameObject.FindGameObjectWithTag("UIMove").GetComponent<MoveJoystick>();
         baseSkillUI = GameObject.FindGameObjectWithTag("UIBaseSkill");
         skill1UI = GameObject.FindGameObjectWithTag("UISkill1");
         skill2UI = GameObject.FindGameObjectWithTag("UISkill2");
         skill3UI = GameObject.FindGameObjectWithTag("UISkill3");
         skill4UI = GameObject.FindGameObjectWithTag("UISkill4");
-        
+        //UI 里找到warnImage
+        warnImage = GameObject.FindGameObjectWithTag("WarnImage").GetComponent<Image>();
         LoadUIResources();
     }
     void LoadUIResources()
     {
-        sp_trap_blind= Resources.Load("Textrues/SKILL_TRAP_BLIND", typeof(Sprite)) as Sprite;
+        sp_trap_blind = Resources.Load("Textrues/SKILL_TRAP_BLIND", typeof(Sprite)) as Sprite;
         sp_trap_blind_colding= Resources.Load("Textrues/SKILL_TRAP_BLIND_COLDING", typeof(Sprite)) as Sprite;
         sp_trap_slow= Resources.Load("Textrues/SKILL_TRAP_SLOW", typeof(Sprite)) as Sprite;
         sp_trap_slow_colding= Resources.Load("Textrues/SKILL_TRAP_SLOW_COLDING", typeof(Sprite)) as Sprite;
@@ -64,8 +66,13 @@ public class UIControl : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
-        
+    //人物一切的ui输入必须是localplayer才能操作，但是ui界面的同步？
+	void Update ()
+    {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
 
         if (this.GetComponent<InfoControl>().getState() == PEOPLE.FREE)
         {
@@ -76,8 +83,23 @@ public class UIControl : MonoBehaviour {
         SkillUIUpdate();
         WarnEffect();
     }
+    private void WarnEffect()
+    {
+        GameObject boss = GameObject.FindGameObjectWithTag("Boss");
+        if (boss == null) return;
+        if ((this.transform.position - boss.transform.position).magnitude > 5)
+            warnImage.color = Color.Lerp(warnImage.color, Color.clear, flashSpeed * Time.deltaTime);
+        else
+        {
+            Color c = new Color(1, 1, 1, 0.30f);
+            warnImage.color = Color.Lerp(warnImage.color, c, flashSpeed * Time.deltaTime);
+            warnImage.color = c;
+        }
+    }
+
     void HandleClick()
     {
+        if (!isLocalPlayer) return;
         if (Input.GetMouseButton(0))//鼠标左键
         {
             Debug.Log("MouseDown");
@@ -91,16 +113,28 @@ public class UIControl : MonoBehaviour {
                 if (hitInfo.collider.tag.Equals("GoldenPage")|| hitInfo.collider.tag.Equals("BlackPage") || hitInfo.collider.tag.Equals("WhitePage"))
                 {
                     Debug.Log("unlock_time_left:"+ hitInfo.collider.gameObject.GetComponent<PageInfo>().unlock_time_left);
-                    hitInfo.collider.gameObject.GetComponent<PageInfo>().unlock_time_left -= this.GetComponent<InfoControl>().unlock_page_speed * Time.deltaTime;                   
+                    CmdChangeTime(hitInfo.collider.gameObject);                   
             
                     if (hitInfo.collider.gameObject.GetComponent<PageInfo>().unlock_time_left <= 0)
                     {
+                        Debug.Log("Acccqqqqurore!");
                         hitInfo.collider.gameObject.GetComponent<PageInfo>().unlock_time_left = 0;
                         acquirePageSkill(hitInfo.collider);
                     }
                 }
             }
         }
+    }
+
+    [Command]
+    void CmdChangeTime(GameObject obj)
+    {
+        RpcChangeTime(obj);
+    }
+    [ClientRpc]
+    void RpcChangeTime(GameObject obj)
+    {
+        obj.GetComponent<PageInfo>().unlock_time_left -= this.GetComponent<InfoControl>().unlock_page_speed * Time.deltaTime;
     }
 
 
@@ -120,8 +154,10 @@ public class UIControl : MonoBehaviour {
         
         return targetPos;
     }
+
     void PageSkillUIUpdate(SKILL _skill, GameObject _skillUI)
     {
+        if (!isLocalPlayer) return;
         Image _skillImg = _skillUI.GetComponent<Image>();
         string skill_name = _skill.getSkillName();
         switch (skill_name)
@@ -150,6 +186,10 @@ public class UIControl : MonoBehaviour {
     }
     void SkillUIUpdate()
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
         SKILL _basicSkill = this.GetComponent<InfoControl>().basicSkill;
         Image baseSkillImg = baseSkillUI.GetComponent<Image>();
         string skill_name = _basicSkill.getSkillName();
@@ -224,6 +264,7 @@ public class UIControl : MonoBehaviour {
  
     bool HandleBasicSkillEvent()
     {
+        if (!isLocalPlayer) return false;
         SKILL _basicSkill = this.GetComponent<InfoControl>().basicSkill;
         SkillJoystick skillJoystick = baseSkillUI.GetComponent<SkillJoystick>();
         if (_basicSkill.cd_time_left > 0)
@@ -253,7 +294,7 @@ public class UIControl : MonoBehaviour {
 
     bool HandlePageSkillEvent(SKILL _skill,GameObject _skillUI)
     {
-       
+        if (!isLocalPlayer) return false;
         SkillJoystick skillJoystick= _skillUI.GetComponent<SkillJoystick>();
 
         if (skillJoystick.isPressed())//在UI上接收点击信息 实时获取方向/位置信息
@@ -275,6 +316,8 @@ public class UIControl : MonoBehaviour {
 
     void SkillUpdate()
     {
+        if (!isLocalPlayer) return;
+
         if (HandleBasicSkillEvent()) //true表示接收到按键事件，此次不需要再检查别的按键了
         {
             return;
@@ -320,6 +363,7 @@ public class UIControl : MonoBehaviour {
     }
     void HandleGetKeyEvent(SKILL _skill)
     {
+        if (!isLocalPlayer) return;
         Debug.Log(_skill.getSkillName());
         if (_skill.need_dir)
         {
@@ -336,14 +380,13 @@ public class UIControl : MonoBehaviour {
                 Debug.Log("PosValid");
                 Debug.Log(Pos);
                 //UI显示位置
-                highlightPosCube.SetActive(true);
-                highlightPosCube.transform.position = Pos;
             }
         }
 
     }
     void HandleGetKeyUpEvent(SKILL _skill)
     {
+        if (!isLocalPlayer) return;
         if (_skill.need_dir)
         {
             _skill.SetDirection(Dir);
@@ -366,15 +409,15 @@ public class UIControl : MonoBehaviour {
             Debug.Log("Already SetTargetPos:");
             Debug.Log(Pos);
             //UI显示位置
-            highlightPosCube.SetActive(true);
-            highlightPosCube.transform.position = Pos;
+
         }
         this.GetComponent<InfoControl>().next_skill_to_begin = _skill;
-        highlightPosCube.SetActive(false);
     }
-
+ 
     void MovementUpdate()
     {
+        if (!isLocalPlayer) return;
+
         v = 0.0f;
         h = 0.0f;
         bool move = false;
@@ -385,18 +428,15 @@ public class UIControl : MonoBehaviour {
 
         if (move && transparent==true)
         {
-            GameObject model = this.transform.Find("model").gameObject;
-            Material[] _material = model.GetComponent<SkinnedMeshRenderer>().materials;
-            Color temp1 = _material[0].color;
-            Color temp2 = _material[1].color;
-            _material[0].SetColor("_Color", new Color(temp1[0], temp1[1], temp1[2], 1.0f));
-            _material[1].SetColor("_Color", new Color(temp2[0], temp2[1], temp2[2], 1.0f));
             transparent = false;
+            CmdCancelTransparent();
         }
     }
 
+
     private void acquirePageSkill(Collider other)
     {
+        if (!isLocalPlayer) return;
         if (other.tag.Equals("GoldenPage"))
         {
             Debug.Log("acquireGoldenPageSkill");
@@ -415,19 +455,61 @@ public class UIControl : MonoBehaviour {
 
         //从游戏场景中消失，或者这里先播放一个纸张消失的动画再消失
         other.gameObject.SetActive(false);
+        CmdDelete_page(other.gameObject);
+        //NetworkServer.Destroy(other.gameObject);
+        //other.gameObject.SetActive(false);
       
     }
 
-    private void WarnEffect()
+    [Command]
+    void CmdDelete_page(GameObject obj)
     {
-        GameObject boss = GameObject.FindGameObjectWithTag("Boss");
-        if ((this.transform.position - boss.transform.position).magnitude > 5)
-            warnImage.color = Color.Lerp(warnImage.color, Color.clear, flashSpeed * Time.deltaTime);
-        else
-        {
-            Color c = new Color(1, 1, 1, 0.15f);
-            warnImage.color = Color.Lerp(warnImage.color, c, flashSpeed * Time.deltaTime);
-        }
+        Debug.Log("Delete !!!!!!!");
+        RpcDelete_page(obj);
     }
+    [ClientRpc]
+    void RpcDelete_page(GameObject obj)
+    {
+        obj.SetActive(false);
+    }
+
+
+    [Command]
+    public void CmdBecomeTransparent()
+    {
+        transparent = true;
+        RpcBecomeTransparent();
+    }
+
+    [Command]
+    void CmdCancelTransparent()
+    {
+        RpcCancelTransparent();
+    }
+
+    [ClientRpc]
+    void RpcBecomeTransparent()
+    {
+        GameObject model = this.transform.Find("model").gameObject;
+        if (model == null) Debug.Log("NULL");
+        Material[] _material = model.GetComponent<SkinnedMeshRenderer>().materials;
+        Color temp1 = _material[0].color;
+        Color temp2 = _material[1].color;
+        _material[0].SetColor("_Color", new Color(temp1[0], temp1[1], temp1[2], 0f));
+        _material[1].SetColor("_Color", new Color(temp2[0], temp2[1], temp2[2], 0f));
+    }
+
+    [ClientRpc]
+    void RpcCancelTransparent()
+    {
+        GameObject model = this.transform.Find("model").gameObject;
+        if (model == null) Debug.Log("NULL");
+        Material[] _material = model.GetComponent<SkinnedMeshRenderer>().materials;
+        Color temp1 = _material[0].color;
+        Color temp2 = _material[1].color;
+        _material[0].SetColor("_Color", new Color(temp1[0], temp1[1], temp1[2], 1.0f));
+        _material[1].SetColor("_Color", new Color(temp2[0], temp2[1], temp2[2], 1.0f));
+    }
+
 
 }

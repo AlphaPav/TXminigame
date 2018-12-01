@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class MoveControl : MonoBehaviour {
+public class MoveControl : NetworkBehaviour {
     //[SerializeField] 作用：私有化变量也可以在面板上显示和赋值
     [SerializeField] private float m_moveSpeedStandard = 2;
     [SerializeField] private float m_moveSpeed = 2;
@@ -11,6 +12,7 @@ public class MoveControl : MonoBehaviour {
     float v = 0.0f;
     float h = 0.0f;
 
+    public GameObject footprint;
     public Transform footfalls;
     public float total_time=0;
     private void Start()
@@ -20,11 +22,14 @@ public class MoveControl : MonoBehaviour {
 
     void Update()
     {
+        if (!isLocalPlayer) return;
+
         bool transparent = this.GetComponent<UIControl>().transparent;
         total_time += Time.deltaTime;
         if (total_time>0.1&&transparent==false)
         {
-            Instantiate(footfalls, GetComponent<Transform>().position, footfalls.rotation);
+            CmdsetFootPrint();
+            //Instantiate(footfalls, GetComponent<Transform>().position, footfalls.rotation);
             total_time = 0;
         }
 
@@ -46,12 +51,23 @@ public class MoveControl : MonoBehaviour {
             }
             
         }
-
-    
     }
+    [Command]
+    private void CmdsetFootPrint()
+    {
+        var foot =(GameObject)Instantiate(footprint, GetComponent<Transform>().position, footfalls.rotation);
+        NetworkServer.Spawn(foot);
+        Destroy(foot, 2.0f);
+    }
+
+
 
     private void MovementUpdate()
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
 
         m_animator.SetBool("Grounded", true);
         h = this.GetComponent<InfoControl>().getHorizontalMove();
@@ -72,6 +88,8 @@ public class MoveControl : MonoBehaviour {
     }
     void Rotating(float horizontal, float vertical)
     {
+        if (!isLocalPlayer) return;
+
        // Debug.Log("rotating");
         // 创建角色目标方向的向量
         Vector3 targetDirection = new Vector3(horizontal, 0f, vertical);

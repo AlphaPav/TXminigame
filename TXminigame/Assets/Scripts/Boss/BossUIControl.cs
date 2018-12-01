@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class BossUIControl : MonoBehaviour {
+using UnityEngine.Networking;
+public class BossUIControl : NetworkBehaviour
+{
     public  float v = 0.0f;/*vertical*/
     public float h = 0.0f;/*horizontal*/
 
-    /*
-     * 屏幕红色蒙版变量
-     */
     public Image blindImage;
     private float flashSpeed = 5;
-
     // Use this for initialization
     private MoveJoystick moveJoystick;
     private GameObject baseSkillUI;
@@ -24,6 +21,7 @@ public class BossUIControl : MonoBehaviour {
     Sprite sp_catch_colding;
 
     void Start () {
+        if (!isLocalPlayer) return;
         moveJoystick = GameObject.FindGameObjectWithTag("UIMove").GetComponent<MoveJoystick>();
         baseSkillUI = GameObject.FindGameObjectWithTag("UIBaseSkill");
 
@@ -37,6 +35,8 @@ public class BossUIControl : MonoBehaviour {
         skill4UI.SetActive(false);
 
         LoadUIResources();
+        blindImage = GameObject.FindGameObjectWithTag("BlindImage").GetComponent<Image>();
+        
     }
     void LoadUIResources()
     {
@@ -46,7 +46,7 @@ public class BossUIControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        
+        if (!isLocalPlayer) return;
         if (this.GetComponent<BossInfoControl>().getState() == PEOPLE.FREE)
         {
             SkillUpdate();
@@ -99,17 +99,17 @@ public class BossUIControl : MonoBehaviour {
         v = moveJoystick.Vertical();
      
     }
-
     public void BlindMask(bool b)
     {
         if (b)
         {
             blindImage.color = Color.Lerp(blindImage.color, new Color(0.1f, 0.1f, 0.1f, 0.9f), flashSpeed * Time.deltaTime);
+            Debug.Log("Blind");
         }
         else
         {
             blindImage.color = Color.clear;
         }
     }
-   
+
 }

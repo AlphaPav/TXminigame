@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 // State Control 是维护人物状态的脚本
 
-public class BossInfoControl : MonoBehaviour {
+public class BossInfoControl : NetworkBehaviour{
     /* skill 有关的变量，由UIControl和SkillControl共同维护*/
     public SKILL basicSkill;
     public SKILL next_skill_to_begin = null;
@@ -13,6 +14,7 @@ public class BossInfoControl : MonoBehaviour {
     public float unlock_page_speed = 5.0f;
     public float blind_time = 0.0f;
     public float ice_time = 0.0f;
+    public Vector3 original_book_pos = new Vector3(-8, 0, 4);
 
 
     // Use this for initialization
@@ -23,7 +25,7 @@ public class BossInfoControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        
+        if (!isLocalPlayer) return;
         if (next_skill_to_begin!=null) //UI里已经判断过是否可以使用 这技能是一定可以使用的
         {
             Debug.Log("next_skill_to_begin!=null");
@@ -54,8 +56,14 @@ public class BossInfoControl : MonoBehaviour {
     }
     public void changeState( int tgtState)
     {
-        this.GetComponent<BossStateControl>().transStateTo(tgtState);
+        Debug.Log("change state");
+        this.GetComponent<BossStateControl>().CmdtransStateTo(tgtState);
+        Debug.Log("change state end");
     }
 
-  
+    public override void OnStartLocalPlayer()
+    {
+        Camera.main.GetComponent<CameraFollow>().SetTarget(this.transform);
+    }
+
 }

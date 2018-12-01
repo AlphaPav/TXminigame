@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 23012066075326914}
   - component: {fileID: 65147870722981636}
   - component: {fileID: 114597424787917306}
+  - component: {fileID: 114939185328590016}
   m_Layer: 0
   m_Name: white_page
   m_TagString: WhitePage
@@ -121,7 +122,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1649131706550996}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.55, y: 0.321, z: -1.4094015}
+  m_LocalPosition: {x: 3.817, y: 0.321, z: -1.4094015}
   m_LocalScale: {x: 0.48366, y: 0.41719744, z: 1.2992467}
   m_Children:
   - {fileID: 224954888700838678}
@@ -297,7 +298,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unlock_time_total: 10
   unlock_time_left: 10
-  old_value: 10
 --- !u!114 &114769586392269836
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -346,6 +346,38 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &114939185328590016
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1649131706550996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 73
+    i1: 197
+    i2: 53
+    i3: 159
+    i4: 184
+    i5: 27
+    i6: 19
+    i7: 52
+    i8: 154
+    i9: 169
+    i10: 62
+    i11: 2
+    i12: 190
+    i13: 55
+    i14: 131
+    i15: 240
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!222 &222290414347876692
 CanvasRenderer:
   m_ObjectHideFlags: 1
