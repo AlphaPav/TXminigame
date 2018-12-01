@@ -28,6 +28,9 @@ public class BossMoveControl : MonoBehaviour {
 
     void Update()
     {
+        /*
+         * 状态判断
+         */
         int tempState = this.GetComponent<BossInfoControl>().getState();
         if (tempState == PEOPLE.ICE || tempState == PEOPLE.EXECUTE_SKILL || tempState == PEOPLE.END_SKILL)
             return;
@@ -94,8 +97,6 @@ public class BossMoveControl : MonoBehaviour {
                 break;
         }
         
-        
-
     }
 
     private void OnTriggerStay (Collider other)
@@ -163,48 +164,4 @@ public class BossMoveControl : MonoBehaviour {
 
     }
 
-    private bool OnTrsPos()
-    {
-        GameObject trsobj = GameObject.Find("TransferPos");
-        if ((this.transform.position - trsobj.transform.position).magnitude < 1)
-            return true;
-        return false;
-    }
-
-    ///*
-    // * boss点击人物 抓会书本
-    // */
-    //private void BossAttack()
-    //{
-    //    //创建射线;从摄像机发射一条经过鼠标当前位置的射线
-    //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-    //    //发射射线
-    //    RaycastHit hitInfo = new RaycastHit();
-    //    if (Physics.Raycast(ray, out hitInfo))
-    //    {
-    //        //获取碰撞点的物体
-    //        GameObject hitObj = hitInfo.collider.gameObject;
-    //        if (hitObj.name.Equals("hero") && Input.GetMouseButton(0)) 
-    //        {
-    //            Debug.Log("Attacking " + hitObj.name);
-                
-    //            // 判断攻击距离
-    //            if ((this.transform.position - hitObj.transform.position).magnitude < 5)
-    //            {
-    //                //被攻击者，大小、位置变化
-    //                hitObj.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-    //                hitObj.transform.position = new Vector3(1, 1, 1);
-    //                //人物冰冻
-    //                hitObj.GetComponent<StateControl>().transStateTo(PEOPLE.ICE);
-    //                //Boss 减速
-    //                this.GetComponent<StateControl>().transStateTo(PEOPLE.SLOW);
-    //            }
-    //            else
-    //            {
-    //                Debug.Log("out of the scope of attacking");
-    //            }
-
-    //        }
-    //    }
-    //}
 }

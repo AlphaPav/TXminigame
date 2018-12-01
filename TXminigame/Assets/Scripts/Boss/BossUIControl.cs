@@ -6,7 +6,12 @@ using UnityEngine.UI;
 public class BossUIControl : MonoBehaviour {
     public  float v = 0.0f;/*vertical*/
     public float h = 0.0f;/*horizontal*/
-    
+
+    /*
+     * 屏幕红色蒙版变量
+     */
+    public Image blindImage;
+    private float flashSpeed = 5;
 
     // Use this for initialization
     private MoveJoystick moveJoystick;
@@ -95,5 +100,16 @@ public class BossUIControl : MonoBehaviour {
      
     }
 
+    public void BlindMask(bool b)
+    {
+        if (b)
+        {
+            blindImage.color = Color.Lerp(blindImage.color, new Color(0.1f, 0.1f, 0.1f, 0.9f), flashSpeed * Time.deltaTime);
+        }
+        else
+        {
+            blindImage.color = Color.clear;
+        }
+    }
    
 }

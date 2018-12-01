@@ -9,6 +9,11 @@ public class UIControl : MonoBehaviour {
     public GameObject highlightPosCube;
     Vector3 Pos = new Vector3(0,0,0);
     Vector3 Dir= new Vector3(0, 0, 0);
+    /*
+     * 屏幕红色蒙版变量
+     */
+    public Image warnImage;
+    private float flashSpeed = 5;
     // Use this for initialization
 
     public bool transparent = false;
@@ -69,6 +74,7 @@ public class UIControl : MonoBehaviour {
         MovementUpdate();
         HandleClick();
         SkillUIUpdate();
+        WarnEffect();
     }
     void HandleClick()
     {
@@ -412,5 +418,16 @@ public class UIControl : MonoBehaviour {
       
     }
 
+    private void WarnEffect()
+    {
+        GameObject boss = GameObject.FindGameObjectWithTag("Boss");
+        if ((this.transform.position - boss.transform.position).magnitude > 5)
+            warnImage.color = Color.Lerp(warnImage.color, Color.clear, flashSpeed * Time.deltaTime);
+        else
+        {
+            Color c = new Color(1, 1, 1, 0.15f);
+            warnImage.color = Color.Lerp(warnImage.color, c, flashSpeed * Time.deltaTime);
+        }
+    }
 
 }
