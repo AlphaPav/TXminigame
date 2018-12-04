@@ -140,17 +140,8 @@ public class UIControl : NetworkBehaviour {
 
     Vector3 GetSkillTgtPos()
     {
-        Vector3 targetPos = Pos;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //发射射线
-        RaycastHit hitInfo = new RaycastHit();
-        if (Physics.Raycast(ray, out hitInfo))
-        {
-            if (hitInfo.collider.gameObject.tag.Equals("Walkable"))
-            {
-                targetPos = hitInfo.point;
-            }
-        }
+        //原地留下陷阱
+        Vector3 targetPos = this.transform.position;
         
         return targetPos;
     }
@@ -369,11 +360,11 @@ public class UIControl : NetworkBehaviour {
         {
             //从UI实时接收方向信息
             //UI显示方向
-            Dir = new Vector3(1.0f, 0.0f, 1.0f);// 应该用户输入，方向y轴分量应该是0 
+            Dir = Vector3.forward;// 用户面朝的方向
         }
         if (_skill.need_pos)
         {
-            //从UI实时接收位置信息
+            //接收位置信息
             Pos = GetSkillTgtPos();
             if (_skill.IsPosValid(Pos))
             {

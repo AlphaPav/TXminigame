@@ -10,7 +10,7 @@ using System;
 
 public class SKILL
 {
-    public float boot_time = 15;        // 技能引导时间（引导可以是念咒之类的）
+    public float boot_time = 2;        // 技能引导时间（引导可以是念咒之类的）
     public float cd_time = 0;          // 技能冷却时间，单位 Seconds
     public bool is_page_skill = false;  //是否为一次性的纸张技能
     public string page_name = "";
