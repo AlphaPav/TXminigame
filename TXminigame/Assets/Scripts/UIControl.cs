@@ -49,6 +49,7 @@ public class UIControl : NetworkBehaviour {
         skill4UI = GameObject.FindGameObjectWithTag("UISkill4");
         //UI 里找到warnImage
         warnImage = GameObject.FindGameObjectWithTag("WarnImage").GetComponent<Image>();
+        warnImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width, Screen.height);
         LoadUIResources();
     }
     void LoadUIResources()
@@ -91,7 +92,7 @@ public class UIControl : NetworkBehaviour {
             warnImage.color = Color.Lerp(warnImage.color, Color.clear, flashSpeed * Time.deltaTime);
         else
         {
-            Color c = new Color(1, 1, 1, 0.30f);
+            Color c = new Color(0.5f, 0, 0, 0.30f);
             warnImage.color = Color.Lerp(warnImage.color, c, flashSpeed * Time.deltaTime);
             warnImage.color = c;
         }
