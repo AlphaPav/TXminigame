@@ -36,7 +36,7 @@ public class BossUIControl : NetworkBehaviour
 
         LoadUIResources();
         blindImage = GameObject.FindGameObjectWithTag("BlindImage").GetComponent<Image>();
-        
+        blindImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width, Screen.height);
     }
     void LoadUIResources()
     {
