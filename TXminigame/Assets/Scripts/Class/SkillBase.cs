@@ -10,7 +10,7 @@ using System;
 
 public class SKILL
 {
-    public float boot_time = 15;        // 技能引导时间（引导可以是念咒之类的）
+    public float boot_time = 2;        // 技能引导时间（引导可以是念咒之类的）
     public float cd_time = 0;          // 技能冷却时间，单位 Seconds
     public bool is_page_skill = false;  //是否为一次性的纸张技能
     public string page_name = "";
@@ -27,6 +27,7 @@ public class SKILL
     public float cd_time_left = 0;
     public float boot_speed = 5.0f;
     public float cd_speed = 5.0f;
+    public Animator m_animator;
 
     private DateTime last_skill_use_time;
 
@@ -38,6 +39,7 @@ public class SKILL
     public bool need_pos = false;
     public float pos_radius = 10f;
 
+
     /*构造函数*/
 
     public SKILL(GameObject _skill_owner, int _id)
@@ -45,6 +47,7 @@ public class SKILL
         skill_owner = _skill_owner;
         boot_time_left = boot_time;
         id = _id;
+        m_animator = skill_owner.GetComponent<Animator>();
     }
     public int getSkillID()
     {
@@ -55,7 +58,7 @@ public class SKILL
         return skill_name;
     }
 
-    //几乎不用重载
+    //不用重载
     public void Boot()
     {
         Debug.Log("In boot");
@@ -64,9 +67,13 @@ public class SKILL
             if (boot_time_left > 0)
             {
                 boot_time_left -= boot_speed * Time.deltaTime;
+                //更改一下动画，这里随便用了一个动画
+                m_animator.SetBool("Grounded", false);
                 return;
             }
             else {
+                //更改一下动画，这里随便用了一个动画
+                m_animator.SetBool("Grounded", true);
                 /*进入执行技能阶段*/
                 skill_owner.GetComponent<InfoControl>().changeState(PEOPLE.EXECUTE_SKILL);
                 /*恢复引导时间*/
@@ -79,10 +86,7 @@ public class SKILL
     // 重点重载函数
     virtual public void Attack()
     {
-        /*如果可以判断技能结束，在结束时更新人物状态
-          skill_owner.GetComponent<InfoControl>().changeState(PEOPLE.END_SKILL);
-  		  return;
-         */
+        return;
     }
 
     //设置技能参数
@@ -114,7 +118,7 @@ public class SKILL
 
 
 /*闪现：金色纸张技能*/
-
+//只需要同步人物的位置即可
 public class SKILL_FLASH : SKILL
 {
 
@@ -131,19 +135,30 @@ public class SKILL_FLASH : SKILL
     override public void Attack()
     {
         skill_owner.transform.Translate(direction * distance);
+        skill_owner.GetComponent<StateControl>().state = PEOPLE.END_SKILL;
         skill_owner.GetComponent<InfoControl>().changeState(PEOPLE.END_SKILL);
+        Debug.Log("Flash on!!!!!!!");
         return;
     }
 }
-/*隐身：黑色纸张技能*/
 
+/*隐身：黑色纸张技能*/
 public class SKILL_HIDE : SKILL
 {
     public SKILL_HIDE(GameObject _skill_owner, int _id) : base(_skill_owner, _id)
     {
-         is_page_skill = true;  
+         is_page_skill = true;
+         need_dir = false;
          page_name = "BlackPage";
          skill_name = "SKILL_HIDE";
+    }
+
+    public override void Attack()
+    {
+        skill_owner.GetComponent<UIControl>().CmdBecomeTransparent();
+        skill_owner.GetComponent<StateControl>().state = PEOPLE.END_SKILL;
+        skill_owner.GetComponent<InfoControl>().changeState(PEOPLE.END_SKILL);
+        return;
     }
 }
 /*复活：白色纸张技能*/
@@ -157,6 +172,13 @@ public class SKILL_REVIVE : SKILL
         page_name = "WhitePage";
         skill_name = "SKILL_REVIVE";
     }
+    override public void Attack()
+    {
+        skill_owner.GetComponent<SkillControl>().CmdRevive();
+        skill_owner.GetComponent<InfoControl>().changeState(PEOPLE.END_SKILL);
+        return;
+    }
+
 }
 
 
@@ -172,14 +194,70 @@ public class SKILL_TRAP_SLOW : SKILL
     // 重载
     override public void Attack()
     {
-        Debug.Log(" SKILL_TRAP_SLOW Attack()");
-        UnityEngine.Object trapPreb = Resources.Load("Prefabs/slow_trap", typeof(GameObject));
-        GameObject myTrap = GameObject.Instantiate(trapPreb, targetPos, Quaternion.identity) as GameObject;   // 实例化陷阱，参数为prefab, position, rotation
+        //Debug.Log(" SKILL_TRAP_SLOW Attack()");
+        skill_owner.GetComponent<SkillControl>().CmdSetTrap(targetPos);
         skill_owner.GetComponent<InfoControl>().changeState(PEOPLE.END_SKILL);
         return;
     }
 }
 
+/*冻住的陷阱：基本技能*/
+public class SKILL_TRAP_ICE : SKILL
+{
+    public SKILL_TRAP_ICE(GameObject _skill_owner, int _id) : base(_skill_owner, _id)
+    {
+        cd_time = 300;   // 5min
+        need_pos = true; //需要位置
+        skill_name = "SKILL_TRAP_ICE";
+    }
+    // 重载
+    override public void Attack()
+    {
+        //Debug.Log(" SKILL_TRAP_ICE Attack()");
+        skill_owner.GetComponent<SkillControl>().CmdSetTrap(targetPos);
+        skill_owner.GetComponent<InfoControl>().changeState(PEOPLE.END_SKILL);
+        return;
+    }
+}
+
+/*变漆黑的陷阱：基本技能*/
+public class SKILL_TRAP_BLIND : SKILL
+{
+    public SKILL_TRAP_BLIND(GameObject _skill_owner, int _id) : base(_skill_owner, _id)
+    {
+        cd_time = 300;   // 5min
+        need_pos = true; //需要位置
+        skill_name = "SKILL_TRAP_BLIND";
+    }
+    // 重载
+    override public void Attack()
+    {
+        skill_owner.GetComponent<SkillControl>().CmdSetTrap(targetPos);
+        skill_owner.GetComponent<InfoControl>().changeState(PEOPLE.END_SKILL);
+        return;
+    }
+}
+
+/*Boss抓人：基本技能*/
+public class SKILL_CATCH: SKILL
+{
+    public SKILL_CATCH(GameObject _skill_owner, int _id) : base(_skill_owner, _id)
+    {
+        cd_time = 300;   // 5min
+        boot_time = 0;
+        skill_name = "SKILL_CATCH";
+        need_pos = false;
+        need_dir = false;
+    }
+    // 重载
+    override public void Attack()
+    {   //目前是按照hero1 ,hero2, hero3的顺序来判断位置  只抓其中一个
+        Debug.Log(" SKILL_CATCH Attack()");
+        skill_owner.GetComponent<BossSkillControl>().CmdCatchAttack();
+        skill_owner.GetComponent<BossStateControl>().CmdtransStateTo(PEOPLE.END_SKILL);
+        return;
+    }
+}
 
 
 

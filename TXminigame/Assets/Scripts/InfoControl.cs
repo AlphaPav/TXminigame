@@ -1,31 +1,50 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
+
 // State Control 是维护人物状态的脚本
 
-public class InfoControl : MonoBehaviour {
+public class InfoControl : NetworkBehaviour
+{
     /* skill 有关的变量，由UIControl和SkillControl共同维护*/
     public SKILL basicSkill;
     public List<SKILL> pageSkills = new List<SKILL>();
+    public Vector3 original_book_pos = new Vector3(-8, 0, 4);
     public SKILL next_skill_to_begin = null;//UI传递过来，在update判断是否合法
     public SKILL current_skill;
-    public string basic_skill_name = "SKILL_TRAP_SLOW";
+    public string basic_skill_name = "";
     int id_count=0;
     public float unlock_page_speed = 5.0f;
+    public float seal_time = 0;//已经被封印的时间
 
 
     // Use this for initialization
     void Start () {
-        if (basic_skill_name == "SKILL_TRAP_SLOW")
+        if (this.gameObject.tag.Equals("Hero1"))
         {
+            basic_skill_name = "SKILL_TRAP_SLOW";
+            Debug.Log("tag.Equals Hero1");
             basicSkill = new SKILL_TRAP_SLOW(this.gameObject, id_count++);
         }
-
-        
-	}
+        else if (this.gameObject.tag.Equals("Hero2"))
+        {
+            basic_skill_name = "SKILL_TRAP_ICE";
+            Debug.Log("tag.Equals Hero2");
+            basicSkill = new SKILL_TRAP_ICE(this.gameObject, id_count++);
+        }
+        else if (this.gameObject.tag.Equals("Hero3"))
+        {
+            basic_skill_name = "SKILL_TRAP_BLIND";
+            Debug.Log("tag.Equals Hero3");
+            basicSkill = new SKILL_TRAP_BLIND(this.gameObject, id_count++);
+        }
+    }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
+        if (!isLocalPlayer) return;
         
         if (next_skill_to_begin!=null) //UI里已经判断过是否可以使用 这技能是一定可以使用的
         {
@@ -35,6 +54,7 @@ public class InfoControl : MonoBehaviour {
             Debug.Log("changeState(PEOPLE.BEGIN_SKILL)");
             changeState(PEOPLE.BEGIN_SKILL);
             next_skill_to_begin = null;
+            Debug.Log("END");
         }
 
         
@@ -105,8 +125,15 @@ public class InfoControl : MonoBehaviour {
     }
     public void changeState( int tgtState)
     {
-        this.GetComponent<StateControl>().transStateTo(tgtState);
+        Debug.Log("change state");
+        this.GetComponent<StateControl>().CmdtransStateTo(tgtState);
+        Debug.Log("END CHANGE");
     }
 
-  
+    public override void OnStartLocalPlayer()
+    {
+        Camera.main.GetComponent<CameraFollow>().SetTarget(this.transform);
+    }
+
+
 }

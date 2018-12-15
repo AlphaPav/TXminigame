@@ -3,34 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour {
-    
-    //相机距离人物高度
-    float m_Height;
-    //相机距离人物距离
-    float m_Distance;
-    //相机跟随速度
-    public float m_Speed = 5f;
-    //目标位置
-    Vector3 m_TargetPosition;
-    //要跟随的人物
-    public Transform hero;
+    [SerializeField] private Transform m_TargetTransform; // 镜头要跟踪的目标
+    private float depth = -3f;          // 镜头相对于角色的前后位置，负数代表位于角色后方；
+    [SerializeField]
+    private float m_Speed = 5f; // 控制镜头跟踪时的速度，用于调整镜头额平滑移动，如果速度过大，极限情况下直接把目标位置赋给镜头，那么对于闪现一类的角色瞬移效果，将会带来不利的视觉影像
 
-    // Use this for initialization
-    void Start () {
-        m_Height = this.transform.position.y - hero.position.y;
-        //hero初始朝着z轴正方向
-        m_Distance =  hero.position.z - this.transform.position.z;
+    void Update()
+    {
+        if (m_TargetTransform != null)
+        {
+            var targetposition = m_TargetTransform.position + new Vector3(0, 3, depth);
+            transform.position = Vector3.MoveTowards(transform.position, targetposition, m_Speed * Time.deltaTime);
+        }
 
     }
-	
-	// Update is called once per frame
-	void Update () {
-        //得到目标位置
-        m_TargetPosition = hero.position + Vector3.up * m_Height - hero.forward * m_Distance;
-        //相机位置插值过渡
-        transform.position = Vector3.Lerp(transform.position, m_TargetPosition, m_Speed * Time.deltaTime);
-        //相机时刻看着人物
-        transform.LookAt(hero);
-      
-	}
+
+    public void SetTarget(Transform target)
+    {
+
+        m_TargetTransform = target;
+    }
 }

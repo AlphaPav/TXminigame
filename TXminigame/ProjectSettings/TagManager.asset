@@ -13,6 +13,23 @@ TagManager:
   - Walkable
   - BlackPage
   - WhitePage
+  - UIBaseSkill
+  - UIMove
+  - Hero1
+  - Hero2
+  - Hero3
+  - UISkill2
+  - UISkill1
+  - UISkill3
+  - UISkill4
+  - myface
+  - myboot
+  - mymove
+  - Net
+  - WarnImage
+  - BlindImage
+  - TransferPos
+  - BossCircle
   layers:
   - Default
   - TransparentFX
@@ -23,7 +40,7 @@ TagManager:
   - 
   - 
   - PostProcessing
-  - 
+  - footprint
   - 
   - 
   - 
