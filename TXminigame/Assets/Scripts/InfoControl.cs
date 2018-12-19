@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 // State Control 是维护人物状态的脚本
 
@@ -17,28 +18,35 @@ public class InfoControl : NetworkBehaviour
     int id_count=0;
     public float unlock_page_speed = 5.0f;
     public float seal_time = 0;//已经被封印的时间
+    public int blood_num=2;
+    int hero_id = -1;
 
 
     // Use this for initialization
     void Start () {
+        if (!isLocalPlayer) return;
         if (this.gameObject.tag.Equals("Hero1"))
         {
             basic_skill_name = "SKILL_TRAP_SLOW";
             Debug.Log("tag.Equals Hero1");
             basicSkill = new SKILL_TRAP_SLOW(this.gameObject, id_count++);
+            hero_id = 1;
         }
         else if (this.gameObject.tag.Equals("Hero2"))
         {
             basic_skill_name = "SKILL_TRAP_ICE";
             Debug.Log("tag.Equals Hero2");
             basicSkill = new SKILL_TRAP_ICE(this.gameObject, id_count++);
+            hero_id = 2;
         }
         else if (this.gameObject.tag.Equals("Hero3"))
         {
             basic_skill_name = "SKILL_TRAP_BLIND";
             Debug.Log("tag.Equals Hero3");
             basicSkill = new SKILL_TRAP_BLIND(this.gameObject, id_count++);
+            hero_id = 3;
         }
+
     }
 	
 	// Update is called once per frame
@@ -81,6 +89,8 @@ public class InfoControl : NetworkBehaviour
         if (_skill != null)
         {
             pageSkills.Add(_skill);
+            blood_num++;
+          
         }
 
         //print for test 
@@ -94,6 +104,8 @@ public class InfoControl : NetworkBehaviour
             {
                 pageSkills.RemoveAt(i);//从列表里删除，使用的情况: 1.释放完全结束 2. 引导时被中断  
                 //还要写一下内存释放？
+                blood_num--;
+                
             }
         }
 
@@ -134,6 +146,8 @@ public class InfoControl : NetworkBehaviour
     {
         Camera.main.GetComponent<CameraFollow>().SetTarget(this.transform);
     }
+
+
 
 
 }

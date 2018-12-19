@@ -12,7 +12,7 @@ public class UIControl : NetworkBehaviour {
     public GameObject highlightPosCube;
     Vector3 Pos = new Vector3(0,0,0);
     Vector3 Dir= new Vector3(0, 0, 0);
-
+    
      //屏幕红色蒙版变量
     public Image warnImage;
     private float flashSpeed = 5;
@@ -26,6 +26,7 @@ public class UIControl : NetworkBehaviour {
     private GameObject skill2UI;
     private GameObject skill3UI;
     private GameObject skill4UI;
+  
     Sprite sp_trap_blind;
     Sprite sp_trap_blind_colding;
     Sprite sp_trap_slow;
@@ -36,17 +37,44 @@ public class UIControl : NetworkBehaviour {
     Sprite sp_hide;
     Sprite sp_revive;
     Sprite sp_null;
-
+    public GameObject msgText;
+    private float show_text_time = 0;
+    Text Msg_text = null;
+    Text Time_text = null;
+    float GameTimeLeft = 899;
+    int temp_minute_left = 15;
+    private GameObject bossUI;
+    private GameObject hero1UI;
+    private GameObject hero2UI;
+    private GameObject hero3UI;
+    private GameObject boss;
+    private GameObject hero1;
+    private GameObject hero2;
+    private GameObject hero3;
 
     // Use this for initialization
     void Start () {
         if (!isLocalPlayer) return;
+        msgText = GameObject.FindGameObjectWithTag("MsgText");
+        Msg_text = msgText.GetComponent<Text>();
+        Time_text = GameObject.FindGameObjectWithTag("TimeText").GetComponent<Text>();
+
         moveJoystick = GameObject.FindGameObjectWithTag("UIMove").GetComponent<MoveJoystick>();
         baseSkillUI = GameObject.FindGameObjectWithTag("UIBaseSkill");
         skill1UI = GameObject.FindGameObjectWithTag("UISkill1");
         skill2UI = GameObject.FindGameObjectWithTag("UISkill2");
         skill3UI = GameObject.FindGameObjectWithTag("UISkill3");
         skill4UI = GameObject.FindGameObjectWithTag("UISkill4");
+        bossUI = GameObject.FindGameObjectWithTag("BossImg");
+        hero1UI = GameObject.FindGameObjectWithTag("Hero1Img");
+        hero2UI = GameObject.FindGameObjectWithTag("Hero2Img");
+        hero3UI = GameObject.FindGameObjectWithTag("Hero3Img");
+
+        boss = GameObject.FindGameObjectWithTag("Boss");
+        hero1 = GameObject.FindGameObjectWithTag("Hero1");
+        hero2 = GameObject.FindGameObjectWithTag("Hero2");
+        hero3 = GameObject.FindGameObjectWithTag("Hero3");
+
         //UI 里找到warnImage
         warnImage = GameObject.FindGameObjectWithTag("WarnImage").GetComponent<Image>();
         warnImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width, Screen.height);
@@ -83,7 +111,55 @@ public class UIControl : NetworkBehaviour {
         HandleClick();
         SkillUIUpdate();
         WarnEffect();
+        MsgUpdate();
+        UIUpdateBloodNum();
     }
+
+
+    public void UIUpdateBloodNum()
+    {
+        int hero1_bloodnum = hero1.GetComponent<InfoControl>().blood_num;
+        Text blood1_text = hero1UI.transform.Find("BloodText").gameObject.GetComponent<Text>();
+        blood1_text.text = "灵识数量:" + hero1_bloodnum.ToString();
+
+        int hero2_bloodnum = hero2.GetComponent<InfoControl>().blood_num;
+        Text blood2_text = hero2UI.transform.Find("BloodText").gameObject.GetComponent<Text>();
+        blood2_text.text = "灵识数量:" + hero2_bloodnum.ToString();
+
+        int hero3_bloodnum = hero3.GetComponent<InfoControl>().blood_num;
+        Text blood3_text = hero3UI.transform.Find("BloodText").gameObject.GetComponent<Text>();
+        blood3_text.text = "灵识数量:" + hero3_bloodnum.ToString();
+    }
+
+    void MsgUpdate()
+    {
+        GameTimeLeft -= Time.deltaTime;
+        int minute = (int)Mathf.Ceil(GameTimeLeft / 60);
+        if (minute < temp_minute_left)
+        {
+            Debug.Log(minute);
+            temp_minute_left = minute;
+            Time_text.text = "游戏剩余时间： " + temp_minute_left.ToString() + "分钟";
+        }
+
+        if (show_text_time > 0)
+        {
+            show_text_time -= Time.deltaTime;
+        }
+        if (show_text_time < 0)
+        {
+            show_text_time = 0;
+            Msg_text.text = "";
+        }
+    }
+
+    public void showMsg(string msg)
+    {
+        show_text_time = 1.0f;
+        Msg_text.text = msg;
+    }
+
+
     private void WarnEffect()
     {
         GameObject boss = GameObject.FindGameObjectWithTag("Boss");
@@ -432,16 +508,19 @@ public class UIControl : NetworkBehaviour {
         if (other.tag.Equals("GoldenPage"))
         {
             Debug.Log("acquireGoldenPageSkill");
+            showMsg("获得金色纸张");
             this.GetComponent<InfoControl>().addPageSkill("GoldenPage");
         }
         else if (other.tag.Equals("BlackPage"))
         {
             Debug.Log("acquireBlackPageSkill");
+            showMsg("获得黑色纸张");
             this.GetComponent<InfoControl>().addPageSkill("BlackPage");
         }
         else if (other.tag.Equals("WhitePage"))
         {
             Debug.Log("acquireWhitePageSkill");
+            showMsg("获得白色纸张");
             this.GetComponent<InfoControl>().addPageSkill("WhitePage");
         }
 
@@ -456,12 +535,13 @@ public class UIControl : NetworkBehaviour {
     [Command]
     void CmdDelete_page(GameObject obj)
     {
-        Debug.Log("Delete !!!!!!!");
+        Debug.Log("CmdDelete_page");
         RpcDelete_page(obj);
     }
     [ClientRpc]
     void RpcDelete_page(GameObject obj)
     {
+        Debug.Log("RpcDelete_page");
         obj.SetActive(false);
     }
 

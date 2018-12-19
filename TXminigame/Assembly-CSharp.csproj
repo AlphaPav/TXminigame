@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\circle.cs" />
     <Compile Include="Assets\detect.cs" />
     <Compile Include="Assets\disapear.cs" />
     <Compile Include="Assets\Scripts\AniControl.cs" />
@@ -79,23 +80,26 @@
     <Compile Include="Assets\Scripts\Page\PageInfo.cs" />
     <Compile Include="Assets\Scripts\SkillControl.cs" />
     <Compile Include="Assets\Scripts\StateControl.cs" />
+    <Compile Include="Assets\Scripts\UI\MapStick.cs" />
     <Compile Include="Assets\Scripts\UI\MoveJoystick.cs" />
     <Compile Include="Assets\Scripts\UI\SkillJoystick.cs" />
     <Compile Include="Assets\Scripts\UIControl.cs" />
     <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\CameraLogic.cs" />
     <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\Demo.cs" />
     <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\SimpleCharacterControl.cs" />
+    <Compile Include="Assets\testcamera.cs" />
+    <Compile Include="Assets\testmove.cs" />
     <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>D:/Code/UnityProgram/TXminigame-7515e0d3e9c47cb910a8fa9751d1ace8241981bc/TXminigame/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+      <HintPath>D:/Code/UnityProgram/TXminigame/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>D:/Code/UnityProgram/TXminigame-7515e0d3e9c47cb910a8fa9751d1ace8241981bc/TXminigame/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>D:/Code/UnityProgram/TXminigame/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>D:/Code/UnityProgram/TXminigame-7515e0d3e9c47cb910a8fa9751d1ace8241981bc/TXminigame/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>D:/Code/UnityProgram/TXminigame/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>D:/Code/UnityProgram/TXminigame-7515e0d3e9c47cb910a8fa9751d1ace8241981bc/TXminigame/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>D:/Code/UnityProgram/TXminigame/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>D:/Program Files/newUnity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
