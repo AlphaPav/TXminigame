@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using System;
 
 //UIcontrol 中一切设备输入都必须限制在local player上才能执行，但是ui界面的同步可能会有bug？
 
@@ -52,8 +53,12 @@ public class UIControl : NetworkBehaviour {
     private GameObject hero2;
     private GameObject hero3;
 
+    //人物解锁 地面光环
+    private GameObject groundGlow;
+
     // Use this for initialization
     void Start () {
+        groundGlow = this.transform.FindChild("groundGlow").gameObject;
         if (!isLocalPlayer) return;
         msgText = GameObject.FindGameObjectWithTag("MsgText");
         Msg_text = msgText.GetComponent<Text>();
@@ -98,6 +103,7 @@ public class UIControl : NetworkBehaviour {
     //人物一切的ui输入必须是localplayer才能操作，但是ui界面的同步？
 	void Update ()
     {
+        glowEffect();
         if (!isLocalPlayer)
         {
             return;
@@ -115,6 +121,13 @@ public class UIControl : NetworkBehaviour {
         UIUpdateBloodNum();
     }
 
+    private void glowEffect()
+    {
+        if (this.GetComponent<StateControl>().state == PEOPLE.GET_SKILL)
+            groundGlow.SetActive(true);
+        else
+            groundGlow.SetActive(false);
+    }
 
     public void UIUpdateBloodNum()
     {
@@ -189,11 +202,13 @@ public class UIControl : NetworkBehaviour {
                 //获取碰撞点的位置
                 if (hitInfo.collider.tag.Equals("GoldenPage")|| hitInfo.collider.tag.Equals("BlackPage") || hitInfo.collider.tag.Equals("WhitePage"))
                 {
+                    this.GetComponent<StateControl>().CmdtransStateTo(PEOPLE.GET_SKILL);
                     Debug.Log("unlock_time_left:"+ hitInfo.collider.gameObject.GetComponent<PageInfo>().unlock_time_left);
                     CmdChangeTime(hitInfo.collider.gameObject);                   
             
                     if (hitInfo.collider.gameObject.GetComponent<PageInfo>().unlock_time_left <= 0)
                     {
+                        this.GetComponent<StateControl>().CmdtransStateTo(PEOPLE.FREE);
                         Debug.Log("Acccqqqqurore!");
                         hitInfo.collider.gameObject.GetComponent<PageInfo>().unlock_time_left = 0;
                         acquirePageSkill(hitInfo.collider);
@@ -201,6 +216,11 @@ public class UIControl : NetworkBehaviour {
                 }
             }
         }
+        else if(this.GetComponent<StateControl>().state == PEOPLE.GET_SKILL)
+        {
+            this.GetComponent<StateControl>().CmdtransStateTo(PEOPLE.FREE);
+        }
+
     }
 
     [Command]
