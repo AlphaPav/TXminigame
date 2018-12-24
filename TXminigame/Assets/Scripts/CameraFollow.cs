@@ -10,6 +10,30 @@ public class CameraFollow : MonoBehaviour {
 
     void Update()
     {
+        GameObject manager = GameObject.Find("Network Manager");
+        int id = manager.GetComponent<MyNetManager>().chosenCharacter;
+        Debug.Log(id);
+        if (id==0)
+        {
+            GameObject[] blind_trap=GameObject.FindGameObjectsWithTag("BlindTrap");
+            GameObject[] ice_trap = GameObject.FindGameObjectsWithTag("IceTrap");
+            GameObject[] slow_trap = GameObject.FindGameObjectsWithTag("SlowTrap");
+            foreach (GameObject trap in blind_trap)
+            {
+                trap.layer = LayerMask.NameToLayer("trap");
+            }
+            foreach (GameObject trap in ice_trap)
+            {
+                trap.layer = LayerMask.NameToLayer("trap");
+            }
+            foreach (GameObject trap in slow_trap)
+            {
+                trap.layer = LayerMask.NameToLayer("trap");
+            }
+        }
+
+
+
         if (m_TargetTransform != null)
         {
             var targetposition = m_TargetTransform.position + new Vector3(0, 3, depth);
