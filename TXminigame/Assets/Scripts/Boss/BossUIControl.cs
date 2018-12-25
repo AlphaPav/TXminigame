@@ -17,22 +17,14 @@ public class BossUIControl : NetworkBehaviour
     private GameObject skill2UI;
     private GameObject skill3UI;
     private GameObject skill4UI;
-    public GameObject msgText;
     Sprite sp_catch;
     Sprite sp_catch_colding;
-    private float show_text_time=0;
-    Text Msg_text = null;
-    Text Time_text = null;
-    float GameTimeLeft = 899;
-    int temp_minute_left = 15;
+
     void Start () {
         if (!isLocalPlayer) return;
-        Time_text = GameObject.FindGameObjectWithTag("TimeText").GetComponent<Text>();
         moveJoystick = GameObject.FindGameObjectWithTag("UIMove").GetComponent<MoveJoystick>();
         baseSkillUI = GameObject.FindGameObjectWithTag("UIBaseSkill");
-        msgText = GameObject.FindGameObjectWithTag("MsgText");
-        Msg_text= msgText.GetComponent<Text>();
-        
+
         skill1UI = GameObject.FindGameObjectWithTag("UISkill1");
         skill2UI = GameObject.FindGameObjectWithTag("UISkill2");
         skill3UI = GameObject.FindGameObjectWithTag("UISkill3");
@@ -44,7 +36,7 @@ public class BossUIControl : NetworkBehaviour
 
         LoadUIResources();
         blindImage = GameObject.FindGameObjectWithTag("BlindImage").GetComponent<Image>();
-        blindImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width, Screen.height);
+        
     }
     void LoadUIResources()
     {
@@ -61,37 +53,9 @@ public class BossUIControl : NetworkBehaviour
         }
         MovementUpdate();
         SkillUIUpdate();
-        MsgUpdate();
-    }
-    void MsgUpdate()
-    {
-        GameTimeLeft -= Time.deltaTime;
-        
-        int minute = (int)Mathf.Ceil(GameTimeLeft / 60) ;
-        if (minute < temp_minute_left)
-        {
-            Debug.Log(minute);
-            temp_minute_left = minute;
-            Time_text.text = "游戏剩余时间： " + temp_minute_left.ToString()+ "分钟";
-        }
-
-
-        if (show_text_time > 0)
-        {
-            show_text_time -= Time.deltaTime;
-        }
-        if (show_text_time < 0)
-        {
-            show_text_time = 0;
-            Msg_text.text = "";
-        }
     }
 
-    public void showMsg(string msg)
-    {
-        show_text_time = 1.0f;
-        Msg_text.text= msg;
-    }
+
 
     void SkillUIUpdate()
     {
