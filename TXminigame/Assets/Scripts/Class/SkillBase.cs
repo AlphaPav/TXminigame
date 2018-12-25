@@ -187,7 +187,7 @@ public class SKILL_TRAP_SLOW : SKILL
 {
     public SKILL_TRAP_SLOW(GameObject _skill_owner, int _id) : base(_skill_owner, _id)
     {
-        cd_time = 300;   // 5min
+        cd_time = 30;   // 5min
         need_pos = true; //需要位置
         skill_name = "SKILL_TRAP_SLOW";
     }
@@ -206,7 +206,7 @@ public class SKILL_TRAP_ICE : SKILL
 {
     public SKILL_TRAP_ICE(GameObject _skill_owner, int _id) : base(_skill_owner, _id)
     {
-        cd_time = 300;   // 5min
+        cd_time = 30;   // 5min
         need_pos = true; //需要位置
         skill_name = "SKILL_TRAP_ICE";
     }
@@ -225,7 +225,7 @@ public class SKILL_TRAP_BLIND : SKILL
 {
     public SKILL_TRAP_BLIND(GameObject _skill_owner, int _id) : base(_skill_owner, _id)
     {
-        cd_time = 300;   // 5min
+        cd_time = 30;   // 30 second
         need_pos = true; //需要位置
         skill_name = "SKILL_TRAP_BLIND";
     }
@@ -243,7 +243,7 @@ public class SKILL_CATCH: SKILL
 {
     public SKILL_CATCH(GameObject _skill_owner, int _id) : base(_skill_owner, _id)
     {
-        cd_time = 300;   // 5min
+        cd_time = 30;   // 30second
         boot_time = 0;
         skill_name = "SKILL_CATCH";
         need_pos = false;
@@ -252,9 +252,9 @@ public class SKILL_CATCH: SKILL
     // 重载
     override public void Attack()
     {   //目前是按照hero1 ,hero2, hero3的顺序来判断位置  只抓其中一个
-        Debug.Log(" SKILL_CATCH Attack()");
-        skill_owner.GetComponent<BossSkillControl>().CmdCatchAttack();
-        skill_owner.GetComponent<BossStateControl>().CmdtransStateTo(PEOPLE.END_SKILL);
+        //Debug.Log(" SKILL_CATCH Attack()");
+        //skill_owner.GetComponent<BossSkillControl>().CmdCatchAttack();
+        //skill_owner.GetComponent<BossStateControl>().CmdtransStateTo(PEOPLE.END_SKILL);
         return;
     }
 }

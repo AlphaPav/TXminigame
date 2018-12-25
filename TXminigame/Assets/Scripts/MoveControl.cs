@@ -5,8 +5,8 @@ using UnityEngine.Networking;
 
 public class MoveControl : NetworkBehaviour {
     //[SerializeField] 作用：私有化变量也可以在面板上显示和赋值
-    [SerializeField] private float m_moveSpeedStandard = 2;
-    [SerializeField] private float m_moveSpeed = 2;
+    [SerializeField] private float m_moveSpeedStandard = 0.1f;
+    [SerializeField] private float m_moveSpeed = 0.1f;
     [SerializeField] private Animator m_animator;
    
     float v = 0.0f;
@@ -77,7 +77,7 @@ public class MoveControl : NetworkBehaviour {
 
         float dis = (new Vector3(h, 0, v)).magnitude;
 
-        transform.position = this.transform.position + new Vector3(h, 0, v) * m_moveSpeed * Time.deltaTime;
+        transform.position = this.transform.position + new Vector3(h, 0, v) * m_moveSpeed * Time.deltaTime* 0.5f;
         if (h != 0 || v != 0)
         {
 

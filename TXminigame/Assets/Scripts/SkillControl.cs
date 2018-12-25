@@ -4,11 +4,12 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class SkillControl : NetworkBehaviour {
-    
+    private float ReviveRadius=4;
 	// Use this for initialization
 	void Start () {
-		
-	}
+        ReviveRadius = 4;
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -80,22 +81,24 @@ public class SkillControl : NetworkBehaviour {
         if (hero1 != null&& (!hero1.tag.Equals(this.gameObject.tag)) 
             && hero1.GetComponent<StateControl>().state== PEOPLE.SEALED)//被封印
         {
-            if ((transform.position - hero1.transform.position).magnitude < 100)//合理半径内
+            if ((transform.position - hero1.transform.position).magnitude < ReviveRadius)//合理半径内
             {
-                //hero1改成自由状态
+                //hero1改成自由状态，血量+1
                 CmdUnflatten(hero1);
                 hero1.GetComponent<StateControl>().CmdtransStateTo(PEOPLE.FREE);
+                hero1.GetComponent<InfoControl>().CmdBloodChange(1);
                 return;
             }
         }
         if (hero2 != null && (!hero2.tag.Equals(this.gameObject.tag))
            && hero2.GetComponent<StateControl>().state == PEOPLE.SEALED)//被封印
         {
-            if ((transform.position - hero2.transform.position).magnitude < 100)//合理半径内
+            if ((transform.position - hero2.transform.position).magnitude < ReviveRadius)//合理半径内
             {
-                //hero2改成自由状态
+                //hero2改成自由状态，血量+1
                 CmdUnflatten(hero2);
                 hero2.GetComponent<StateControl>().CmdtransStateTo(PEOPLE.FREE);
+                hero2.GetComponent<InfoControl>().CmdBloodChange(1);
                 return;
             }
         }
@@ -103,11 +106,12 @@ public class SkillControl : NetworkBehaviour {
         if (hero3 != null && (!hero3.tag.Equals(this.gameObject.tag))
             && hero3.GetComponent<StateControl>().state == PEOPLE.SEALED)//被封印
         {
-            if ((transform.position - hero3.transform.position).magnitude < 100)//合理半径内
+            if ((transform.position - hero3.transform.position).magnitude < ReviveRadius)//合理半径内
             {
-                //hero3改成自由状态
+                //hero3改成自由状态，血量+1
                 CmdUnflatten(hero3);
                 hero3.GetComponent<StateControl>().CmdtransStateTo(PEOPLE.FREE);
+                hero3.GetComponent<InfoControl>().CmdBloodChange(1);
                 return;
             }
         }
@@ -121,7 +125,7 @@ public class SkillControl : NetworkBehaviour {
     [ClientRpc]
     public void RpcUnflatten(GameObject obj)
     {
-        obj.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        obj.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f); //TODO: 根据之后的模型要改
         obj.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
     }
 

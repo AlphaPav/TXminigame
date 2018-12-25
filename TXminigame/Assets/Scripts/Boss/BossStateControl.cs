@@ -14,27 +14,22 @@ public class BossStateControl : NetworkBehaviour{
 	
 	// Update is called once per frame
 	void Update () {
+        if (!isLocalPlayer) return;
+        if(state == PEOPLE.SLOW)
+        {
+            Debug.Log("SLOW");
+        }
         if (state == PEOPLE.END_SKILL)
         {
-            SKILL current_skill = this.GetComponent<BossInfoControl>().current_skill;
+           
             SKILL basicSkill = this.GetComponent<BossInfoControl>().basicSkill;
-            if (current_skill.getSkillID() == basicSkill.getSkillID())
-            {
-                //回复技能冷却时间和引导时间
-                basicSkill.cd_time_left = basicSkill.cd_time;
-                basicSkill.boot_time_left = basicSkill.boot_time;
-            }
-            CmdtransStateTo(PEOPLE.FREE);
-            current_skill = null;
-            if (isLocalPlayer)
-            {
-                if (this.GetComponent<BossSkillControl>().BeSlowAfterEndSkill==true)
-                {
-                    CmdtransStateTo(PEOPLE.SLOW);
-                    this.GetComponent<BossSkillControl>().BeSlowAfterEndSkill = false;
-                }
-            }
+           
+            //回复技能冷却时间和引导时间
+            basicSkill.cd_time_left = basicSkill.cd_time;
+            basicSkill.boot_time_left = basicSkill.boot_time;
             
+            CmdBeSlowDown();
+
             return;
         }
         //state为 slow 已经在movecontrol中写了
@@ -73,20 +68,37 @@ public class BossStateControl : NetworkBehaviour{
         }
     }
 
+    [Command]
+    public void CmdBeSlowDown()
+    {
+        if(state != PEOPLE.END_SKILL){
+            return;
+        }
+        //如果抓到人
+        if (this.GetComponent<BossSkillControl>().BeSlowAfterEndSkill)
+        {
+            CmdtransStateTo(PEOPLE.SLOW);
+            Debug.Log("SLOWING");
+            this.GetComponent<BossSkillControl>().BeSlowAfterEndSkill = false;
+        }
+        else
+        {
+            CmdtransStateTo(PEOPLE.FREE);
+        }
+    }
 
     [Command]
     public void CmdtransStateTo(int targetState)
     {
         state = targetState;
-        Debug.Log("CmdtanslateStateTo");
-        RpcChangeState(targetState);
+        Debug.Log("BOSS  CmdtanslateStateTo"+ state);
     }
     [ClientRpc]
     public void RpcChangeState(int targetState)
     {
-        Debug.Log("RPCChangeStaet");
+        Debug.Log(this.gameObject.tag+"from"+state+ "RPCChangeState to "+ targetState);
         state = targetState;
-        Debug.Log(state);
+       
     }
 
 

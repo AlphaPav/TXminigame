@@ -14,12 +14,13 @@ public class BossInfoControl : NetworkBehaviour{
     public float unlock_page_speed = 5.0f;
     public float blind_time = 0.0f;
     public float ice_time = 0.0f;
-    public Vector3 original_book_pos = new Vector3(-8, 0, 4);
+    public Vector3 original_book_pos = new Vector3(-1.6f, 2, -12.85f);
 
 
     // Use this for initialization
     void Start () {
         basic_skill_name = "SKILL_CATCH";
+        original_book_pos = new Vector3(-1.6f, 2, -12.85f);
         basicSkill = new SKILL_CATCH(this.gameObject, id_count++);
     }
 	
@@ -56,9 +57,9 @@ public class BossInfoControl : NetworkBehaviour{
     }
     public void changeState( int tgtState)
     {
-        Debug.Log("change state");
+        Debug.Log("change state"+tgtState);
         this.GetComponent<BossStateControl>().CmdtransStateTo(tgtState);
-        Debug.Log("change state end");
+       
     }
 
     public override void OnStartLocalPlayer()

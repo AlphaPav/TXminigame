@@ -11,4 +11,28 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/BossLose.unity
+    guid: 6db034b17f0d26c4496e95df2fe4dfdf
+  - enabled: 1
+    path: Assets/Scenes/BossWin.unity
+    guid: a7370caf27d62a5428634c7c3325b353
+  - enabled: 1
+    path: Assets/Scenes/Hero1Lose.unity
+    guid: 1125387e3ddc2864d89362ab2ef7ed96
+  - enabled: 1
+    path: Assets/Scenes/Hero1Win.unity
+    guid: 420970e771a0c2d47adcbf4ef26e0e38
+  - enabled: 1
+    path: Assets/Scenes/Hero2Lose.unity
+    guid: f6c4ce1fd3a1fe14bac2744fc57f0518
+  - enabled: 1
+    path: Assets/Scenes/Hero2Win.unity
+    guid: 890c67520a8483f4bb4bdadc7837a6db
+  - enabled: 1
+    path: Assets/Scenes/Hero3Lose.unity
+    guid: 703c9b9a101c4994dbf0dee7dc5c2c1d
+  - enabled: 1
+    path: Assets/Scenes/Hero3Win.unity
+    guid: 976a01d1c7cbe484b82e71be849c46da
   m_configObjects: {}
