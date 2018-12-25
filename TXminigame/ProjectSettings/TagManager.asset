@@ -30,6 +30,19 @@ TagManager:
   - BlindImage
   - TransferPos
   - BossCircle
+  - MapCamera
+  - HeroPosInMap
+  - BlackPageInMap
+  - GoldenPageInMap
+  - WhitePageInMap
+  - TransferPos1
+  - MsgText
+  - TimeText
+  - BossImg
+  - Hero1Img
+  - Hero2Img
+  - Hero3Img
+  - MsgImg
   layers:
   - Default
   - TransparentFX

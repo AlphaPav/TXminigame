@@ -8,10 +8,10 @@ public class BossSkillControl : NetworkBehaviour
     [SyncVar]
     public bool BeSlowAfterEndSkill = false;
 
-    public float CatchRadius = 2;
+    public float CatchRadius = 1;
 	// Use this for initialization
 	void Start () {
-        CatchRadius = 2;
+        CatchRadius = 1;
 
     }
 	
@@ -44,10 +44,12 @@ public class BossSkillControl : NetworkBehaviour
         GameObject hero1 = GameObject.FindGameObjectWithTag("Hero1");
         GameObject hero2 = GameObject.FindGameObjectWithTag("Hero2");
         GameObject hero3 = GameObject.FindGameObjectWithTag("Hero3");
+       
 
         if (hero1 != null)
         {
-            Debug.Log("Hero 1 exist");
+            Debug.Log("Hero1" + (transform.position - hero1.transform.position).magnitude);
+          
             if (((transform.position - hero1.transform.position).magnitude < CatchRadius) 
                 && hero1.GetComponent<StateControl>().state!=PEOPLE.SEALED )
             {
@@ -61,6 +63,7 @@ public class BossSkillControl : NetworkBehaviour
         }
         if (hero2 != null)
         {
+            Debug.Log("Hero2" + (transform.position - hero2.transform.position).magnitude);
             if (((transform.position - hero2.transform.position).magnitude < CatchRadius)
                 && hero2.GetComponent<StateControl>().state != PEOPLE.SEALED)
             {
@@ -72,6 +75,7 @@ public class BossSkillControl : NetworkBehaviour
         }
         if (hero3 != null)
         {
+            Debug.Log("Hero3" + (transform.position - hero3.transform.position).magnitude);
             if (((transform.position - hero3.transform.position).magnitude < CatchRadius)
                 && hero3.GetComponent<StateControl>().state != PEOPLE.SEALED)
             {

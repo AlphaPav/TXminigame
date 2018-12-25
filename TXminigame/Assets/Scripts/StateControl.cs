@@ -53,13 +53,13 @@ public class StateControl : NetworkBehaviour {
         if (state == PEOPLE.SEALED)
         {
             Debug.Log("PEOPLE.SEALED");
-            this.GetComponent<InfoControl>().seal_time += Time.deltaTime;
-            if (this.GetComponent<InfoControl>().seal_time >=120)
-            {
-                Debug.Log("state= die");
-                this.GetComponent<InfoControl>().seal_time = 0;
-                CmdtransStateTo(PEOPLE.DIE);
-            }
+            //this.GetComponent<InfoControl>().seal_time += Time.deltaTime;
+            //if (this.GetComponent<InfoControl>().seal_time >=120)
+            //{
+            //    Debug.Log("state= die");
+            //    this.GetComponent<InfoControl>().seal_time = 0;
+            //    CmdtransStateTo(PEOPLE.DIE);
+            //}
             return;
         }
         if (state == PEOPLE.CATCHED)

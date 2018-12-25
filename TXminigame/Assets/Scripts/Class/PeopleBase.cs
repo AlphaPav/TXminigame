@@ -25,6 +25,7 @@ class PEOPLE
     public const int BLIND = 6; //被黑色蒙版遮住
     public const int SEALED = 7; //被封印
     public const int DIE = 8;
+    public const int CATCHED = 9;
     public bool transparent = false;
                                  // ....
 

@@ -10,7 +10,7 @@ using System;
 
 public class SKILL
 {
-    public float boot_time = 2;        // 技能引导时间（引导可以是念咒之类的）
+    public float boot_time = 3;        // 技能引导时间（引导可以是念咒之类的）
     public float cd_time = 0;          // 技能冷却时间，单位 Seconds
     public bool is_page_skill = false;  //是否为一次性的纸张技能
     public string page_name = "";
@@ -25,8 +25,8 @@ public class SKILL
 
     public float boot_time_left = 0;    // 技能引导剩余时间
     public float cd_time_left = 0;
-    public float boot_speed = 5.0f;
-    public float cd_speed = 5.0f;
+    public float boot_speed = 4.0f;
+    public float cd_speed = 4.0f;
     public Animator m_animator;
 
     private DateTime last_skill_use_time;
@@ -187,7 +187,7 @@ public class SKILL_TRAP_SLOW : SKILL
 {
     public SKILL_TRAP_SLOW(GameObject _skill_owner, int _id) : base(_skill_owner, _id)
     {
-        cd_time = 30;   // 5min
+        cd_time = 30;   // 30 second
         need_pos = true; //需要位置
         skill_name = "SKILL_TRAP_SLOW";
     }
@@ -206,7 +206,7 @@ public class SKILL_TRAP_ICE : SKILL
 {
     public SKILL_TRAP_ICE(GameObject _skill_owner, int _id) : base(_skill_owner, _id)
     {
-        cd_time = 30;   // 5min
+        cd_time = 30;   //30 second
         need_pos = true; //需要位置
         skill_name = "SKILL_TRAP_ICE";
     }
