@@ -10,14 +10,20 @@ public class StateControl : NetworkBehaviour {
     [SyncVar]
     public int state;
     private int temp_catch_count;
+
+    //人物引导技能 光环
+    public GameObject bubbleGlow;
+
     // Use this for initialization
     void Start () {
         state = PEOPLE.FREE;
+        bubbleGlow = this.transform.Find("bubbleGlow").gameObject;
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
+        CmdBubbleEffect();
         if (!isLocalPlayer) return;
         if (state == PEOPLE.FREE)
         {
@@ -90,8 +96,22 @@ public class StateControl : NetworkBehaviour {
         //    Debug.Log("temp catch count: " + temp_catch_count);
         //    CmdJudgeState();
         //}
-        
+
     }
+
+    [Command]
+    public void CmdBubbleEffect()
+    {
+        if (state == PEOPLE.BEGIN_SKILL)
+        {
+            bubbleGlow.SetActive(true);
+        }
+        else
+        {
+            bubbleGlow.SetActive(false);
+        }
+    }
+
     [Command]
     public void CmdBeCatched()
     {

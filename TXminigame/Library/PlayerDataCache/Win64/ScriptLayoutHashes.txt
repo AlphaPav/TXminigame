@@ -1,6 +1,6 @@
 WindowsStandalone
 PlayerPath?
-D:/Code/UnityProgram/Txminigame-temp/TXminigame/built/TXminigame.exe
+D:/Unity2018/Unity Projects/TXminigame-master/TXminigame/built/TXminigame.exe
 SceneListBegin?
 Assets/Scenes/Start.unity
 Assets/Scenes/Main.unity
@@ -30,7 +30,7 @@ c7dd12c15208b0447e101f80038706df UnityEngine.Timeline.dll:UnityEngine.Timeline.A
 f6637497451c9a030c421de4a1ad5cdb Unity.TextMeshPro.dll:TMPro.TMP_ScrollbarEventHandler
 b14b4630cc47b6e9ea8a644551a6a8cc Unity.TextMeshPro.dll:TMPro.TMP_Text
 ab9bd90b21b93a5e86dc51f79bbf6366 Assembly-CSharp.dll:.PageInfo
-bc9f32c401dad3679b654d7b4c9a4d7b Assembly-CSharp.dll:.StateControl
+6a18031bff3a1ab7bc0b9e343dd5d2e6 Assembly-CSharp.dll:.StateControl
 53cefe5d98cadefbab750835e70b89c0 UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
 486cd95c82d8305219c352c06b776e1f UnityEngine.UI.dll:UnityEngine.EventSystems.BaseInput
 da2091a04d360891450faf16cdf621f1 UnityEngine.UI.dll:UnityEngine.UI.Button

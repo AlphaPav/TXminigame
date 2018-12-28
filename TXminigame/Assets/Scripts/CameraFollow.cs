@@ -10,7 +10,7 @@ public class CameraFollow : MonoBehaviour {
    
     private void Start()
     {
-         
+
     }
     void Update()
     {

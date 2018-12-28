@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public class NetChoose : MonoBehaviour {
-    public static int chosenID=0;
+    public static int chosenID = 0;
 
 	// Use this for initialization
 	void Start () {
