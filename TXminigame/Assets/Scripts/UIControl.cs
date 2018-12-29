@@ -260,11 +260,13 @@ public class UIControl : NetworkBehaviour {
     void HandleClick()
     {
         if (!isLocalPlayer) return;
+       
         if (Input.GetMouseButton(0))//鼠标左键
         {
             Debug.Log("MouseDown");
             //创建射线;从摄像机发射一条经过鼠标当前位置的射线
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+           // Ray ray = Camera.main.ScreenPointToRay(Input.touches[0].position);
             //发射射线
             RaycastHit hitInfo = new RaycastHit();
             if (Physics.Raycast(ray, out hitInfo))

@@ -25,14 +25,20 @@ public class CameraFollow : MonoBehaviour {
             foreach (GameObject trap in blind_trap)
             {
                 trap.layer = LayerMask.NameToLayer("trap");
+                trap.transform.Find("Mesh01").gameObject.layer= LayerMask.NameToLayer("trap");
+                trap.transform.Find("Mesh02").gameObject.layer = LayerMask.NameToLayer("trap");
             }
             foreach (GameObject trap in ice_trap)
             {
                 trap.layer = LayerMask.NameToLayer("trap");
+                trap.transform.Find("Mesh01").gameObject.layer = LayerMask.NameToLayer("trap");
+                trap.transform.Find("Mesh02").gameObject.layer = LayerMask.NameToLayer("trap");
             }
             foreach (GameObject trap in slow_trap)
             {
                 trap.layer = LayerMask.NameToLayer("trap");
+                trap.transform.Find("Mesh01").gameObject.layer = LayerMask.NameToLayer("trap");
+                trap.transform.Find("Mesh02").gameObject.layer = LayerMask.NameToLayer("trap");
             }
         }
         if (m_TargetTransform != null)

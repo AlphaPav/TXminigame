@@ -24,8 +24,8 @@ public class BossMoveControl : NetworkBehaviour{
 
     private void Start()
     {
-        transfer_pos = new Vector3(4.69f, 0f, 5.53f);
-        transfer1_pos = new Vector3(6.7f, 0f, -13.34f);
+        transfer1_pos = new Vector3(-14.277f, 0f, -10.8f);
+        transfer_pos = new Vector3(6f, 0f, 2.6f);
         m_animator = this.GetComponent<Animator>();
     }
 
@@ -119,11 +119,11 @@ public class BossMoveControl : NetworkBehaviour{
         if (other.tag.Equals("TransferPos"))
         {
             m_lastPos = this.transform.position;
-            TransferUnlock();
+            TransferUnlock(other.gameObject);
         }else if (other.tag.Equals("TransferPos1"))
         {
             m_lastPos = this.transform.position;
-            Transfer1Unlock();
+            Transfer1Unlock(other.gameObject);
         }
     }
     private void MovementUpdate()
@@ -168,47 +168,54 @@ public class BossMoveControl : NetworkBehaviour{
     /*
      * 传送启动 移动会打断
      */
-    public void TransferUnlock()
+    public void TransferUnlock(GameObject transObj)
     {
         if (!isLocalPlayer) return;
-
+        GameObject light = transObj.transform.Find("SpotLight").gameObject;
         if (m_lastPos == this.transform.position)
         {
             transfer_unlock_lefttime -= transfer_unlock_speed * Time.deltaTime;
             //传送点附近添加动画
+           
+            light.SetActive(true);
+
             Debug.Log(transfer_unlock_lefttime);
             this.GetComponent<BossUIControl>().showMsg("正在传送中");
         }
         else
         {
             this.GetComponent<BossUIControl>().showMsg("传送中断");
+            light.SetActive(false);
             Debug.Log("传送打断");
         }
 
 
         if (transfer_unlock_lefttime <= 0)
         {
+            light.SetActive(false);
             this.transform.position = new Vector3(transfer1_pos[0], transform.position.y, transfer1_pos[2]);
             Debug.Log(transform.position);
-            transfer_unlock_lefttime = 3;
+            transfer_unlock_lefttime = 3;    
         }
         m_lastPos = this.transform.position;
 
     }
-    public void Transfer1Unlock()
+    public void Transfer1Unlock(GameObject transObj)
     {
         if (!isLocalPlayer) return;
-
+        GameObject light = transObj.transform.Find("SpotLight").gameObject;
         if (m_lastPos == this.transform.position)
         {
             transfer1_unlock_lefttime -= transfer_unlock_speed * Time.deltaTime;
             //传送点附近添加动画
+            light.SetActive(true);
             this.GetComponent<BossUIControl>().showMsg("正在传送中");
             Debug.Log(transfer1_unlock_lefttime);
         }
         else
         {
             this.GetComponent<BossUIControl>().showMsg("传送中断");
+            light.SetActive(false);
             Debug.Log("传送打断");
         }
 
@@ -217,6 +224,7 @@ public class BossMoveControl : NetworkBehaviour{
             this.transform.position = new Vector3(transfer_pos[0], transform.position.y, transfer_pos[2]);
             Debug.Log(transform.position);
             transfer1_unlock_lefttime = 3;
+            light.SetActive(false);
         }
         m_lastPos = this.transform.position;
 

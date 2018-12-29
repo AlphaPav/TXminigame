@@ -26,7 +26,7 @@ public class SKILL
     public float boot_time_left = 0;    // 技能引导剩余时间
     public float cd_time_left = 0;
     public float boot_speed = 4.0f;
-    public float cd_speed = 4.0f;
+    public float cd_speed = 1.0f;
     public Animator m_animator;
 
     private DateTime last_skill_use_time;
