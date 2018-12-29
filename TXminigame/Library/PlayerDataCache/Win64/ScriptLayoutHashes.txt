@@ -1,6 +1,6 @@
 WindowsStandalone
 PlayerPath?
-D:/Code/UnityProgram/TXminigame/built/TXminigame.exe
+D:/Unity2018/Unity Projects/TXminigame-master/TXminigame/built/TXminigame.exe
 SceneListBegin?
 Assets/Scenes/Start.unity
 Assets/Scenes/Main.unity

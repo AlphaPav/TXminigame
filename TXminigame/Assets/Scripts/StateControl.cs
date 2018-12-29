@@ -23,7 +23,7 @@ public class StateControl : NetworkBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        CmdBubbleEffect();
+        BubbleEffect();
         if (!isLocalPlayer) return;
         if (state == PEOPLE.FREE)
         {
@@ -98,9 +98,8 @@ public class StateControl : NetworkBehaviour {
         //}
 
     }
-
-    [Command]
-    public void CmdBubbleEffect()
+    
+    public void BubbleEffect()
     {
         if (state == PEOPLE.BEGIN_SKILL)
         {
