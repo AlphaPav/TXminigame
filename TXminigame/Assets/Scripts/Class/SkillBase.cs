@@ -243,7 +243,7 @@ public class SKILL_CATCH: SKILL
 {
     public SKILL_CATCH(GameObject _skill_owner, int _id) : base(_skill_owner, _id)
     {
-        cd_time = 30;   // 30second
+        cd_time = 15;   // 15second
         boot_time = 0;
         skill_name = "SKILL_CATCH";
         need_pos = false;

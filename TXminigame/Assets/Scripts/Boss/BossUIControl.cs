@@ -34,6 +34,9 @@ public class BossUIControl : NetworkBehaviour
     private GameObject hero1UI;
     private GameObject hero2UI;
     private GameObject hero3UI;
+    private GameObject[] hero1_lingshi;
+    private GameObject[] hero2_lingshi;
+    private GameObject[] hero3_lingshi;
     private GameObject boss;
     private GameObject hero1;
     private GameObject hero2;
@@ -65,7 +68,20 @@ public class BossUIControl : NetworkBehaviour
         hero1UI = GameObject.FindGameObjectWithTag("Hero1Img");
         hero2UI = GameObject.FindGameObjectWithTag("Hero2Img");
         hero3UI = GameObject.FindGameObjectWithTag("Hero3Img");
-
+        hero1_lingshi = new GameObject[6];
+        hero2_lingshi = new GameObject[6];
+        hero3_lingshi = new GameObject[6];
+        for (int i = 0; i < 6; i++)
+        {
+            
+            hero1_lingshi[i] = hero1UI.transform.Find("Image" + i).gameObject;
+            hero2_lingshi[i] = hero2UI.transform.Find("Image" + i).gameObject;
+            hero3_lingshi[i] = hero3UI.transform.Find("Image" + i).gameObject;
+        
+            hero1_lingshi[i].SetActive(false);
+            hero2_lingshi[i].SetActive(false);
+            hero3_lingshi[i].SetActive(false);
+        }
         boss = GameObject.FindGameObjectWithTag("Boss");
         hero1 = GameObject.FindGameObjectWithTag("Hero1");
         hero2 = GameObject.FindGameObjectWithTag("Hero2");
@@ -112,22 +128,54 @@ public class BossUIControl : NetworkBehaviour
         if (hero1 != null)
         {
             int hero1_bloodnum = hero1.GetComponent<InfoControl>().blood_num;
-
+            //Debug.Log(blood1_text.text);
             blood1_text.text = "灵识数量:" + hero1_bloodnum.ToString();
+            for (int i = 0; i < 6; i++)
+            {
+                if (i < hero1_bloodnum)
+                {
+                    hero1_lingshi[i].SetActive(true);
+                }
+                else
+                {
+                    hero1_lingshi[i].SetActive(false);
+                }
+            }
         }
 
         if (hero2 != null)
         {
             int hero2_bloodnum = hero2.GetComponent<InfoControl>().blood_num;
-
             blood2_text.text = "灵识数量:" + hero2_bloodnum.ToString();
+            for (int i = 0; i < 6; i++)
+            {
+                if (i < hero2_bloodnum)
+                {
+                    hero2_lingshi[i].SetActive(true);
+                }
+                else
+                {
+                    hero2_lingshi[i].SetActive(false);
+                }
+            }
+
         }
 
         if (hero3 != null)
         {
             int hero3_bloodnum = hero3.GetComponent<InfoControl>().blood_num;
-
             blood3_text.text = "灵识数量:" + hero3_bloodnum.ToString();
+            for (int i = 0; i < 6; i++)
+            {
+                if (i < hero3_bloodnum)
+                {
+                    hero3_lingshi[i].SetActive(true);
+                }
+                else
+                {
+                    hero3_lingshi[i].SetActive(false);
+                }
+            }
         }
 
     }

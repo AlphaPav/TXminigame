@@ -56,6 +56,9 @@ public class UIControl : NetworkBehaviour {
     private GameObject hero1;
     private GameObject hero2;
     private GameObject hero3;
+    private GameObject[] hero1_lingshi;
+    private GameObject[] hero2_lingshi;
+    private GameObject[] hero3_lingshi;
     Text blood1_text;
     Text blood2_text;
     Text blood3_text;
@@ -91,7 +94,18 @@ public class UIControl : NetworkBehaviour {
         blood1_text = hero1UI.transform.Find("BloodText").gameObject.GetComponent<Text>();
         blood2_text = hero2UI.transform.Find("BloodText").gameObject.GetComponent<Text>();
         blood3_text = hero3UI.transform.Find("BloodText").gameObject.GetComponent<Text>();
-        
+        hero1_lingshi = new GameObject[6];
+        hero2_lingshi = new GameObject[6];
+        hero3_lingshi = new GameObject[6];
+        for (int i = 0; i < 6; i++)
+        {
+            hero1_lingshi[i] = hero1UI.transform.Find("Image" + i).gameObject;
+            hero2_lingshi[i] = hero2UI.transform.Find("Image" + i).gameObject;
+            hero3_lingshi[i] = hero3UI.transform.Find("Image" + i).gameObject;
+            hero1_lingshi[i].SetActive(false);
+            hero2_lingshi[i].SetActive(false);
+            hero3_lingshi[i].SetActive(false);
+        }
         //UI 里找到warnImage
         warnImage = GameObject.FindGameObjectWithTag("WarnImage").GetComponent<Image>();
         warnImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width, Screen.height);
@@ -110,6 +124,7 @@ public class UIControl : NetworkBehaviour {
         sp_hide= Resources.Load("Textrues/SKILL_HIDE", typeof(Sprite)) as Sprite;
         sp_revive= Resources.Load("Textrues/SKILL_REVIVE", typeof(Sprite)) as Sprite;
         sp_null = Resources.Load("Textrues/NULL", typeof(Sprite)) as Sprite;
+        
     }
 	
 	// Update is called once per frame
@@ -159,18 +174,51 @@ public class UIControl : NetworkBehaviour {
             int hero1_bloodnum = hero1.GetComponent<InfoControl>().blood_num;
             //Debug.Log(blood1_text.text);
             blood1_text.text = "灵识数量:" + hero1_bloodnum.ToString();
+            for (int i = 0; i < 6;  i++)
+            {
+                if (i < hero1_bloodnum) {
+                    hero1_lingshi[i].SetActive(true);
+                }
+                else
+                {
+                    hero1_lingshi[i].SetActive(false);
+                }
+            }
         }
 
         if (hero2 != null)
         {
             int hero2_bloodnum = hero2.GetComponent<InfoControl>().blood_num;
             blood2_text.text = "灵识数量:" + hero2_bloodnum.ToString();
+            for (int i = 0; i < 6; i++)
+            {
+                if (i < hero2_bloodnum)
+                {
+                    hero2_lingshi[i].SetActive(true);
+                }
+                else
+                {
+                    hero2_lingshi[i].SetActive(false);
+                }
+            }
+
         }
 
         if (hero3 != null)
         {
             int hero3_bloodnum = hero3.GetComponent<InfoControl>().blood_num;
             blood3_text.text = "灵识数量:" + hero3_bloodnum.ToString();
+            for (int i = 0; i < 6; i++)
+            {
+                if (i < hero3_bloodnum)
+                {
+                    hero3_lingshi[i].SetActive(true);
+                }
+                else
+                {
+                    hero3_lingshi[i].SetActive(false);
+                }
+            }
         }
        
     }
@@ -394,6 +442,8 @@ public class UIControl : NetworkBehaviour {
         }
         else
         {
+            Text cd_text = baseSkillUI.transform.Find("cd_time_left_text").gameObject.GetComponent<Text>();
+            cd_text.text = "";
             switch (skill_name)
             {
                 case "SKILL_TRAP_BLIND":
@@ -545,19 +595,14 @@ public class UIControl : NetworkBehaviour {
         Debug.Log(_skill.getSkillName());
         if (_skill.need_dir)
         {
-            //从UI实时接收方向信息
-            //UI显示方向
             Dir = Vector3.forward;// 用户面朝的方向
         }
         if (_skill.need_pos)
         {
-            //接收位置信息
             Pos = GetSkillTgtPos();
             if (_skill.IsPosValid(Pos))
             {
-                Debug.Log("PosValid");
                 Debug.Log(Pos);
-                //UI显示位置
             }
         }
 
