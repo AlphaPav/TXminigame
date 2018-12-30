@@ -27,7 +27,7 @@ public class MapStick : NetworkBehaviour, IPointerUpHandler, IPointerDownHandler
 
         if (NetChoose.chosenID == 0)
         {
-            bossMapPos = GameObject.Find("VirtualJoystick/PosText/BossText");
+            bossMapPos = GameObject.Find("VirtualJoystick/PosIcon/BossIcon");
 
             GoldenPagesMapPos = GameObject.FindGameObjectsWithTag("GoldenPageInMap");
             BlackPagesMapPos = GameObject.FindGameObjectsWithTag("BlackPageInMap");
@@ -37,9 +37,9 @@ public class MapStick : NetworkBehaviour, IPointerUpHandler, IPointerDownHandler
         }
         else
         {
-            hero1MapPos = GameObject.Find("VirtualJoystick/PosText/Hero1Text");
-            hero2MapPos = GameObject.Find("VirtualJoystick/PosText/Hero2Text");
-            hero3MapPos = GameObject.Find("VirtualJoystick/PosText/Hero3Text");
+            hero1MapPos = GameObject.Find("VirtualJoystick/PosIcon/Hero1Icon");
+            hero2MapPos = GameObject.Find("VirtualJoystick/PosIcon/Hero2Icon");
+            hero3MapPos = GameObject.Find("VirtualJoystick/PosIcon/Hero3Icon");
         }
 
         UIVect2 = GameObject.Find("VirtualJoystick").GetComponent<RectTransform>().sizeDelta;
