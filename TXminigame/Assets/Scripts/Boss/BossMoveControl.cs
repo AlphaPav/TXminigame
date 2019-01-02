@@ -5,9 +5,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 public class BossMoveControl : NetworkBehaviour{
-    [SerializeField] private float m_moveSpeedStandard = 0.2f;
-    [SerializeField] private float m_moveSpeed = 0.2f;
-    [SerializeField] private Animator m_animator;
+    [SerializeField] private float m_moveSpeedStandard = 1f;
+    [SerializeField] private float m_moveSpeed = 1f;
+    //[SerializeField] private Animator m_animator;
+    bool isNowRun = false;
+    bool isLastRun = false;
+ 
+    
+
     public GameObject remain;
     float v = 0.0f;
     float h = 0.0f;
@@ -26,7 +31,10 @@ public class BossMoveControl : NetworkBehaviour{
     {
         transfer1_pos = new Vector3(-14.277f, 0f, -10.8f);
         transfer_pos = new Vector3(6f, 0f, 2.6f);
-        m_animator = this.GetComponent<Animator>();
+        //  m_animator = this.GetComponent<Animator>();
+       
+        isNowRun = false;
+        isLastRun = false;
     }
 
 
@@ -134,21 +142,34 @@ public class BossMoveControl : NetworkBehaviour{
         }
 
 
-        m_animator.SetBool("Grounded", true);
         h = this.GetComponent<BossInfoControl>().getHorizontalMove();
         v = this.GetComponent<BossInfoControl>().getVerticalMove();
 
-        // Debug.Log(new Vector2(h, v));
-
         float dis = (new Vector3(h, 0, v)).magnitude;
+        if (dis > 0)
+        {
+            isNowRun = true;
+        }
+        else
+        {
+            isNowRun = false;
+        }
+        if (isNowRun != isLastRun)
+        {
+            if(isNowRun) CmdPlayAnimation(this.gameObject, "run");
+            else CmdPlayAnimation(this.gameObject, "idle");
+        }
+        isLastRun = isNowRun;
+  
 
-        transform.position = this.transform.position + new Vector3(h, 0, v) * m_moveSpeed * Time.deltaTime* 0.5f;
+        transform.position = this.transform.position + new Vector3(h, 0, v) * m_moveSpeed * Time.deltaTime * 1.5f;
+        Debug.Log((new Vector3(h, 0, v) * m_moveSpeed * Time.deltaTime * 10).magnitude);
         if (h != 0 || v != 0)
         {
-
             Rotating(h, v);
         }
-        m_animator.SetFloat("MoveSpeed", dis);
+      
+       
     }
     void Rotating(float horizontal, float vertical)
     {
@@ -246,6 +267,20 @@ public class BossMoveControl : NetworkBehaviour{
         NetworkServer.Spawn(_henji);
         obj.SetActive(false);
     }
+    [Command]
+    void CmdPlayAnimation(GameObject obj, string _aniName)
+    {
+        Debug.Log(obj.tag + " CmdPlayAnimation: "+ _aniName);
+         RpcPlayAnimation(obj, _aniName);
+        //m_animation.Play(_aniName);
+    }
+    [ClientRpc]
+    void RpcPlayAnimation(GameObject obj, string _aniName)
+    {
+        Debug.Log(obj.tag + " RpcPlayAnimation: " +_aniName);
+        Animation _ani;
+        _ani = obj.GetComponent<Animation>();
 
-    
+        _ani.Play(_aniName);
+    }
 }

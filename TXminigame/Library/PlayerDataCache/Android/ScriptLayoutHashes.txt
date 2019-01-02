@@ -112,7 +112,7 @@ c7dd12c15208b0447e101f80038706df UnityEngine.Timeline.dll:UnityEngine.Timeline.A
 64f3a13c1277a7f1324321d93d0ec13b UnityEngine.Timeline.dll:UnityEngine.Timeline.TimelineAsset
 5017b781e0dfe18825ee4bf3a9b8e91b Assembly-CSharp.dll:.Demo
 66b3109aa5921cf800bec17926c6adba Unity.TextMeshPro.dll:TMPro.TMP_SubMeshUI
-9a10c15e8b415653bd0faf3fa4baea23 Assembly-CSharp.dll:.MoveControl
+3bb172d6e707abd490ef63092b039d04 Assembly-CSharp.dll:.MoveControl
 201273fb4f889724fb090164b7d6c657 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 486cd95c82d8305219c352c06b776e1f UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
 0f27c39183b9eb95eba0a228bea28273 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkDiscovery
@@ -138,7 +138,7 @@ d75dc834c5dec688db75a55a1724c90f UnityEngine.HoloLens.dll:UnityEngine.Audio.Audi
 e1ea12ca952c81d81a9a21fdf34446ed UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInputModule
 98d69a140ec0084cde3b6a5e09aea295 UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingCollider
 dfd33ff9ae3ce8d7ca1f22b475ec2387 UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
-11b3afc891dd54b32190aee23ec6378b Assembly-CSharp.dll:.InfoControl
+fbd854d73cc94c1694da513b47efaec0 Assembly-CSharp.dll:.InfoControl
 fcedd142636aa89184cc61bd8e5dee4a Assembly-CSharp.dll:.MyNetManager
 96f3ea9f23b6f08e60710ebb4af49174 Unity.TextMeshPro.dll:TMPro.TMP_SpriteAsset
 10c41e99888673d65e369ab38c67c35e Assembly-CSharp.dll:.BossSkillControl
@@ -150,7 +150,7 @@ eaf0bcdb10d442a4029d615f41d09957 Unity.TextMeshPro.dll:TMPro.TextContainer
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.detect
 ef7ce1632e84ad9364a0c84716804066 Assembly-CSharp.dll:.BossInfoControl
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.disapear
-ef28f0c292a17e26223b696448ee9f8f Assembly-CSharp.dll:.BossMoveControl
+5c00bd7455529a74a7b57a06b6341bbb Assembly-CSharp.dll:.BossMoveControl
 201273fb4f889724fb090164b7d6c657 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 486cd95c82d8305219c352c06b776e1f UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
 0f27c39183b9eb95eba0a228bea28273 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkDiscovery
@@ -198,3 +198,4 @@ e04611b8715e6833d2bd7010fc6be10b Unity.TextMeshPro.dll:TMPro.TMP_StyleSheet
 9318334b30e9f195f573b2ce00154b95 Unity.TextMeshPro.dll:TMPro.TMP_ColorGradient
 93307bd34e39d73fd24e00ec39c25a91 Unity.TextMeshPro.dll:TMPro.TMP_SubMesh
 ac0b58805d5fb2acd9405b7d3e36728f Assembly-CSharp.dll:.CameraFollow
+e90f3a77c7dafa4547c158f7b006f821 Assembly-CSharp.dll:.change

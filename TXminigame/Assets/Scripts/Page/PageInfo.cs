@@ -6,10 +6,10 @@ using UnityEngine.Networking;
 
 public class PageInfo : NetworkBehaviour
 {
-    public float unlock_time_total = 30.0f;
+    public float unlock_time_total = 25.0f;
 
     [SyncVar]
-    public float unlock_time_left = 30.0f; //可以被人物的SkillControl脚本修改
+    public float unlock_time_left = 25.0f; //可以被人物的SkillControl脚本修改
  
 	// Use this for initialization
 	void Start () {

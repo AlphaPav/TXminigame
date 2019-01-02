@@ -86,9 +86,9 @@ public class BossUIControl : NetworkBehaviour
         hero1 = GameObject.FindGameObjectWithTag("Hero1");
         hero2 = GameObject.FindGameObjectWithTag("Hero2");
         hero3 = GameObject.FindGameObjectWithTag("Hero3");
-        blood1_text = hero1UI.transform.Find("BloodText").gameObject.GetComponent<Text>();
-        blood2_text = hero2UI.transform.Find("BloodText").gameObject.GetComponent<Text>();
-        blood3_text = hero3UI.transform.Find("BloodText").gameObject.GetComponent<Text>();
+        //blood1_text = hero1UI.transform.Find("BloodText").gameObject.GetComponent<Text>();
+        //blood2_text = hero2UI.transform.Find("BloodText").gameObject.GetComponent<Text>();
+        //blood3_text = hero3UI.transform.Find("BloodText").gameObject.GetComponent<Text>();
 
         cd_text = baseSkillUI.transform.Find("cd_time_left_text").gameObject.GetComponent<Text>();
         baseSkillImg = baseSkillUI.GetComponent<Image>();
@@ -114,7 +114,32 @@ public class BossUIControl : NetworkBehaviour
         MovementUpdate();
         SkillUIUpdate();
         MsgUpdate();
+        isAllSealed();
     }
+
+    void isAllSealed()
+    {
+        bool ishero1sealed = true;
+        bool ishero2sealed = true;
+        bool ishero3sealed = true;
+
+        if (hero1 != null) ishero1sealed = false;
+
+        if (hero2 != null) ishero2sealed = false;
+
+        if (hero3 != null) ishero3sealed = false;
+
+        if (hero1.GetComponent<StateControl>().state == PEOPLE.SEALED) ishero1sealed = true;
+        if (hero2.GetComponent<StateControl>().state == PEOPLE.SEALED) ishero2sealed = true;
+        if (hero3.GetComponent<StateControl>().state == PEOPLE.SEALED) ishero3sealed = true;
+
+        if (ishero1sealed && ishero2sealed && ishero3sealed)
+        {
+            SceneManager.LoadScene(this.gameObject.tag + "Win");
+        }
+
+    }
+
 
     public void BossUIUpdateBloodNum()
     {
@@ -129,7 +154,7 @@ public class BossUIControl : NetworkBehaviour
         {
             int hero1_bloodnum = hero1.GetComponent<InfoControl>().blood_num;
             //Debug.Log(blood1_text.text);
-            blood1_text.text = "灵识数量:" + hero1_bloodnum.ToString();
+           // blood1_text.text = "灵识数量:" + hero1_bloodnum.ToString();
             for (int i = 0; i < 6; i++)
             {
                 if (i < hero1_bloodnum)
@@ -146,7 +171,7 @@ public class BossUIControl : NetworkBehaviour
         if (hero2 != null)
         {
             int hero2_bloodnum = hero2.GetComponent<InfoControl>().blood_num;
-            blood2_text.text = "灵识数量:" + hero2_bloodnum.ToString();
+           // blood2_text.text = "灵识数量:" + hero2_bloodnum.ToString();
             for (int i = 0; i < 6; i++)
             {
                 if (i < hero2_bloodnum)
@@ -164,7 +189,7 @@ public class BossUIControl : NetworkBehaviour
         if (hero3 != null)
         {
             int hero3_bloodnum = hero3.GetComponent<InfoControl>().blood_num;
-            blood3_text.text = "灵识数量:" + hero3_bloodnum.ToString();
+           // blood3_text.text = "灵识数量:" + hero3_bloodnum.ToString();
             for (int i = 0; i < 6; i++)
             {
                 if (i < hero3_bloodnum)
@@ -211,7 +236,7 @@ public class BossUIControl : NetworkBehaviour
         {
             Debug.Log(minute);
             temp_minute_left = minute;
-            Time_text.text = "游戏剩余时间： " + temp_minute_left.ToString()+ "分钟";
+            Time_text.text =  temp_minute_left.ToString()+ " Minutes";
         }
 
 

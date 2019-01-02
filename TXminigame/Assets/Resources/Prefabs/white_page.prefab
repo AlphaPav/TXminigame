@@ -544,8 +544,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a80bdb1fee0443429bcde6cb6496743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlock_time_total: 10
-  unlock_time_left: 10
+  unlock_time_total: 20
+  unlock_time_left: 20
 --- !u!114 &114769586392269836
 MonoBehaviour:
   m_ObjectHideFlags: 1

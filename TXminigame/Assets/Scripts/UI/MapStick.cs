@@ -74,10 +74,10 @@ public class MapStick : NetworkBehaviour, IPointerUpHandler, IPointerDownHandler
             tempPos = GameObject.FindGameObjectWithTag("Boss").transform.position;
             //小地图放大
             if (zoomInFlag)
-                bossMapPos.GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.7f * (19 - tempPos.x) / 37, -UIVect2.y * 0.7f * (7.5f - tempPos.z) / 25, 0);
+                bossMapPos.GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.52f * (19 - tempPos.x) / 37, -UIVect2.y * 0.7f * (7.5f - tempPos.z) / 25, 0);
             else
             {
-                bossMapPos.GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.35f * (19 - tempPos.x) / 37, -UIVect2.y * 0.35f * (7.5f - tempPos.z) / 25, 0);
+                bossMapPos.GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.26f * (19 - tempPos.x) / 37, -UIVect2.y * 0.35f * (7.5f - tempPos.z) / 25, 0);
             }
         }
     }
@@ -96,10 +96,10 @@ public class MapStick : NetworkBehaviour, IPointerUpHandler, IPointerDownHandler
                 tempPos = GoldenPages[i].transform.position;
                 //小地图放大
                 if (zoomInFlag)
-                    GoldenPagesMapPos[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.7f * (19 - tempPos.x) / 37, -UIVect2.y * 0.7f * (7.5f - tempPos.z) / 25, 0);
+                    GoldenPagesMapPos[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.52f * (19 - tempPos.x) / 37, -UIVect2.y * 0.7f * (7.5f - tempPos.z) / 25, 0);
                 else
                 {
-                    GoldenPagesMapPos[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.35f * (19 - tempPos.x) / 37, -UIVect2.y * 0.35f * (7.5f - tempPos.z) / 25, 0);
+                    GoldenPagesMapPos[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.26f * (19 - tempPos.x) / 37, -UIVect2.y * 0.35f * (7.5f - tempPos.z) / 25, 0);
                 }
                 /*
                  * 解锁到50% 小地图上的图标闪烁
@@ -107,6 +107,11 @@ public class MapStick : NetworkBehaviour, IPointerUpHandler, IPointerDownHandler
                 if (GoldenPages[i].GetComponent<PageInfo>().unlock_time_left < GoldenPages[i].GetComponent<PageInfo>().unlock_time_total * 0.5f)
                 {
                     shakePagePosInMap(GoldenPagesMapPos[i]);
+                }
+
+                if (GoldenPages[i].GetComponent<PageInfo>().unlock_time_left <= 0)
+                {
+                    GoldenPages[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(20, 20, 0);
                 }
             }
         }
@@ -118,10 +123,10 @@ public class MapStick : NetworkBehaviour, IPointerUpHandler, IPointerDownHandler
                 tempPos = BlackPages[i].transform.position;
                 //小地图放大
                 if (zoomInFlag)
-                    BlackPagesMapPos[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.7f * (19 - tempPos.x) / 37, -UIVect2.y * 0.7f * (7.5f - tempPos.z) / 25, 0);
+                    BlackPagesMapPos[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.52f * (19 - tempPos.x) / 37, -UIVect2.y * 0.7f * (7.5f - tempPos.z) / 25, 0);
                 else
                 {
-                    BlackPagesMapPos[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.35f * (19 - tempPos.x) / 37, -UIVect2.y * 0.35f * (7.5f - tempPos.z) / 25, 0);
+                    BlackPagesMapPos[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.26f * (19 - tempPos.x) / 37, -UIVect2.y * 0.35f * (7.5f - tempPos.z) / 25, 0);
                 }
                 /*
                  * 解锁到50% 小地图上的图标闪烁
@@ -129,6 +134,11 @@ public class MapStick : NetworkBehaviour, IPointerUpHandler, IPointerDownHandler
                 if (BlackPages[i].GetComponent<PageInfo>().unlock_time_left < BlackPages[i].GetComponent<PageInfo>().unlock_time_total * 0.5f)
                 {
                     shakePagePosInMap(BlackPagesMapPos[i]);
+                }
+
+                if (BlackPages[i].GetComponent<PageInfo>().unlock_time_left <= 0)
+                {
+                    BlackPages[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(20, 20, 0);
                 }
             }
         }
@@ -140,10 +150,10 @@ public class MapStick : NetworkBehaviour, IPointerUpHandler, IPointerDownHandler
                 tempPos = WhitePages[i].transform.position;
                 //小地图放大
                 if (zoomInFlag)
-                    WhitePagesMapPos[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.7f * (19 - tempPos.x) / 37, -UIVect2.y * 0.7f * (7.5f - tempPos.z) / 25, 0);
+                    WhitePagesMapPos[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.52f * (19 - tempPos.x) / 37, -UIVect2.y * 0.7f * (7.5f - tempPos.z) / 25, 0);
                 else
                 {
-                    WhitePagesMapPos[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.35f * (19 - tempPos.x) / 37, -UIVect2.y * 0.35f * (7.5f - tempPos.z) / 25, 0);
+                    WhitePagesMapPos[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.26f * (19 - tempPos.x) / 37, -UIVect2.y * 0.35f * (7.5f - tempPos.z) / 25, 0);
                 }
                 /*
                  * 解锁到50% 小地图上的图标闪烁
@@ -151,6 +161,11 @@ public class MapStick : NetworkBehaviour, IPointerUpHandler, IPointerDownHandler
                 if (WhitePages[i].GetComponent<PageInfo>().unlock_time_left < WhitePages[i].GetComponent<PageInfo>().unlock_time_total * 0.5f)
                 {
                     shakePagePosInMap(WhitePagesMapPos[i]);
+                }
+
+                if (WhitePages[i].GetComponent<PageInfo>().unlock_time_left <= 0)
+                {
+                    WhitePagesMapPos[i].GetComponent<RectTransform>().anchoredPosition = new Vector3(20, 20, 0);
                 }
             }
         }
@@ -162,7 +177,7 @@ public class MapStick : NetworkBehaviour, IPointerUpHandler, IPointerDownHandler
     /// <param name="obj">闪烁物体</param>
     private void shakePagePosInMap(GameObject obj)
     {
-        Text tx = obj.GetComponent<Text>();
+        Image tx = obj.GetComponent<Image>();
 
         if (shakeTime % 4 > 2f)
             tx.enabled = true;
@@ -182,27 +197,27 @@ public class MapStick : NetworkBehaviour, IPointerUpHandler, IPointerDownHandler
             tempPos = GameObject.FindGameObjectWithTag("Hero1").transform.position;
             //小地图放大
             if (zoomInFlag)
-                hero1MapPos.GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.7f * (19 - tempPos.x) / 37, -UIVect2.y * 0.7f * (7.5f - tempPos.z) / 25, 0);
+                hero1MapPos.GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.52f * (19 - tempPos.x) / 37, -UIVect2.y * 0.7f * (7.5f - tempPos.z) / 25, 0);
             else
-                hero1MapPos.GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.35f * (19 - tempPos.x) / 37, -UIVect2.y * 0.35f * (7.5f - tempPos.z) / 25, 0);
+                hero1MapPos.GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.26f * (19 - tempPos.x) / 37, -UIVect2.y * 0.35f * (7.5f - tempPos.z) / 25, 0);
         }
         if (GameObject.FindGameObjectWithTag("Hero2") != null)
         {
             tempPos = GameObject.FindGameObjectWithTag("Hero2").transform.position;
             //小地图放大
             if (zoomInFlag)
-                hero2MapPos.GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.7f * (19 - tempPos.x) / 37, -UIVect2.y * 0.7f * (7.5f - tempPos.z) / 25, 0);
+                hero2MapPos.GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.52f * (19 - tempPos.x) / 37, -UIVect2.y * 0.7f * (7.5f - tempPos.z) / 25, 0);
             else
-                hero2MapPos.GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.35f * (19 - tempPos.x) / 37, -UIVect2.y * 0.35f * (7.5f - tempPos.z) / 25, 0);
+                hero2MapPos.GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.26f * (19 - tempPos.x) / 37, -UIVect2.y * 0.35f * (7.5f - tempPos.z) / 25, 0);
         }
         if (GameObject.FindGameObjectWithTag("Hero3") != null)
         {
             tempPos = GameObject.FindGameObjectWithTag("Hero3").transform.position;
             //小地图放大
             if (zoomInFlag)
-                hero3MapPos.GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.7f * (19 - tempPos.x) / 37, -UIVect2.y * 0.7f * (7.5f - tempPos.z) / 25, 0);
+                hero3MapPos.GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.52f * (19 - tempPos.x) / 37, -UIVect2.y * 0.7f * (7.5f - tempPos.z) / 25, 0);
             else
-                hero3MapPos.GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.35f * (19 - tempPos.x) / 37, -UIVect2.y * 0.35f * (7.5f - tempPos.z) / 25, 0);
+                hero3MapPos.GetComponent<RectTransform>().anchoredPosition = new Vector3(-UIVect2.x * 0.26f * (19 - tempPos.x) / 37, -UIVect2.y * 0.35f * (7.5f - tempPos.z) / 25, 0);
         }
     }
 

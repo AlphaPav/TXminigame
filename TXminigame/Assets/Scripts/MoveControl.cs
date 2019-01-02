@@ -5,10 +5,11 @@ using UnityEngine.Networking;
 
 public class MoveControl : NetworkBehaviour {
     //[SerializeField] 作用：私有化变量也可以在面板上显示和赋值
-    [SerializeField] private float m_moveSpeedStandard = 0.1f;
-    [SerializeField] private float m_moveSpeed = 0.1f;
-    [SerializeField] private Animator m_animator;
-   
+    [SerializeField] private float m_moveSpeedStandard = 1f;
+    [SerializeField] private float m_moveSpeed = 1f;
+
+    bool isNowRun = false;
+    bool isLastRun = false;
     float v = 0.0f;
     float h = 0.0f;
 
@@ -17,7 +18,7 @@ public class MoveControl : NetworkBehaviour {
     public float total_time=0;
     private void Start()
     {
-        m_animator = this.GetComponent<Animator>();
+ 
     }
 
     void Update()
@@ -69,21 +70,36 @@ public class MoveControl : NetworkBehaviour {
             return;
         }
 
-        m_animator.SetBool("Grounded", true);
+
         h = this.GetComponent<InfoControl>().getHorizontalMove();
         v = this.GetComponent<InfoControl>().getVerticalMove();
 
        // Debug.Log(new Vector2(h, v));
 
         float dis = (new Vector3(h, 0, v)).magnitude;
-
-        transform.position = this.transform.position + new Vector3(h, 0, v) * m_moveSpeed * Time.deltaTime* 0.5f;
+        if (dis > 0)
+        {
+            isNowRun = true;
+        }
+        else
+        {
+            isNowRun = false;
+        }
+        if (isNowRun != isLastRun)
+        {
+            if (isNowRun) CmdHeroPlayAnimation(this.gameObject, "run");
+            else CmdHeroPlayAnimation(this.gameObject, "idle");
+        }
+        isLastRun = isNowRun;
+       
+        transform.position = this.transform.position + new Vector3(h, 0, v) * m_moveSpeed * Time.deltaTime * 1.4f;
+        Debug.Log((new Vector3(h, 0, v) * m_moveSpeed * Time.deltaTime * 10).magnitude);
         if (h != 0 || v != 0)
         {
 
             Rotating(h, v);
         }
-        m_animator.SetFloat("MoveSpeed", dis);
+       
 
     }
     void Rotating(float horizontal, float vertical)
@@ -103,5 +119,20 @@ public class MoveControl : NetworkBehaviour {
 
     }
 
+    [Command]
+    void CmdHeroPlayAnimation(GameObject obj, string _aniName)
+    {
+        Debug.Log(obj.tag + " CmdHeroPlayAnimation: " + _aniName);
+        RpcHeroPlayAnimation(obj, _aniName);
+        //m_animation.Play(_aniName);
+    }
+    [ClientRpc]
+    void RpcHeroPlayAnimation(GameObject obj, string _aniName)
+    {
+        Debug.Log(obj.tag + " RpcHeroPlayAnimation: " + _aniName);
+        Animation _ani;
+        _ani = obj.GetComponent<Animation>();
 
+        _ani.Play(_aniName);
+    }
 }

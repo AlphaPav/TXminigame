@@ -19,15 +19,25 @@ public class InfoControl : NetworkBehaviour
     public float unlock_page_speed = 1.0f;
     public float seal_time = 0;//已经被封印的时间
 
-    public Vector3 original_book_pos = new Vector3(-1.66f, 2, -12.85f);
+    public Vector3 original_book_pos = new Vector3(-1.66f, 3, -12.85f);
     [SyncVar]
     public int blood_num = 2;
-
+    public List<SkinnedMeshRenderer> myMeshRenderer = new List<SkinnedMeshRenderer>();
 
     // Use this for initialization
     void Start () {
         original_book_pos = new Vector3(-1.6f, 2, -12.85f);
         if (!isLocalPlayer) return;
+
+        GameObject model = this.transform.Find("model").gameObject;
+        if (model == null) Debug.Log("NULL");
+        foreach (Transform child in model.transform)
+        {
+            GameObject childObj = child.gameObject;
+            myMeshRenderer.Add(childObj.GetComponent<SkinnedMeshRenderer>());
+        }
+
+
         if (this.gameObject.tag.Equals("Hero1"))
         {
             basic_skill_name = "SKILL_TRAP_SLOW";

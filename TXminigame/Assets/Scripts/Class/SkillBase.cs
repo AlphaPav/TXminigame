@@ -68,12 +68,12 @@ public class SKILL
             {
                 boot_time_left -= boot_speed * Time.deltaTime;
                 //更改一下动画，这里随便用了一个动画
-                m_animator.SetBool("Grounded", false);
+              
                 return;
             }
             else {
                 //更改一下动画，这里随便用了一个动画
-                m_animator.SetBool("Grounded", true);
+ 
                 /*进入执行技能阶段*/
                 skill_owner.GetComponent<InfoControl>().changeState(PEOPLE.EXECUTE_SKILL);
                 /*恢复引导时间*/

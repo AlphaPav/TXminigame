@@ -147,9 +147,11 @@ public class UIControl : NetworkBehaviour {
         SkillUIUpdate();
         WarnEffect();
         MsgUpdate();
-       
+        isAllSealed();
 
     }
+
+
     private void glowEffect()
     {
         if (GETING_SKILL)
@@ -223,6 +225,29 @@ public class UIControl : NetworkBehaviour {
        
     }
 
+    void isAllSealed()
+    {
+        bool ishero1sealed = true;
+        bool ishero2sealed = true;
+        bool ishero3sealed = true;
+
+        if (hero1 != null) ishero1sealed = false;
+    
+        if (hero2 != null) ishero2sealed = false;
+
+        if (hero3 != null) ishero3sealed = false;
+
+        if (hero1.GetComponent<StateControl>().state == PEOPLE.SEALED) ishero1sealed = true;
+        if (hero2.GetComponent<StateControl>().state == PEOPLE.SEALED) ishero2sealed = true;
+        if (hero3.GetComponent<StateControl>().state == PEOPLE.SEALED) ishero3sealed = true;
+
+        if (ishero1sealed && ishero2sealed && ishero3sealed)
+        {
+            SceneManager.LoadScene(this.gameObject.tag + "Lose");
+        }
+
+    }
+
     void gameOver()
     {
         int num1 = 2;
@@ -258,7 +283,7 @@ public class UIControl : NetworkBehaviour {
         {
             Debug.Log(minute);
             temp_minute_left = minute;
-            Time_text.text = "游戏剩余时间： " + temp_minute_left.ToString() + "分钟";
+            Time_text.text =  temp_minute_left.ToString() + " Minutes";
         }
 
         if (show_text_time > 0)
@@ -705,37 +730,52 @@ public class UIControl : NetworkBehaviour {
     public void CmdBecomeTransparent()
     {
         transparent = true;
-        RpcBecomeTransparent();
+        RpcBecomeTransparent(this.gameObject);
     }
 
     [Command]
     void CmdCancelTransparent()
     {
-        RpcCancelTransparent();
+        RpcCancelTransparent(this.gameObject);
     }
 
     [ClientRpc]
-    void RpcBecomeTransparent()
+    void RpcBecomeTransparent(GameObject obj)
     {
         GameObject model = this.transform.Find("model").gameObject;
         if (model == null) Debug.Log("NULL");
-        Material[] _material = model.GetComponent<SkinnedMeshRenderer>().materials;
-        Color temp1 = _material[0].color;
-        Color temp2 = _material[1].color;
-        _material[0].SetColor("_Color", new Color(temp1[0], temp1[1], temp1[2], 0f));
-        _material[1].SetColor("_Color", new Color(temp2[0], temp2[1], temp2[2], 0f));
+        List<SkinnedMeshRenderer> _myMeshRenderer = obj.GetComponent<InfoControl>().myMeshRenderer;
+
+        for (int i = 0; i < _myMeshRenderer.Count; i++)
+        {
+            _myMeshRenderer[i].enabled = false;
+        }
+        //Material[] _material = model.GetComponent<SkinnedMeshRenderer>().materials;
+        //Color temp1 = _material[0].color;
+        //Color temp2 = _material[1].color;
+        //_material[0].SetColor("_Color", new Color(temp1[0], temp1[1], temp1[2], 0f));
+        //_material[1].SetColor("_Color", new Color(temp2[0], temp2[1], temp2[2], 0f));
     }
 
     [ClientRpc]
-    void RpcCancelTransparent()
+    void RpcCancelTransparent(GameObject obj)
     {
+        //GameObject model = this.transform.Find("model").gameObject;
+        //if (model == null) Debug.Log("NULL");
+        //Material[] _material = model.GetComponent<SkinnedMeshRenderer>().materials;
+        //Color temp1 = _material[0].color;
+        //Color temp2 = _material[1].color;
+        //_material[0].SetColor("_Color", new Color(temp1[0], temp1[1], temp1[2], 1.0f));
+        //_material[1].SetColor("_Color", new Color(temp2[0], temp2[1], temp2[2], 1.0f));
         GameObject model = this.transform.Find("model").gameObject;
         if (model == null) Debug.Log("NULL");
-        Material[] _material = model.GetComponent<SkinnedMeshRenderer>().materials;
-        Color temp1 = _material[0].color;
-        Color temp2 = _material[1].color;
-        _material[0].SetColor("_Color", new Color(temp1[0], temp1[1], temp1[2], 1.0f));
-        _material[1].SetColor("_Color", new Color(temp2[0], temp2[1], temp2[2], 1.0f));
+        List<SkinnedMeshRenderer> _myMeshRenderer = obj.GetComponent<InfoControl>().myMeshRenderer;
+
+        for (int i = 0; i < _myMeshRenderer.Count; i++)
+        {
+            _myMeshRenderer[i].enabled = true;
+        }
+     
     }
 
 

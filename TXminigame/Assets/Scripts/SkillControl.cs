@@ -125,7 +125,7 @@ public class SkillControl : NetworkBehaviour {
     [ClientRpc]
     public void RpcUnflatten(GameObject obj)
     {
-        obj.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f); //TODO: 根据之后的模型要改
+        obj.transform.localScale = new Vector3(7f, 7f, 7f); //TODO: 根据之后的模型要改
         obj.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
     }
 

@@ -54,6 +54,7 @@ public class BossSkillControl : NetworkBehaviour
                 && hero1.GetComponent<StateControl>().state!=PEOPLE.SEALED )
             {
                 Debug.Log("Boss Catch Attack hero1");
+                this.GetComponent<BossUIControl>().showMsg("抓到了青蛙王子！对方灵识-1！");
                 //hero1改成封印状态
                 hero1.GetComponent<StateControl>().CmdtransStateTo(PEOPLE.CATCHED);
                 //Boss 减速
@@ -67,7 +68,7 @@ public class BossSkillControl : NetworkBehaviour
             if (((transform.position - hero2.transform.position).magnitude < CatchRadius)
                 && hero2.GetComponent<StateControl>().state != PEOPLE.SEALED)
             {
-                
+                this.GetComponent<BossUIControl>().showMsg("抓到了士兵！对方灵识-1！");
                 hero2.GetComponent<StateControl>().CmdtransStateTo(PEOPLE.CATCHED);
                 //Boss 减速
                 BeSlowAfterEndSkill = true;
@@ -79,7 +80,7 @@ public class BossSkillControl : NetworkBehaviour
             if (((transform.position - hero3.transform.position).magnitude < CatchRadius)
                 && hero3.GetComponent<StateControl>().state != PEOPLE.SEALED)
             {
-                
+                this.GetComponent<BossUIControl>().showMsg("抓到了水妖！对方灵识-1！");
                 hero3.GetComponent<StateControl>().CmdtransStateTo(PEOPLE.CATCHED);
                 //Boss 减速
                 BeSlowAfterEndSkill = true;
