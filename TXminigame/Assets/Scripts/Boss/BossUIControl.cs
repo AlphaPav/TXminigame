@@ -27,7 +27,7 @@ public class BossUIControl : NetworkBehaviour
     Text Time_text = null;
     private GameObject Msg_ImgObj = null;
     //float GameTimeLeft = 899;//15min
-    float GameTimeLeft = 599;//10min
+    float GameTimeLeft = 479;//8min
     int temp_minute_left = 15;
 
     private GameObject bossUI;
