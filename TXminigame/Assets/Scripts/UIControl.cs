@@ -7,14 +7,15 @@ using UnityEngine.SceneManagement;
 
 //UIcontrol 中一切设备输入都必须限制在local player上才能执行，但是ui界面的同步可能会有bug？
 
-public class UIControl : NetworkBehaviour {
-    public  float v = 0.0f;/*vertical*/
+public class UIControl : NetworkBehaviour
+{
+    public float v = 0.0f;/*vertical*/
     public float h = 0.0f;/*horizontal*/
     public GameObject highlightPosCube;
-    Vector3 Pos = new Vector3(0,0,0);
-    Vector3 Dir= new Vector3(0, 0, 0);
-    
-     //屏幕红色蒙版变量
+    Vector3 Pos = new Vector3(0, 0, 0);
+    Vector3 Dir = new Vector3(0, 0, 0);
+
+    //屏幕红色蒙版变量
     public Image warnImage;
     private float flashSpeed = 5;
     [SyncVar]
@@ -23,13 +24,13 @@ public class UIControl : NetworkBehaviour {
     [SyncVar]
     public bool GETING_SKILL = false;
     private MoveJoystick moveJoystick;
-    
+
     private GameObject baseSkillUI;
     private GameObject skill1UI;
     private GameObject skill2UI;
     private GameObject skill3UI;
     private GameObject skill4UI;
-  
+
     Sprite sp_trap_blind;
     Sprite sp_trap_blind_colding;
     Sprite sp_trap_slow;
@@ -62,13 +63,14 @@ public class UIControl : NetworkBehaviour {
     Text blood1_text;
     Text blood2_text;
     Text blood3_text;
-    
+
 
     //人物解锁 地面光环
     public GameObject groundGlow;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         groundGlow = this.transform.Find("groundGlow").gameObject;
         if (!isLocalPlayer) return;
         msgText = GameObject.FindGameObjectWithTag("MsgText");
@@ -115,28 +117,28 @@ public class UIControl : NetworkBehaviour {
     void LoadUIResources()
     {
         sp_trap_blind = Resources.Load("Textrues/SKILL_TRAP_BLIND", typeof(Sprite)) as Sprite;
-        sp_trap_blind_colding= Resources.Load("Textrues/SKILL_TRAP_BLIND_COLDING", typeof(Sprite)) as Sprite;
-        sp_trap_slow= Resources.Load("Textrues/SKILL_TRAP_SLOW", typeof(Sprite)) as Sprite;
-        sp_trap_slow_colding= Resources.Load("Textrues/SKILL_TRAP_SLOW_COLDING", typeof(Sprite)) as Sprite;
-        sp_trap_ice= Resources.Load("Textrues/SKILL_TRAP_ICE", typeof(Sprite)) as Sprite;
-        sp_trap_ice_colding= Resources.Load("Textrues/SKILL_TRAP_ICE_COLDING", typeof(Sprite)) as Sprite;
-        sp_flash= Resources.Load("Textrues/SKILL_FLASH", typeof(Sprite)) as Sprite;
-        sp_hide= Resources.Load("Textrues/SKILL_HIDE", typeof(Sprite)) as Sprite;
-        sp_revive= Resources.Load("Textrues/SKILL_REVIVE", typeof(Sprite)) as Sprite;
+        sp_trap_blind_colding = Resources.Load("Textrues/SKILL_TRAP_BLIND_COLDING", typeof(Sprite)) as Sprite;
+        sp_trap_slow = Resources.Load("Textrues/SKILL_TRAP_SLOW", typeof(Sprite)) as Sprite;
+        sp_trap_slow_colding = Resources.Load("Textrues/SKILL_TRAP_SLOW_COLDING", typeof(Sprite)) as Sprite;
+        sp_trap_ice = Resources.Load("Textrues/SKILL_TRAP_ICE", typeof(Sprite)) as Sprite;
+        sp_trap_ice_colding = Resources.Load("Textrues/SKILL_TRAP_ICE_COLDING", typeof(Sprite)) as Sprite;
+        sp_flash = Resources.Load("Textrues/SKILL_FLASH", typeof(Sprite)) as Sprite;
+        sp_hide = Resources.Load("Textrues/SKILL_HIDE", typeof(Sprite)) as Sprite;
+        sp_revive = Resources.Load("Textrues/SKILL_REVIVE", typeof(Sprite)) as Sprite;
         sp_null = Resources.Load("Textrues/NULL", typeof(Sprite)) as Sprite;
-        
+
     }
-	
-	// Update is called once per frame
+
+    // Update is called once per frame
     //人物一切的ui输入必须是localplayer才能操作，但是ui界面的同步？
-	void Update ()
+    void Update()
     {
         glowEffect();
         if (!isLocalPlayer)
         {
             return;
         }
-        
+
         UIUpdateBloodNum();
         if (this.GetComponent<InfoControl>().getState() == PEOPLE.FREE)
         {
@@ -158,14 +160,15 @@ public class UIControl : NetworkBehaviour {
         {
             groundGlow.SetActive(true);
         }
-        else {
+        else
+        {
             groundGlow.SetActive(false);
         }
     }
 
     public void UIUpdateBloodNum()
     {
-        if (hero1 == null||hero2==null|| hero3==null)
+        if (hero1 == null || hero2 == null || hero3 == null)
         {
             hero1 = GameObject.FindGameObjectWithTag("Hero1");
             hero2 = GameObject.FindGameObjectWithTag("Hero2");
@@ -176,9 +179,10 @@ public class UIControl : NetworkBehaviour {
             int hero1_bloodnum = hero1.GetComponent<InfoControl>().blood_num;
             //Debug.Log(blood1_text.text);
             blood1_text.text = "灵识数量:" + hero1_bloodnum.ToString();
-            for (int i = 0; i < 6;  i++)
+            for (int i = 0; i < 6; i++)
             {
-                if (i < hero1_bloodnum) {
+                if (i < hero1_bloodnum)
+                {
                     hero1_lingshi[i].SetActive(true);
                 }
                 else
@@ -222,7 +226,7 @@ public class UIControl : NetworkBehaviour {
                 }
             }
         }
-       
+
     }
 
     void isAllSealed()
@@ -232,7 +236,7 @@ public class UIControl : NetworkBehaviour {
         bool ishero3sealed = true;
 
         if (hero1 != null) ishero1sealed = false;
-    
+
         if (hero2 != null) ishero2sealed = false;
 
         if (hero3 != null) ishero3sealed = false;
@@ -261,7 +265,8 @@ public class UIControl : NetworkBehaviour {
             Debug.Log(this.gameObject.tag + "Win");
             SceneManager.LoadScene(this.gameObject.tag + "Win");
         }
-        else {
+        else
+        {
             SceneManager.LoadScene(this.gameObject.tag + "Lose");
         }
     }
@@ -283,7 +288,7 @@ public class UIControl : NetworkBehaviour {
         {
             Debug.Log(minute);
             temp_minute_left = minute;
-            Time_text.text =  temp_minute_left.ToString() + " Minutes";
+            Time_text.text = temp_minute_left.ToString() + " Minutes";
         }
 
         if (show_text_time > 0)
@@ -333,13 +338,13 @@ public class UIControl : NetworkBehaviour {
     void HandleClick()
     {
         if (!isLocalPlayer) return;
-       
+
         if (Input.GetMouseButton(0))//鼠标左键
         {
             Debug.Log("MouseDown");
             //创建射线;从摄像机发射一条经过鼠标当前位置的射线
-             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-           // Ray ray = Camera.main.ScreenPointToRay(Input.touches[0].position);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            // Ray ray = Camera.main.ScreenPointToRay(Input.touches[0].position);
             //发射射线
             RaycastHit hitInfo = new RaycastHit();
             if (Physics.Raycast(ray, out hitInfo))
@@ -379,12 +384,12 @@ public class UIControl : NetworkBehaviour {
         }
     }
     [Command]
-    void CmdGettingSkill( bool state)
+    void CmdGettingSkill(bool state)
     {
         GETING_SKILL = state;
     }
 
-  
+
 
     [Command]
     void CmdChangeTime(GameObject obj)
@@ -402,7 +407,7 @@ public class UIControl : NetworkBehaviour {
     {
         //原地留下陷阱
         Vector3 targetPos = this.transform.position;
-        
+
         return targetPos;
     }
 
@@ -514,7 +519,7 @@ public class UIControl : NetworkBehaviour {
 
 
     }
- 
+
     bool HandleBasicSkillEvent()
     {
         if (!isLocalPlayer) return false;
@@ -524,8 +529,9 @@ public class UIControl : NetworkBehaviour {
         {
 
         }
-        else {
-          
+        else
+        {
+
             if (skillJoystick.isPressed())//在UI上接收点击信息 实时获取方向/位置信息
             {
                 Debug.Log("Input.GetKey");
@@ -542,13 +548,13 @@ public class UIControl : NetworkBehaviour {
             }
         }
         return false;
- 
+
     }
 
-    bool HandlePageSkillEvent(SKILL _skill,GameObject _skillUI)
+    bool HandlePageSkillEvent(SKILL _skill, GameObject _skillUI)
     {
         if (!isLocalPlayer) return false;
-        SkillJoystick skillJoystick= _skillUI.GetComponent<SkillJoystick>();
+        SkillJoystick skillJoystick = _skillUI.GetComponent<SkillJoystick>();
 
         if (skillJoystick.isPressed())//在UI上接收点击信息 实时获取方向/位置信息
         {
@@ -561,7 +567,7 @@ public class UIControl : NetworkBehaviour {
         {
             Debug.Log("Input.GetKeyUp");
             HandleGetKeyUpEvent(_skill);
-            skillJoystick.waspressed  = false;
+            skillJoystick.waspressed = false;
             return true;
         }
         return false;
@@ -575,7 +581,7 @@ public class UIControl : NetworkBehaviour {
         {
             return;
         }
-      
+
         // UI上 第一个纸张技能的位置
         if (this.GetComponent<InfoControl>().pageSkills.Count >= 1)  //如果这个位置有技能
         {
@@ -651,7 +657,7 @@ public class UIControl : NetworkBehaviour {
             {
                 Debug.Log("PosInValid");
                 Debug.Log(Pos);
-               
+
                 _skill.SetTargetPos(this.transform.position);
             }
             Debug.Log("Already SetTargetPos:");
@@ -661,7 +667,7 @@ public class UIControl : NetworkBehaviour {
         }
         this.GetComponent<InfoControl>().next_skill_to_begin = _skill;
     }
- 
+
     void MovementUpdate()
     {
         if (!isLocalPlayer) return;
@@ -674,7 +680,7 @@ public class UIControl : NetworkBehaviour {
         v = moveJoystick.Vertical();
         if (v != 0.0f || h != 0.0f) move = true;
 
-        if (move && transparent==true)
+        if (move && transparent == true)
         {
             transparent = false;
             CmdCancelTransparent();
@@ -709,7 +715,7 @@ public class UIControl : NetworkBehaviour {
         CmdDelete_page(other.gameObject);
         //NetworkServer.Destroy(other.gameObject);
         //other.gameObject.SetActive(false);
-      
+
     }
 
     [Command]
@@ -730,7 +736,7 @@ public class UIControl : NetworkBehaviour {
     public void CmdBecomeTransparent()
     {
         transparent = true;
-        RpcBecomeTransparent(this.gameObject);
+        RpcBecomeTransparent(this.gameObject); //隐身需要新建一个layer，在此新建layer号为11号，设置为main camera 不可见。
     }
 
     [Command]
@@ -742,40 +748,19 @@ public class UIControl : NetworkBehaviour {
     [ClientRpc]
     void RpcBecomeTransparent(GameObject obj)
     {
-        GameObject model = this.transform.Find("model").gameObject;
-        if (model == null) Debug.Log("NULL");
-        List<SkinnedMeshRenderer> _myMeshRenderer = obj.GetComponent<InfoControl>().myMeshRenderer;
-
-        for (int i = 0; i < _myMeshRenderer.Count; i++)
-        {
-            _myMeshRenderer[i].enabled = false;
+        foreach (Transform tran in GetComponentsInChildren<Transform>())
+        {//遍历当前物体及其所有子物体
+            tran.gameObject.layer = 11;//更改物体的Layer层
         }
-        //Material[] _material = model.GetComponent<SkinnedMeshRenderer>().materials;
-        //Color temp1 = _material[0].color;
-        //Color temp2 = _material[1].color;
-        //_material[0].SetColor("_Color", new Color(temp1[0], temp1[1], temp1[2], 0f));
-        //_material[1].SetColor("_Color", new Color(temp2[0], temp2[1], temp2[2], 0f));
     }
 
     [ClientRpc]
     void RpcCancelTransparent(GameObject obj)
     {
-        //GameObject model = this.transform.Find("model").gameObject;
-        //if (model == null) Debug.Log("NULL");
-        //Material[] _material = model.GetComponent<SkinnedMeshRenderer>().materials;
-        //Color temp1 = _material[0].color;
-        //Color temp2 = _material[1].color;
-        //_material[0].SetColor("_Color", new Color(temp1[0], temp1[1], temp1[2], 1.0f));
-        //_material[1].SetColor("_Color", new Color(temp2[0], temp2[1], temp2[2], 1.0f));
-        GameObject model = this.transform.Find("model").gameObject;
-        if (model == null) Debug.Log("NULL");
-        List<SkinnedMeshRenderer> _myMeshRenderer = obj.GetComponent<InfoControl>().myMeshRenderer;
-
-        for (int i = 0; i < _myMeshRenderer.Count; i++)
-        {
-            _myMeshRenderer[i].enabled = true;
+        foreach (Transform tran in GetComponentsInChildren<Transform>())
+        {//遍历当前物体及其所有子物体
+            tran.gameObject.layer = 9;//更改物体的Layer层
         }
-     
     }
 
 

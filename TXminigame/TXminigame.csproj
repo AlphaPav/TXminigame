@@ -306,6 +306,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\change.cs" />
     <Compile Include="Assets\circle.cs" />
     <Compile Include="Assets\detect.cs" />
     <Compile Include="Assets\disapear.cs" />
