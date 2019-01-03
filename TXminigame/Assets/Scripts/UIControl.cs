@@ -730,7 +730,7 @@ public class UIControl : NetworkBehaviour {
     public void CmdBecomeTransparent()
     {
         transparent = true;
-        RpcBecomeTransparent(this.gameObject);
+        RpcBecomeTransparent(this.gameObject); //隐身需要新建一个layer，在此新建layer号为11号，设置为main camera 不可见。
     }
 
     [Command]
@@ -742,40 +742,19 @@ public class UIControl : NetworkBehaviour {
     [ClientRpc]
     void RpcBecomeTransparent(GameObject obj)
     {
-        GameObject model = this.transform.Find("model").gameObject;
-        if (model == null) Debug.Log("NULL");
-        List<SkinnedMeshRenderer> _myMeshRenderer = obj.GetComponent<InfoControl>().myMeshRenderer;
-
-        for (int i = 0; i < _myMeshRenderer.Count; i++)
-        {
-            _myMeshRenderer[i].enabled = false;
+	foreach (Transform tran in GetComponentsInChildren<Transform>())
+        {//遍历当前物体及其所有子物体
+            tran.gameObject.layer = 11;//更改物体的Layer层
         }
-        //Material[] _material = model.GetComponent<SkinnedMeshRenderer>().materials;
-        //Color temp1 = _material[0].color;
-        //Color temp2 = _material[1].color;
-        //_material[0].SetColor("_Color", new Color(temp1[0], temp1[1], temp1[2], 0f));
-        //_material[1].SetColor("_Color", new Color(temp2[0], temp2[1], temp2[2], 0f));
     }
 
     [ClientRpc]
     void RpcCancelTransparent(GameObject obj)
     {
-        //GameObject model = this.transform.Find("model").gameObject;
-        //if (model == null) Debug.Log("NULL");
-        //Material[] _material = model.GetComponent<SkinnedMeshRenderer>().materials;
-        //Color temp1 = _material[0].color;
-        //Color temp2 = _material[1].color;
-        //_material[0].SetColor("_Color", new Color(temp1[0], temp1[1], temp1[2], 1.0f));
-        //_material[1].SetColor("_Color", new Color(temp2[0], temp2[1], temp2[2], 1.0f));
-        GameObject model = this.transform.Find("model").gameObject;
-        if (model == null) Debug.Log("NULL");
-        List<SkinnedMeshRenderer> _myMeshRenderer = obj.GetComponent<InfoControl>().myMeshRenderer;
-
-        for (int i = 0; i < _myMeshRenderer.Count; i++)
-        {
-            _myMeshRenderer[i].enabled = true;
+	 foreach (Transform tran in GetComponentsInChildren<Transform>())
+        {//遍历当前物体及其所有子物体
+            tran.gameObject.layer = 9;//更改物体的Layer层
         }
-     
     }
 
 
