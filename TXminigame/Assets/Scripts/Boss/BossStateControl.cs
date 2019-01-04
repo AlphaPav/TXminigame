@@ -43,7 +43,7 @@ public class BossStateControl : NetworkBehaviour{
                 this.GetComponent<BossUIControl>().BlindMask(true);
             }
 
-            if (this.GetComponent<BossInfoControl>().blind_time >= 2)
+            if (this.GetComponent<BossInfoControl>().blind_time >= 5)
             {
                 this.GetComponent<BossInfoControl>().blind_time = 0;
                 state = PEOPLE.FREE;

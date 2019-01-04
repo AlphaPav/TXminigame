@@ -1328,6 +1328,21 @@ Prefab:
       propertyPath: unlock_time_left
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 114547391434844096, guid: f7e30fe7334e7f94489c9ce59157b7d9,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 0.92926645
+      objectReference: {fileID: 0}
+    - target: {fileID: 114547391434844096, guid: f7e30fe7334e7f94489c9ce59157b7d9,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114547391434844096, guid: f7e30fe7334e7f94489c9ce59157b7d9,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: f7e30fe7334e7f94489c9ce59157b7d9, type: 2}
@@ -17441,6 +17456,11 @@ Prefab:
         type: 2}
       propertyPath: unlock_time_left
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114547391434844096, guid: f7e30fe7334e7f94489c9ce59157b7d9,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 0.92926645
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7e30fe7334e7f94489c9ce59157b7d9, type: 2}
@@ -41917,6 +41937,11 @@ Prefab:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114547391434844096, guid: f7e30fe7334e7f94489c9ce59157b7d9,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 0.92926645
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7e30fe7334e7f94489c9ce59157b7d9, type: 2}
   m_IsPrefabAsset: 0
@@ -50413,6 +50438,11 @@ Prefab:
         type: 2}
       propertyPath: unlock_time_left
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114547391434844096, guid: f7e30fe7334e7f94489c9ce59157b7d9,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 0.92926645
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7e30fe7334e7f94489c9ce59157b7d9, type: 2}
@@ -73915,6 +73945,11 @@ Prefab:
         type: 2}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114547391434844096, guid: f7e30fe7334e7f94489c9ce59157b7d9,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 0.92926645
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7e30fe7334e7f94489c9ce59157b7d9, type: 2}

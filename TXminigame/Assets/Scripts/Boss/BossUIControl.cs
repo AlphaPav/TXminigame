@@ -94,7 +94,7 @@ public class BossUIControl : NetworkBehaviour
         baseSkillImg = baseSkillUI.GetComponent<Image>();
         LoadUIResources();
         blindImage = GameObject.FindGameObjectWithTag("BlindImage").GetComponent<Image>();
-        blindImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width, Screen.height);
+        blindImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width * 2.5f, Screen.height * 2.5f);
     }
     void LoadUIResources()
     {
@@ -316,7 +316,7 @@ public class BossUIControl : NetworkBehaviour
     {
         if (b)
         {
-            blindImage.color = Color.Lerp(blindImage.color, new Color(0.1f, 0.1f, 0.1f, 0.9f), flashSpeed * Time.deltaTime);
+            blindImage.color = Color.Lerp(blindImage.color, new Color(0.05f, 0.05f, 0.05f, 1.0f), flashSpeed * Time.deltaTime);
             Debug.Log("Blind");
         }
         else

@@ -110,7 +110,7 @@ public class UIControl : NetworkBehaviour
         }
         //UI 里找到warnImage
         warnImage = GameObject.FindGameObjectWithTag("WarnImage").GetComponent<Image>();
-        warnImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width, Screen.height);
+        warnImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width * 2, Screen.height * 2);
         LoadUIResources();
 
     }
