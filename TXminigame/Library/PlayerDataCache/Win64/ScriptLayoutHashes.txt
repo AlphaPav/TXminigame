@@ -2,6 +2,7 @@ WindowsStandalone
 PlayerPath?
 D:/Unity2018/Unity Project/TXminigame/TXminigame/built/TXminigame.exe
 SceneListBegin?
+Assets/Scenes/Totorial.unity
 Assets/Scenes/Start.unity
 Assets/Scenes/Main.unity
 Assets/Scenes/BossLose.unity
@@ -182,6 +183,7 @@ e033f131358cea5a0eabf9561e781deb UnityEngine.TestRunner.dll:UnityEngine.TestTool
 28a95668dd28649297d595834fe8417e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSoundfieldExtension
 28a95668dd28649297d595834fe8417e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSourceExtension
 036edfd18cbbbeb5aee719bfcdc720ac Assembly-CSharp.dll:.BossUIControl
+d555faa0df7cd775a18943974d1cdc99 Assembly-CSharp.dll:.PicSlide
 d75dc834c5dec688db75a55a1724c90f UnityEngine.HoloLens.dll:UnityEngine.Audio.AudioSpatializerMicrosoft
 486cd95c82d8305219c352c06b776e1f UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInput
 e1ea12ca952c81d81a9a21fdf34446ed UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInputModule
@@ -192,6 +194,7 @@ aac9c55ae7ba4b95b852a7d9c191acd1 Unity.TextMeshPro.dll:TMPro.TextMeshProUGUI
 0a006f3734181ba8b26758f0866152c0 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 2b3b67e211e77aaa41d3047b8edc7fc0 Assembly-CSharp.dll:.CameraLogic
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.AniControl
+d0a8c0dc2804cd10dd6465e725f57c9e Assembly-CSharp.dll:UnityEngine.UI.Slideshow
 e04611b8715e6833d2bd7010fc6be10b Unity.TextMeshPro.dll:TMPro.TMP_StyleSheet
 486cd95c82d8305219c352c06b776e1f Assembly-CSharp.dll:.PeopleBase
 2f9af06a78208a67db480e9bfed4a076 Unity.TextMeshPro.dll:TMPro.TextMeshPro

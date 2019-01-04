@@ -41,6 +41,10 @@ public class NetChoose : MonoBehaviour {
         chosenID = 3;
     }
 
+    public void StartNetChoose()
+    {
+        SceneManager.LoadScene("Start");
+    }
     
     public void StartPlay()
     {

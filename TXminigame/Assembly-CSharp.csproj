@@ -71,8 +71,10 @@
      <Compile Include="Assets\Scripts\Net\MyNetManager.cs" />
      <Compile Include="Assets\Scripts\Net\NetChoose.cs" />
      <Compile Include="Assets\Scripts\Page\PageInfo.cs" />
+     <Compile Include="Assets\Scripts\PicSlide.cs" />
      <Compile Include="Assets\Scripts\SkillControl.cs" />
      <Compile Include="Assets\Scripts\StateControl.cs" />
+     <Compile Include="Assets\Scripts\TotorScene\Slideshow.cs" />
      <Compile Include="Assets\Scripts\UI\MapStick.cs" />
      <Compile Include="Assets\Scripts\UI\MoveJoystick.cs" />
      <Compile Include="Assets\Scripts\UI\SkillJoystick.cs" />
