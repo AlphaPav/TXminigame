@@ -804,7 +804,7 @@ Transform:
   m_GameObject: {fileID: 1582639273756012}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.035714284, z: 0}
-  m_LocalScale: {x: 0.07142857, y: 0.0714286, z: 0.0714286}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4456896733281160}
   m_RootOrder: 4
@@ -817,7 +817,7 @@ Transform:
   m_GameObject: {fileID: 1831513241110874}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.014285717, z: 0}
-  m_LocalScale: {x: 0.07142857, y: 0.0714286, z: 0.0714286}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4456896733281160}
   m_RootOrder: 3
@@ -884,7 +884,7 @@ Transform:
   m_GameObject: {fileID: 1168893347494566}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.0001429149, y: 0.0014571461, z: 0.002714293}
-  m_LocalScale: {x: 0.07142857, y: 0.07142857, z: 0.07142857}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4456896733281160}
   m_RootOrder: 2
@@ -1099,6 +1099,7 @@ MonoBehaviour:
   seal_time: 0
   original_book_pos: {x: -1.66, y: 2, z: -12.85}
   blood_num: 2
+  myMeshRenderer: []
 --- !u!114 &114545982479960948
 MonoBehaviour:
   m_ObjectHideFlags: 1

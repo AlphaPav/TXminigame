@@ -231,19 +231,15 @@ public class UIControl : NetworkBehaviour
 
     void isAllSealed()
     {
-        bool ishero1sealed = true;
-        bool ishero2sealed = true;
-        bool ishero3sealed = true;
 
-        if (hero1 != null) ishero1sealed = false;
+        if ((hero1 == null) || (hero2 == null) || (hero3 == null)) return;
+        bool ishero1sealed = false;
+        bool ishero2sealed = false;
+        bool ishero3sealed = false;
 
-        if (hero2 != null) ishero2sealed = false;
-
-        if (hero3 != null) ishero3sealed = false;
-
-        if (hero1.GetComponent<StateControl>().state == PEOPLE.SEALED) ishero1sealed = true;
-        if (hero2.GetComponent<StateControl>().state == PEOPLE.SEALED) ishero2sealed = true;
-        if (hero3.GetComponent<StateControl>().state == PEOPLE.SEALED) ishero3sealed = true;
+        if (hero1 != null && (hero1.GetComponent<StateControl>().state == PEOPLE.SEALED)) ishero1sealed = true;
+        if (hero2 != null && (hero2.GetComponent<StateControl>().state == PEOPLE.SEALED)) ishero2sealed = true;
+        if (hero3 != null && (hero3.GetComponent<StateControl>().state == PEOPLE.SEALED)) ishero3sealed = true;
 
         if (ishero1sealed && ishero2sealed && ishero3sealed)
         {

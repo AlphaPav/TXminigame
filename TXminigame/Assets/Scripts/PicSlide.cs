@@ -5,7 +5,7 @@ using UnityEngine;
 public class PicSlide : MonoBehaviour {
 
     public GameObject Img, Text;
-    const int slide_speed = 5;
+    const int slide_speed = 2;
 
     bool slideFlag = false;
     // Use this for initialization

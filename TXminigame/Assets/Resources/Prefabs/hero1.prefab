@@ -733,7 +733,7 @@ Transform:
   m_GameObject: {fileID: 1677874493828568}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.0001429149, y: 0.001457142, z: 0.002714293}
-  m_LocalScale: {x: 1, y: 0.07142857, z: 0.07142857}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4073663499347004}
   m_RootOrder: 0
@@ -1092,6 +1092,7 @@ MonoBehaviour:
   seal_time: 0
   original_book_pos: {x: -1.66, y: 2, z: -12.85}
   blood_num: 2
+  myMeshRenderer: []
 --- !u!114 &114835767991907618
 MonoBehaviour:
   m_ObjectHideFlags: 1
