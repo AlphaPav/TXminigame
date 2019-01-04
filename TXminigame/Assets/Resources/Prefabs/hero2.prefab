@@ -1026,7 +1026,7 @@ MonoBehaviour:
   transparent: 0
   GETING_SKILL: 0
   msgText: {fileID: 0}
-  groundGlow: {fileID: 0}
+  groundGlow: {fileID: 1831513241110874}
 --- !u!114 &114392660288461796
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1095,7 +1095,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basic_skill_name: SKILL_TRAP_SLOW
-  unlock_page_speed: 1
+  unlock_page_speed: 2
   seal_time: 0
   original_book_pos: {x: -1.66, y: 2, z: -12.85}
   blood_num: 2

@@ -16,7 +16,7 @@ public class InfoControl : NetworkBehaviour
     public SKILL current_skill;
     public string basic_skill_name = "";
     int id_count=0;
-    public float unlock_page_speed = 1.0f;
+    public float unlock_page_speed =3.0f;
     public float seal_time = 0;//已经被封印的时间
 
     public Vector3 original_book_pos = new Vector3(-1.66f, 3, -12.85f);

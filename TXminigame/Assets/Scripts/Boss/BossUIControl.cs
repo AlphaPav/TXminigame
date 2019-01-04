@@ -22,6 +22,9 @@ public class BossUIControl : NetworkBehaviour
     public GameObject msgText;
     Sprite sp_catch;
     Sprite sp_catch_colding;
+    Sprite sp_empty;
+    Sprite sp_lingshi;
+    Sprite sp_msg;
     private float show_text_time=0;
     Text Msg_text = null;
     Text Time_text = null;
@@ -45,24 +48,27 @@ public class BossUIControl : NetworkBehaviour
     Text blood2_text;
     Text blood3_text;
     Text cd_text;
+
     Image baseSkillImg;
     void Start () {
         if (!isLocalPlayer) return;
+        LoadUIResources();
+
         Time_text = GameObject.FindGameObjectWithTag("TimeText").GetComponent<Text>();
         moveJoystick = GameObject.FindGameObjectWithTag("UIMove").GetComponent<MoveJoystick>();
         baseSkillUI = GameObject.FindGameObjectWithTag("UIBaseSkill");
         msgText = GameObject.FindGameObjectWithTag("MsgText");
         Msg_text= msgText.GetComponent<Text>();
         Msg_ImgObj = GameObject.FindGameObjectWithTag("MsgImg");
-        Msg_ImgObj.SetActive(false);
+        Msg_ImgObj.GetComponent<Image>().sprite = sp_empty;
         skill1UI = GameObject.FindGameObjectWithTag("UISkill1");
         skill2UI = GameObject.FindGameObjectWithTag("UISkill2");
         skill3UI = GameObject.FindGameObjectWithTag("UISkill3");
         skill4UI = GameObject.FindGameObjectWithTag("UISkill4");
-        skill1UI.SetActive(false);
-        skill2UI.SetActive(false);
-        skill3UI.SetActive(false);
-        skill4UI.SetActive(false);
+        skill1UI.GetComponent<Image>().sprite = sp_empty;
+        skill2UI.GetComponent<Image>().sprite = sp_empty;
+        skill3UI.GetComponent<Image>().sprite = sp_empty;
+        skill4UI.GetComponent<Image>().sprite = sp_empty;
 
         bossUI = GameObject.FindGameObjectWithTag("BossImg");
         hero1UI = GameObject.FindGameObjectWithTag("Hero1Img");
@@ -77,10 +83,10 @@ public class BossUIControl : NetworkBehaviour
             hero1_lingshi[i] = hero1UI.transform.Find("Image" + i).gameObject;
             hero2_lingshi[i] = hero2UI.transform.Find("Image" + i).gameObject;
             hero3_lingshi[i] = hero3UI.transform.Find("Image" + i).gameObject;
-        
-            hero1_lingshi[i].SetActive(false);
-            hero2_lingshi[i].SetActive(false);
-            hero3_lingshi[i].SetActive(false);
+
+            hero1_lingshi[i].GetComponent<Image>().sprite = sp_empty;
+            hero2_lingshi[i].GetComponent<Image>().sprite = sp_empty;
+            hero3_lingshi[i].GetComponent<Image>().sprite = sp_empty;
         }
         boss = GameObject.FindGameObjectWithTag("Boss");
         hero1 = GameObject.FindGameObjectWithTag("Hero1");
@@ -92,14 +98,20 @@ public class BossUIControl : NetworkBehaviour
 
         cd_text = baseSkillUI.transform.Find("cd_time_left_text").gameObject.GetComponent<Text>();
         baseSkillImg = baseSkillUI.GetComponent<Image>();
-        LoadUIResources();
+       
         blindImage = GameObject.FindGameObjectWithTag("BlindImage").GetComponent<Image>();
         blindImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width * 2.5f, Screen.height * 2.5f);
+
+
+
     }
     void LoadUIResources()
     {
         sp_catch= Resources.Load("Textrues/SKILL_CATCH", typeof(Sprite)) as Sprite;
         sp_catch_colding= Resources.Load("Textrues/SKILL_CATCH_COLDING", typeof(Sprite)) as Sprite;
+        sp_empty = Resources.Load("Textrues/empty", typeof(Sprite)) as Sprite;
+        sp_lingshi=Resources.Load("Textrues/LINGSHI", typeof(Sprite)) as Sprite;
+        sp_msg= Resources.Load("Textrues/msgImg", typeof(Sprite)) as Sprite;
     }
 	
 	// Update is called once per frame
@@ -154,11 +166,11 @@ public class BossUIControl : NetworkBehaviour
             {
                 if (i < hero1_bloodnum)
                 {
-                    hero1_lingshi[i].SetActive(true);
+                    hero1_lingshi[i].GetComponent<Image>().sprite = sp_lingshi;
                 }
                 else
                 {
-                    hero1_lingshi[i].SetActive(false);
+                    hero1_lingshi[i].GetComponent<Image>().sprite = sp_empty;
                 }
             }
         }
@@ -171,11 +183,11 @@ public class BossUIControl : NetworkBehaviour
             {
                 if (i < hero2_bloodnum)
                 {
-                    hero2_lingshi[i].SetActive(true);
+                    hero2_lingshi[i].GetComponent<Image>().sprite = sp_lingshi;
                 }
                 else
                 {
-                    hero2_lingshi[i].SetActive(false);
+                    hero2_lingshi[i].GetComponent<Image>().sprite = sp_empty;
                 }
             }
 
@@ -189,11 +201,11 @@ public class BossUIControl : NetworkBehaviour
             {
                 if (i < hero3_bloodnum)
                 {
-                    hero3_lingshi[i].SetActive(true);
+                    hero3_lingshi[i].GetComponent<Image>().sprite = sp_lingshi;
                 }
                 else
                 {
-                    hero3_lingshi[i].SetActive(false);
+                    hero3_lingshi[i].GetComponent<Image>().sprite = sp_empty;
                 }
             }
         }
@@ -243,7 +255,11 @@ public class BossUIControl : NetworkBehaviour
         {
             show_text_time = 0;
             Msg_text.text = "";
-            Msg_ImgObj.SetActive(false);
+            if (Msg_ImgObj == null)
+            {
+                Msg_ImgObj = GameObject.FindGameObjectWithTag("MsgImg");
+            }
+            Msg_ImgObj.GetComponent<Image>().sprite = sp_empty;
         }
     }
 
@@ -261,11 +277,18 @@ public class BossUIControl : NetworkBehaviour
 
         show_text_time = 1.0f;
         Msg_text.text= msg;
-        Msg_ImgObj.SetActive(true);
+        Msg_ImgObj.GetComponent<Image>().sprite = sp_msg;
     }
 
     void SkillUIUpdate()
     {
+        if (cd_text == null) {
+            cd_text = baseSkillUI.transform.Find("cd_time_left_text").gameObject.GetComponent<Text>();
+        }
+        if (baseSkillImg == null)
+        {
+            baseSkillImg = baseSkillUI.GetComponent<Image>();
+        }
         SKILL _basicSkill = this.GetComponent<BossInfoControl>().basicSkill;
   
         if (_basicSkill.cd_time_left > 0)

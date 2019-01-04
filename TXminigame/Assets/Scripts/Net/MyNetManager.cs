@@ -28,7 +28,7 @@ public class MyNetManager: NetworkManager {
 
         chosenCharacter = NetChoose.chosenID;
         test.chosenClass = chosenCharacter;
-        Debug.Log(chosenCharacter);
+     //   Debug.Log(chosenCharacter);
 
         ClientScene.AddPlayer(client.connection, 0, test);
 

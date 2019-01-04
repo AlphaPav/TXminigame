@@ -41,6 +41,11 @@ public class UIControl : NetworkBehaviour
     Sprite sp_hide;
     Sprite sp_revive;
     Sprite sp_null;
+
+    Sprite sp_empty;
+    Sprite sp_lingshi;
+    Sprite sp_msg;
+
     public GameObject msgText;
     private float show_text_time = 0;
     Text Msg_text = null;
@@ -71,13 +76,15 @@ public class UIControl : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
+
         groundGlow = this.transform.Find("groundGlow").gameObject;
         if (!isLocalPlayer) return;
+        LoadUIResources();
         msgText = GameObject.FindGameObjectWithTag("MsgText");
         Msg_text = msgText.GetComponent<Text>();
         Time_text = GameObject.FindGameObjectWithTag("TimeText").GetComponent<Text>();
         Msg_ImgObj = GameObject.FindGameObjectWithTag("MsgImg");
-        Msg_ImgObj.SetActive(false);
+        Msg_ImgObj.GetComponent<Image>().sprite = sp_empty;
         moveJoystick = GameObject.FindGameObjectWithTag("UIMove").GetComponent<MoveJoystick>();
         baseSkillUI = GameObject.FindGameObjectWithTag("UIBaseSkill");
         skill1UI = GameObject.FindGameObjectWithTag("UISkill1");
@@ -104,14 +111,14 @@ public class UIControl : NetworkBehaviour
             hero1_lingshi[i] = hero1UI.transform.Find("Image" + i).gameObject;
             hero2_lingshi[i] = hero2UI.transform.Find("Image" + i).gameObject;
             hero3_lingshi[i] = hero3UI.transform.Find("Image" + i).gameObject;
-            hero1_lingshi[i].SetActive(false);
-            hero2_lingshi[i].SetActive(false);
-            hero3_lingshi[i].SetActive(false);
+            hero1_lingshi[i].GetComponent<Image>().sprite = sp_empty;
+            hero2_lingshi[i].GetComponent<Image>().sprite = sp_empty;
+            hero3_lingshi[i].GetComponent<Image>().sprite = sp_empty;
         }
         //UI 里找到warnImage
         warnImage = GameObject.FindGameObjectWithTag("WarnImage").GetComponent<Image>();
         warnImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.width * 2, Screen.height * 2);
-        LoadUIResources();
+    
 
     }
     void LoadUIResources()
@@ -126,6 +133,9 @@ public class UIControl : NetworkBehaviour
         sp_hide = Resources.Load("Textrues/SKILL_HIDE", typeof(Sprite)) as Sprite;
         sp_revive = Resources.Load("Textrues/SKILL_REVIVE", typeof(Sprite)) as Sprite;
         sp_null = Resources.Load("Textrues/NULL", typeof(Sprite)) as Sprite;
+        sp_empty = Resources.Load("Textrues/empty", typeof(Sprite)) as Sprite;
+        sp_lingshi = Resources.Load("Textrues/LINGSHI", typeof(Sprite)) as Sprite;
+        sp_msg = Resources.Load("Textrues/msgImg", typeof(Sprite)) as Sprite;
 
     }
 
@@ -156,6 +166,10 @@ public class UIControl : NetworkBehaviour
 
     private void glowEffect()
     {
+        if (groundGlow == null)
+        {
+            groundGlow = this.transform.Find("groundGlow").gameObject;
+        }
         if (GETING_SKILL)
         {
             groundGlow.SetActive(true);
@@ -181,13 +195,18 @@ public class UIControl : NetworkBehaviour
             blood1_text.text = "灵识数量:" + hero1_bloodnum.ToString();
             for (int i = 0; i < 6; i++)
             {
+                if (hero1_lingshi[i] == null)
+                {
+                     hero1_lingshi[i] = hero1UI.transform.Find("Image" + i).gameObject;
+                }
                 if (i < hero1_bloodnum)
                 {
-                    hero1_lingshi[i].SetActive(true);
+
+                    hero1_lingshi[i].GetComponent<Image>().sprite = sp_lingshi;
                 }
                 else
                 {
-                    hero1_lingshi[i].SetActive(false);
+                    hero1_lingshi[i].GetComponent<Image>().sprite = sp_empty;
                 }
             }
         }
@@ -198,13 +217,18 @@ public class UIControl : NetworkBehaviour
             blood2_text.text = "灵识数量:" + hero2_bloodnum.ToString();
             for (int i = 0; i < 6; i++)
             {
+                if (hero2_lingshi[i] == null)
+                {
+                    hero2_lingshi[i] = hero2UI.transform.Find("Image" + i).gameObject;
+                }
+
                 if (i < hero2_bloodnum)
                 {
-                    hero2_lingshi[i].SetActive(true);
+                    hero2_lingshi[i].GetComponent<Image>().sprite = sp_lingshi;
                 }
                 else
                 {
-                    hero2_lingshi[i].SetActive(false);
+                    hero2_lingshi[i].GetComponent<Image>().sprite = sp_empty;
                 }
             }
 
@@ -216,13 +240,18 @@ public class UIControl : NetworkBehaviour
             blood3_text.text = "灵识数量:" + hero3_bloodnum.ToString();
             for (int i = 0; i < 6; i++)
             {
+                if (hero3_lingshi[i] == null)
+                {
+                    hero3_lingshi[i] = hero3UI.transform.Find("Image" + i).gameObject;
+                }
+
                 if (i < hero3_bloodnum)
                 {
-                    hero3_lingshi[i].SetActive(true);
+                    hero3_lingshi[i].GetComponent<Image>().sprite = sp_lingshi;
                 }
                 else
                 {
-                    hero3_lingshi[i].SetActive(false);
+                    hero3_lingshi[i].GetComponent<Image>().sprite = sp_empty;
                 }
             }
         }
@@ -295,7 +324,7 @@ public class UIControl : NetworkBehaviour
         {
             show_text_time = 0;
             Msg_text.text = "";
-            Msg_ImgObj.SetActive(false);
+            Msg_ImgObj.GetComponent<Image>().sprite = sp_empty;
         }
     }
 
@@ -313,7 +342,7 @@ public class UIControl : NetworkBehaviour
 
         show_text_time = 2.0f;
         Msg_text.text = msg;
-        Msg_ImgObj.SetActive(true);
+        Msg_ImgObj.GetComponent<Image>().sprite = sp_msg;
     }
 
 
@@ -395,7 +424,11 @@ public class UIControl : NetworkBehaviour
     [ClientRpc]
     void RpcChangeTime(GameObject obj)
     {
-        obj.GetComponent<PageInfo>().unlock_time_left -= this.GetComponent<InfoControl>().unlock_page_speed * Time.deltaTime;
+        if (obj != null)
+        {
+            obj.GetComponent<PageInfo>().unlock_time_left -= this.GetComponent<InfoControl>().unlock_page_speed * Time.deltaTime;
+        }
+        
     }
 
 

@@ -163,7 +163,7 @@ public class BossMoveControl : NetworkBehaviour{
   
 
         transform.position = this.transform.position + new Vector3(h, 0, v) * m_moveSpeed * Time.deltaTime * 1.5f;
-        Debug.Log((new Vector3(h, 0, v) * m_moveSpeed * Time.deltaTime * 10).magnitude);
+        //Debug.Log((new Vector3(h, 0, v) * m_moveSpeed * Time.deltaTime * 10).magnitude);
         if (h != 0 || v != 0)
         {
             Rotating(h, v);
