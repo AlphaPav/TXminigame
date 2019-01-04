@@ -113,7 +113,7 @@ public class MoveControl : NetworkBehaviour {
         Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up); //函数参数解释: LookRotation(目标方向为"前方向", 定义声明"上方向")
         // 创建新旋转值 并根据转向速度平滑转至目标旋转值
         //  Lerp(角色刚体当前旋转值, 目标旋转值, 根据旋转速度平滑转向)
-        Quaternion newRotation = Quaternion.Lerp(this.transform.rotation, targetRotation, m_moveSpeed * Time.deltaTime);
+        Quaternion newRotation = Quaternion.Lerp(this.transform.rotation, targetRotation, m_moveSpeed * Time.deltaTime * 4);
         // 更新刚体旋转值为 新旋转值
         this.transform.rotation = newRotation;
 

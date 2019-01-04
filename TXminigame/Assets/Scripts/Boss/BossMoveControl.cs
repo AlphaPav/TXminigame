@@ -181,7 +181,7 @@ public class BossMoveControl : NetworkBehaviour{
         //行走时 朝向改变
         Vector3 targetDirection = new Vector3(horizontal, 0f, vertical);
         Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up); //函数参数解释: LookRotation(目标方向为"前方向", 定义声明"上方向")
-        Quaternion newRotation = Quaternion.Lerp(this.transform.rotation, targetRotation, m_moveSpeed * Time.deltaTime);
+        Quaternion newRotation = Quaternion.Lerp(this.transform.rotation, targetRotation, m_moveSpeed * Time.deltaTime * 4);
         this.transform.rotation = newRotation;
 
     }
