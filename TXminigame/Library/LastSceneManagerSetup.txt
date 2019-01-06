@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/BossWin.unity
+- path: Assets/Scenes/Totorial.unity
   isLoaded: 1
   isActive: 1

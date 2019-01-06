@@ -29,8 +29,8 @@ public class BossUIControl : NetworkBehaviour
     Text Msg_text = null;
     Text Time_text = null;
     private GameObject Msg_ImgObj = null;
-    //float GameTimeLeft = 899;//15min
-    float GameTimeLeft = 479;//8min
+    public float GameTimeLeft = 479;//15min
+    //float GameTimeLeft = 479;//8min
     int temp_minute_left = 15;
 
     private GameObject bossUI;
@@ -48,12 +48,18 @@ public class BossUIControl : NetworkBehaviour
     Text blood2_text;
     Text blood3_text;
     Text cd_text;
+    public int Hero1BloodNum = 2;
+    public int Hero2BloodNum = 2;
+    public int Hero3BloodNum = 2;
+
 
     Image baseSkillImg;
     void Start () {
         if (!isLocalPlayer) return;
         LoadUIResources();
-
+        Hero1BloodNum = 2;
+        Hero2BloodNum = 2;
+        Hero3BloodNum = 2;
         Time_text = GameObject.FindGameObjectWithTag("TimeText").GetComponent<Text>();
         moveJoystick = GameObject.FindGameObjectWithTag("UIMove").GetComponent<MoveJoystick>();
         baseSkillUI = GameObject.FindGameObjectWithTag("UIBaseSkill");
@@ -127,6 +133,9 @@ public class BossUIControl : NetworkBehaviour
         SkillUIUpdate();
         MsgUpdate();
         isAllSealed();
+        if (hero1 != null) Hero1BloodNum = hero1.GetComponent<InfoControl>().blood_num;
+        if (hero2 != null) Hero2BloodNum = hero2.GetComponent<InfoControl>().blood_num;
+        if (hero3 != null) Hero3BloodNum = hero3.GetComponent<InfoControl>().blood_num;
     }
 
     void isAllSealed()
@@ -142,7 +151,11 @@ public class BossUIControl : NetworkBehaviour
 
         if (ishero1sealed && ishero2sealed && ishero3sealed)
         {
-            SceneManager.LoadScene(this.gameObject.tag + "Win");
+            if (hero1 != null) hero1.GetComponent<UIControl>().gameOver();
+            if (hero2 != null) hero2.GetComponent<UIControl>().gameOver();
+            if (hero3 != null) hero3.GetComponent<UIControl>().gameOver();
+            
+           // SceneManager.LoadScene(this.gameObject.tag + "Win");
         }
 
     }
@@ -212,15 +225,18 @@ public class BossUIControl : NetworkBehaviour
 
     }
 
-    void gameOver()
+    public void gameOver()
     {
-        int num1 = 2;
-        if(hero1!=null) num1= hero1.GetComponent<InfoControl>().blood_num;
-        int num2 = 2;
-        if (hero2 != null) num2 = hero2.GetComponent<InfoControl>().blood_num;
-        int num3 = 2;
-        if (hero3 != null) num3 = hero3.GetComponent<InfoControl>().blood_num;
-        if (num1 + num2 + num3 > 6)
+        //int num1 = 2;
+        //if(hero1!=null) num1= hero1.GetComponent<InfoControl>().blood_num;
+        //int num2 = 2;
+        //if (hero2 != null) num2 = hero2.GetComponent<InfoControl>().blood_num;
+        //int num3 = 2;
+        //if (hero3 != null) num3 = hero3.GetComponent<InfoControl>().blood_num;
+        if (hero1 != null) hero1.GetComponent<UIControl>().gameOver();
+        if (hero2 != null) hero2.GetComponent<UIControl>().gameOver();
+        if (hero3 != null) hero3.GetComponent<UIControl>().gameOver();
+        if (Hero1BloodNum + Hero2BloodNum + Hero3BloodNum > 6)
         {
             Debug.Log(this.gameObject.tag + "Lose");
             SceneManager.LoadScene(this.gameObject.tag + "Lose");
@@ -234,6 +250,10 @@ public class BossUIControl : NetworkBehaviour
     void MsgUpdate()
     {
         GameTimeLeft -= Time.deltaTime;
+        if (hero1 != null) hero1.GetComponent<UIControl>().GameTimeLeft = GameTimeLeft;
+        if (hero2 != null) hero2.GetComponent<UIControl>().GameTimeLeft = GameTimeLeft;
+        if (hero3 != null) hero3.GetComponent<UIControl>().GameTimeLeft = GameTimeLeft;
+        Debug.Log(GameTimeLeft);
         if (GameTimeLeft < 0)
         {
             gameOver();

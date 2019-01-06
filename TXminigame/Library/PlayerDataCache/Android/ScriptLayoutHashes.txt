@@ -1,6 +1,6 @@
 Android
 PlayerPath?
-C:/Users/AlphaPav/Desktop/androidbuilt
+C:/Users/zheng/Desktop/TXminigame/TXminigame/android
 SceneListBegin?
 Assets/Scenes/Totorial.unity
 Assets/Scenes/Start.unity
@@ -65,7 +65,7 @@ e90403eeda069970e0b9de1533de13a6 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 2d58ca16854b99daea8c45e9c0f367b7 UnityEngine.UI.dll:UnityEngine.EventSystems.TouchInputModule
 16da51d1b62ef6d4ee1849350434023b UnityEngine.UI.dll:UnityEngine.UI.VerticalLayoutGroup
 50b0b141074b216c8b53b1bd467f73c9 Unity.TextMeshPro.dll:TMPro.TMP_InputField
-d922b3bfc82396e00658399561d364be Assembly-CSharp.dll:.UIControl
+9ef791049d6360ccf32286212cdc75cd Assembly-CSharp.dll:.UIControl
 53cefe5d98cadefbab750835e70b89c0 UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
 486cd95c82d8305219c352c06b776e1f UnityEngine.UI.dll:UnityEngine.EventSystems.BaseInput
 da2091a04d360891450faf16cdf621f1 UnityEngine.UI.dll:UnityEngine.UI.Button
@@ -182,7 +182,7 @@ e033f131358cea5a0eabf9561e781deb UnityEngine.TestRunner.dll:UnityEngine.TestTool
 70f7dc248db3379548a88e8d4fa049f8 UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioRoom
 28a95668dd28649297d595834fe8417e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSoundfieldExtension
 28a95668dd28649297d595834fe8417e UnityEngine.GoogleAudioSpatializer.dll:UnityEngine.Experimental.Audio.Google.GvrAudioSourceExtension
-036edfd18cbbbeb5aee719bfcdc720ac Assembly-CSharp.dll:.BossUIControl
+06380d09b8f0532fb5bf4dcdf3b7f5b5 Assembly-CSharp.dll:.BossUIControl
 d555faa0df7cd775a18943974d1cdc99 Assembly-CSharp.dll:.PicSlide
 d75dc834c5dec688db75a55a1724c90f UnityEngine.HoloLens.dll:UnityEngine.Audio.AudioSpatializerMicrosoft
 486cd95c82d8305219c352c06b776e1f UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInput

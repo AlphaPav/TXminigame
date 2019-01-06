@@ -51,8 +51,8 @@ public class UIControl : NetworkBehaviour
     Text Msg_text = null;
     Text Time_text = null;
     private GameObject Msg_ImgObj = null;
-    //float GameTimeLeft = 899;
-    float GameTimeLeft = 479;//8min
+    public float GameTimeLeft = 479;
+    //float GameTimeLeft = 479;//8min
     int temp_minute_left = 15;
     private GameObject bossUI;
     private GameObject hero1UI;
@@ -68,8 +68,10 @@ public class UIControl : NetworkBehaviour
     Text blood1_text;
     Text blood2_text;
     Text blood3_text;
-
-
+    public int Hero1BloodNum=2;
+    public int Hero2BloodNum=2;
+    public int Hero3BloodNum=2;
+    
     //人物解锁 地面光环
     public GameObject groundGlow;
 
@@ -77,9 +79,13 @@ public class UIControl : NetworkBehaviour
     void Start()
     {
 
+
         groundGlow = this.transform.Find("groundGlow").gameObject;
         if (!isLocalPlayer) return;
         LoadUIResources();
+        Hero1BloodNum = 2;
+        Hero2BloodNum = 2;
+        Hero3BloodNum = 2;
         msgText = GameObject.FindGameObjectWithTag("MsgText");
         Msg_text = msgText.GetComponent<Text>();
         Time_text = GameObject.FindGameObjectWithTag("TimeText").GetComponent<Text>();
@@ -148,7 +154,7 @@ public class UIControl : NetworkBehaviour
         {
             return;
         }
-
+        boss = GameObject.FindGameObjectWithTag("Boss");
         UIUpdateBloodNum();
         if (this.GetComponent<InfoControl>().getState() == PEOPLE.FREE)
         {
@@ -160,6 +166,9 @@ public class UIControl : NetworkBehaviour
         WarnEffect();
         MsgUpdate();
         isAllSealed();
+        if(hero1!=null) Hero1BloodNum= hero1.GetComponent<InfoControl>().blood_num;
+        if (hero2 != null) Hero2BloodNum = hero2.GetComponent<InfoControl>().blood_num;
+        if (hero3 != null) Hero3BloodNum = hero3.GetComponent<InfoControl>().blood_num;
 
     }
 
@@ -277,15 +286,15 @@ public class UIControl : NetworkBehaviour
 
     }
 
-    void gameOver()
+    public void gameOver()
     {
-        int num1 = 2;
-        if (hero1 != null) num1 = hero1.GetComponent<InfoControl>().blood_num;
-        int num2 = 2;
-        if (hero2 != null) num2 = hero2.GetComponent<InfoControl>().blood_num;
-        int num3 = 2;
-        if (hero3 != null) num3 = hero3.GetComponent<InfoControl>().blood_num;
-        if (num1 + num2 + num3 > 6)
+        //int num1 = 2;
+        //if (hero1 != null) num1 = hero1.GetComponent<InfoControl>().blood_num;
+        //int num2 = 2;
+        //if (hero2 != null) num2 = hero2.GetComponent<InfoControl>().blood_num;
+        //int num3 = 2;
+        //if (hero3 != null) num3 = hero3.GetComponent<InfoControl>().blood_num;
+        if (Hero1BloodNum + Hero2BloodNum + Hero3BloodNum > 6)
         {
             Debug.Log(this.gameObject.tag + "Win");
             SceneManager.LoadScene(this.gameObject.tag + "Win");
@@ -303,8 +312,11 @@ public class UIControl : NetworkBehaviour
         {
             return;
         }
+
+        
         GameTimeLeft -= Time.deltaTime;
-        if (GameTimeLeft < 0)
+        Debug.Log(GameTimeLeft);
+        if (GameTimeLeft < 10)
         {
             gameOver();
         }

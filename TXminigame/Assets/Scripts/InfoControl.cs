@@ -26,6 +26,7 @@ public class InfoControl : NetworkBehaviour
 
     // Use this for initialization
     void Start () {
+        unlock_page_speed = 3.0f;
         original_book_pos = new Vector3(-1.6f, 2, -12.85f);
         if (!isLocalPlayer) return;
 
