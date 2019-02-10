@@ -1,13 +1,17 @@
 # TXminigame
-Minigame project in Tencent game planning course
+Minigame project in Tencent game planning course.
+
+**demo video**: https://youtu.be/lwE8W6PYatI
+
+![image](pics/pic1.png)
 
 ## Objects
 - 人物
 - Boss
-- 纸张（本身会发亮）
+- 纸张
 - 原书
 - 传送点
-- 陷阱（prefab）
+- 陷阱
 
 ## Interaction
 - Boss 在人物附近X米半径内，人物屏幕边缘会变红（周）
@@ -20,7 +24,7 @@ Minigame project in Tencent game planning course
 - 人物 消耗纸张使用技能，确定攻击目标/移动方向。有引导时间，中途打断则纸张被浪费，技能不释放。若成功释放，人物状态变化/陷阱实例化。（谢）
 - 人物 使用基础技能，步骤同上。不同点是技能有冷却时间（谢）
 - 人物 在原书中呆了X秒无人来救，则死亡。该人物纸张清零，不算做团队成就。（陈）
-- 人物 人物行走中会留下脚印，比如身后一共5个脚印，以单位距离采样(?) 以1秒为单位时间更新(?)。以此增加Boss追踪机率。（文）
+- 人物 人物行走中会留下脚印，比如身后一共5个脚印，以单位距离采样,单位时间更新。以此增加Boss追踪机率。（文）
 - 人物 消耗一张纸张后 地图中会在随机位置出现一张（陈）
 - 人物 /*点击队友，选择自己拥有的纸张赠送*/
 - 技能 基础技能/纸张技能 
@@ -35,7 +39,7 @@ Minigame project in Tencent game planning course
 - 系统 玩家死亡/胜利的场景切换  成就机制：每次任务获得一次胜利均可以解锁其自身独有的小故事（选自格林童话，将一个童话分割为数节，分次解锁）Boss获胜可解锁任意人物小故事一节。
 - 基本框架（谢）
 ## UI
-- 基本框架（陈）
+- 基本框架（谢）
 - 接收人物移动信息，传给InfoControl
 - 各人物获得的书籍、各人物死亡状态显示在左上角
 - 小地图中人的显示
